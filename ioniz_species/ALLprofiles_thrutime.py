@@ -11,7 +11,7 @@ from pynbody.analysis import profile
 
 
 # Just using k = 1 and k = 2, for GM1 & GM4 for now
-k = 1
+k = 5
 ## MOVED FILES FROM FABIO TO ALYSON BROOKS: /nobackupp8/ambrook2/fgoverna_pleiades_p8_files
 sim = ['/nobackupp8/ambrook2/fgoverna_pleiades_p8_files/pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH.00','/nobackupp8/ambrook2/fgoverna_pleiades_p8_files/pioneer50h243GM1.1536gs1bwK1BH/pioneer50h243GM1.1536gst1bwK1BH.00','/nobackupp8/ambrook2/fgoverna_pleiades_p8_files/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.00','/nobackup/nnsanche/pioneer50h243GM5.1536gst1bwK1BH/pioneer50h243GM5.1536gst1bwK1BH.00','/nobackupp8/ambrook2/fgoverna_pleiades_p8_files/pioneer50h243GM6.1536gst1bwK1BH/pioneer50h243GM6.1536gst1bwK1BH.00','/nobackup/nnsanche/pioneer50h243GM7.1536gst1bwK1BH/pioneer50h243GM7.1536gst1bwK1BH.00']
 labels = ['P0','GM1','GM4','GM5','GM6','GM7']
@@ -25,7 +25,7 @@ ts = np.loadtxt('../'+labels[k]+'/timesteps.txt',dtype=str)
 #for t in range(len(ts)):
 #print('Loading sim:',sim[k],' at timestep:',ts[t])
 
-for i in range(51,len(ts)):
+for i in range(6,len(ts)):
     print('LOADING TIMESTEP:',ts[i])
     ######################
     # READ IN SIMULATION #
@@ -70,10 +70,10 @@ for i in range(51,len(ts)):
         np.savetxt('Omass_thrutime/'+labels[k]+'_Omass_'+ts[i]+'.np',np.log10(CGMprofile['mass'].in_units('g')*CGMprofile['OxMassFrac']/(16*m_p)))
         np.savetxt('Rbins_thrutime/'+labels[k]+'_Rbins_'+ts[i]+'.np',CGMprofile['rbins'].in_units('kpc'))
     
-        sph.image(CGM_gas,qty="temp",width=500,cmap="YlOrRd",vmin=10**4,vmax=10**6)
-        plt.savefig(labels[k]+'_Tmap_'+ts[i]+'.pdf')
+#        sph.image(CGM_gas,qty="temp",width=500,cmap="YlOrRd")
+#        plt.savefig(labels[k]+'_Tmap_'+ts[i]+'.pdf')
 #        plt.show()
-        plt.close()
+#        plt.close()
 
 quit()
 plt.plot(profile['rbins'].in_units('kpc'),np.log10((profile['mass'].in_units('g')*profile['OxMassFrac']*profile['ovi']/(16*m_p))/profile._binsize.in_units('cm**2')),label=labels[k])
