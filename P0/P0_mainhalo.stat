@@ -1,0 +1,2 @@
+  Grp      N_tot     N_gas    N_star    N_dark       Mvir(M_sol)   Rvir(kpc)    GasMass(M_sol)   StarMass(M_sol)   DarkMass(M_sol)       V_max    R@V_max     VelDisp         Xc         Yc         Zc         VXc         VYc         VZc   Contam  Satellite?   False?
+    1    8271091    586421   1384485   6300185     1.0681378e+12    268.8791     1.0968760e+11     5.7230961e+10     9.0121839e+11   196.42999   22.13604   179.39999    4.11739    9.16190   31.40633    79.78000  -246.33000   -66.93000    clean       no         

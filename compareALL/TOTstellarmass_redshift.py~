@@ -1,0 +1,48 @@
+# This script creates the arrays of data for the stellar mass 
+# of different galaxy's MH.
+
+#     - Outputs:
+#         1. Numpy arrays for stellar mass for all sims (P0-GM7)
+
+
+# N. Nicole Sanchez -- August 2017
+# Univ. of Wash.    -- Nbody Shop
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+import matplotlib as mpl
+import numpy as np
+import pynbody
+import sys
+
+
+timesteps_P0 = ['0136','0186','0223','0273','0345','0384','0454','0635','0768','0972','1152','1536','1739','1920','2304','2554','2688','3072','3195','3456','3840','4096']
+timesteps_GM1 = ['0128','0136','0186','0192','0256','0273','0320','0384','0448','0454','0512','0576','0640','0704','0768','0832','0896','0960','0972','1024','1088','1152','1216','1280','1344','1408','1472','1536','1600','1664','1728','1739','1792','1856','1920','1984','2048','2112','2176','2240','2304','2368','2432','2496','2554','2560','2624','2688','2752','2816','2880','2944','3008','3072','3136','3200','3264','3328','3392','3456','3520','3584','3648','3712','3776','3840','3904','3968','4032',
+'4096']
+timesteps_GM456 = ['0128','0136','0186','0223','0256','0273','0345','0384','0454','0512','0635','0640','0768','0896','0972','1024','1152','1280','1408','1536','1664','1739','1792','1920','2048','2176','2304','2432','2554','2560','2688','2816','2944','3072','3195','3200','3328','3456','3584','3712','3840','3968','4096']
+timesteps = [timesteps_P0,timesteps_GM1,timesteps_GM456,timesteps_GM456,timesteps_GM456,timesteps_GM456]
+
+sims = ['/nobackupp8/fgoverna/pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH.00','/nobackupp8/fgoverna/pioneer50h243GM1.1536gs1bwK1BH/pioneer50h243GM1.1536gst1bwK1BH.00','/nobackupp8/fgoverna/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.00','/nobackup/nnsanche/pioneer50h243GM5.1536gst1bwK1BH/pioneer50h243GM5.1536gst1bwK1BH.00','/nobackupp8/fgoverna/pioneer50h243GM6.1536gst1bwK1BH/pioneer50h243GM6.1536gst1bwK1BH.00','/nobackup/nnsanche/pioneer50h243GM7.1536gst1bwK1BH/pioneer50h243GM7.1536gst1bwK1BH.00']
+names  = ['P0','GM1','GM4','GM5','GM6','GM7']
+
+
+
+for j in range(len(sims)):
+    totalstellar_mass = []
+    for i in range(len(timesteps)): 
+        print(str(sims[j])+str(timesteps[j][i]))
+        sim = pynbody.load(str(sims[j])+str(timesteps[j][i]))
+        print('simulation '+sims[j]+' at z = ','%.2f' % sim.properties['z'] )
+
+        sim.properties
+        sim.properties['time'].in_units('Gyr')
+        print('time:', sim.properties['time'].in_units('Gyr'))
+
+        sim.loadable_keys()
+        sim.physical_units()
+        h = sim.halos()
+        h1 = h[1]
+        pynbody.analysis.angmom.faceon(h1)
+        
+        totalstellar_mass.append(h1.s['mass'].sum())
+        
+    np.savetxt(names[j]+'_totstellarmass.txt',totalstellar_mass)

@@ -1,0 +1,25 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+k = 1
+labels = ['P0','GM1','GM4','GM5','GM6','GM7']
+ts = np.loadtxt('../'+labels[k]+'/timesteps.txt',dtype=str)
+z = np.loadtxt('../'+labels[k]+'/steps_z_time.txt',delimiter=' ',dtype=str,usecols=2,unpack=True,skiprows=1)
+print(labels[k])
+
+
+for t in range(len(ts)):
+#    t = len(ts)-1
+    Novi = np.loadtxt('GM1_Novi_'+ts[t]+'_ydata.np')
+    R = np.loadtxt('GM1_b_'+ts[t]+'_xdata.np')
+
+    plt.plot(R,np.log10(Novi),marker='.',label=labels[k])
+    plt.ylabel(r'N$_{OVI}$ [cm$^{-2}$]')
+    plt.xlabel(r'$r$ [kpc]')
+    plt.ylim(13,16)
+    plt.xlim(-10,270)
+    plt.text(230,15.50,z[k])
+    plt.legend()
+    plt.savefig(labels[k]+'_NOVI_b_'+ts[t]+'.pdf')
+#    plt.show()

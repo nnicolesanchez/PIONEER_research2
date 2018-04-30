@@ -1,0 +1,102 @@
+import matplotlib.pyplot as plt
+import pynbody
+
+file = pynbody.load('/nobackupp8/fgoverna/pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH.004096')
+#pynbody.analysis.decomp(file,vcen=None)
+
+file.properties
+file.properties['time'].in_units('Gyr')
+file.keys()
+file['pos'].in_units('kpc')
+h = file.halos()
+pynbody.analysis.halo.center(h[1],mode='ssc')
+h1 = h[1]
+
+pynbody.analysis.angmom.faceon(h[1])
+
+file.physical_units()
+
+#im = pynbody.plot.image(h[1].d,width='200 kpc', units='Msol kpc^-2', cmap='Greys')
+#pynbody.plot.image(h[1].g,width='50 kpc', av_z=True, cmap='Blues')
+#pynbody.plot.image(h[1].g,width='50 kpc', cmap='Spectral')
+
+file.rotate_x(90)
+pynbody.plot.image(h[1].g,width='50 kpc', cmap='Spectral')
+#plt.show()
+
+# Following two things are the same:
+#file.rotate_x(90)
+#pynbody.analysis.angmom.sideon(h[1])
+
+pynbody.analysis.angmom.faceon(h[1]) 
+
+# Get disk stars with ages 1-6 Gyr
+pynbody.plot.image(h[1].s,width='50 kpc', av_z=True, cmap='Blues')
+plt.title('All Stars in H1')
+#plt.show()
+print('Number of total stars with ages in main halo',len(h[1].s))
+
+R_d = ((h1.s['x'].in_units('kpc'))**2. + (h1.s['y'].in_units('kpc'))**2.)**(0.5)
+disk_stars_xymax = (R_d < 15.) & (R_d > -15.)
+disk_stars_zmax  = (h1.s['z'].in_units('kpc') < 4.) & (h1.s['z'].in_units('kpc') > -4.)
+
+disk_stars = h1.s[disk_stars_xymax & disk_stars_zmax]
+print('Number of total stars with ages 1-6 Gyr in main halo',len(disk_stars))
+pynbody.plot.image(disk_stars,width='50 kpc', av_z=True, cmap='Blues')
+plt.title('Stars within Disk of H1')
+plt.savefig('h1_diskstars_xy15kpc_z4kpc_faceon.pdf')
+#plt.show()
+plt.clf()
+
+pynbody.plot.profile.density_profile(disk_stars, linestyle=False, center=True)
+plt.xscale('linear')
+plt.savefig('h1_diskstars_xy15kpc_z4kpc_densityprofile.pdf')
+#plt.show()
+plt.clf()
+
+young_stars1 = disk_stars['age'].in_units('Gyr') < 6.
+young_stars2 = disk_stars['age'].in_units('Gyr') > 1.
+
+young_disk_star = disk_stars[young_stars1 & young_stars2]
+print('Number of total stars with ages 1-6 Gyr in main halo',len(disk_stars))
+pynbody.plot.image(young_disk_star,width='50 kpc', av_z=True, cmap='Blues')
+plt.title('Stars within Disk (Ages 1-6 Gyr) of H1')
+plt.savefig('h1_diskstars_xy15kpc_z4kpc_age1_6gyr.pdf')
+#plt.show()
+plt.clf()
+
+
+# create a profile object for the stars (by default this is a 2D profile)
+p = pynbody.analysis.profile.Profile(young_disk_star['mass'],min=.01,max=50)
+f, axs = plt.subplots(1,2,figsize=(14,6))
+axs[0].plot(p['rbins'],p['density'], 'k')
+axs[0].semilogy()
+axs[0].set_xlabel('R [kpc]')
+axs[0].set_ylabel(r'$\Sigma_{\star}$ [M$_{\odot}$ kpc$^{-2}$]')
+plt.savefig('h1_diskstars_xy15kpc_z4kpc_age1_6gyr_densvsR.pdf')
+#plt.show()
+plt.clf()
+
+
+plt.plot(p['rbins'],np.log10(p['mass']), 'k')
+plt.xlabel('R [kpc]')
+plt.ylabel(r'$M_{\star}$ [M$_{\odot}$]')
+plt.savefig('h1_diskstars_xy15kpc_z4kpc_age1_6gyr_massvsR.pdf')
+#plt.show()
+plt.clf()
+
+
+
+fit_inds = np.where(p['rbins'] < 0.2*p['rbins'].max())
+alphfit = np.polyfit(np.log10(p['rbins'][fit_inds]),np.log10(p['mass'][fit_inds]), 1)
+fit = np.poly1d(alphfit)
+print(alphfit)
+plt.plot(np.log10(p['rbins']),np.log10(p['mass']), 'k')
+plt.plot(p['rbins'][fit_inds], fit(np.log10(p['rbins'][fit_inds])),color='k',linestyle='dashed')
+plt.savefig('h1_diskstars_xy15kpc_z4kpc_age1_6gyr_massvsRplusfit.pdf')
+plt.xlabel('R [kpc]')
+plt.ylabel(r'$M_{\star}$ [M$_{\odot}$]')
+#plt.show()
+plt.clf()
+
+# I = I_0 e^(R/h)

@@ -1,0 +1,115 @@
+# This script creates a plot of the CGM mass 
+# of different phases:
+#        Cool: 10^4   - 10^4.5
+#              10^4.5 - 10^5
+#        Warm: 10^5   - 10^5.7
+#              10^5.7 - 10^6
+#        Hot:  10^6   - 10^7
+
+#     - Outputs:
+#         3. Mean CGM metal fraction vs redshift/time
+#               - for each sim (divided by phase, like #2)
+#               ** Seep plotCGMmassphase_redshift.py for #1 & 2
+
+
+# N. Nicole Sanchez -- August 2017
+# Univ. of Wash.    -- Nbody Shop
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+import matplotlib as mpl
+import numpy as np
+import sys
+
+
+plt.rc('font', size=12, family='serif', style='normal', variant='normal', stretch='normal', weight='normal')
+plt.rc('xtick', labelsize=12)
+plt.rc('xtick.major', size=6, width=1)
+plt.rc('lines', lw=2)
+plt.rc('axes', lw=1, labelsize=12)
+
+names     = ['P0','GM1','GM4','GM5','GM6','GM7']
+colors    = ['DodgerBlue','SteelBlue','FireBrick','IndianRed','Salmon','Orange']
+labels    = ['cool','cool/warm','warm','hot']
+lines     = ['-','--','-.',':']
+colors2   = ['lightcoral','indianred','FireBrick','DarkRed']
+ticks_P0  = [3,9,12,15,21]
+ticks_GM1 = [5,18,31,44,69]
+ticks_GM456  = [5,14,21,28,42]
+ticks     = [ticks_P0,ticks_GM1,ticks_GM456,ticks_GM456,ticks_GM456]
+
+Z_sun = 0.0134 # (Asplund 2009; https://arxiv.org/pdf/0909.0948.pdf)
+
+# Load in the data and create phase arrays
+cool = []
+cw   = []
+warm = []
+hot  = []
+t    = []
+z    = []
+
+for j in range(5):#len(names)):
+    cool.append(np.loadtxt(names[j]+'_phaseCGM_metals_cool.txt'))
+    cw.append(np.loadtxt(names[j]+'_phaseCGM_metals_cool_warm.txt'))
+    warm.append(np.loadtxt(names[j]+'_phaseCGM_metals_warm.txt'))
+    hot.append(np.loadtxt(names[j]+'_phaseCGM_metals_hot.txt'))
+    t.append(np.loadtxt(names[j]+'_time_Gyr.txt'))
+    z.append(np.loadtxt(names[j]+'_redshifts.txt'))
+
+cool45 = cool + cw
+
+# COOL CGM Mean METALLICITY (for all gxys) vs Redshift
+fig = plt.figure()
+ax1 = fig.add_subplot(111)
+ax2 = ax1.twiny()
+
+ax1.plot(t[0],cool45[0]/Z_sun,color=colors[0],label=names[0],linestyle=lines[3])
+ax1.plot(t[1],cool45[1]/Z_sun,color=colors[1],label=names[1],linestyle=lines[2])
+ax1.plot(t[2],cool45[2]/Z_sun,color=colors[2],label=names[2],linestyle=lines[1])
+ax1.plot(t[3],cool45[3]/Z_sun,color=colors[3],label=names[3],linestyle=lines[0])
+ax1.plot(t[4],cool45[4]/Z_sun,color=colors[4],label=names[4],linestyle=lines[3])
+#ax1.plot(t[5],np.log10(cool[5]),color=colors[5],label=names[5],linestyle=lines[2])
+ax1.set_ylabel(r'Cool CGM Mean Metallicity [Z$_{\odot}$] (T$^4$ - T$^5$)')
+ax1.set_xlabel('Time [Gyr]')
+ax1.legend()
+plt.savefig('ALL_coolCGMmetallicity_redshift.pdf')
+plt.show()
+plt.close()
+
+quit()
+# WARM CGM Mean METALLICITY (for all gxys) vs Redshift 
+fig = plt.figure()
+ax1 = fig.add_subplot(111)
+ax2 = ax1.twiny()
+
+ax1.plot(t[0],np.log10(warm[0]),color=colors[0],label=names[0],linestyle=lines[3])
+ax1.plot(t[1],np.log10(warm[1]),color=colors[1],label=names[1],linestyle=lines[2])
+ax1.plot(t[2],np.log10(warm[2]),color=colors[2],label=names[2],linestyle=lines[1])
+ax1.plot(t[3],np.log10(warm[3]),color=colors[3],label=names[3],linestyle=lines[0])
+ax1.plot(t[4],np.log10(warm[4]),color=colors[4],label=names[4],linestyle=lines[3])
+#ax1.plot(t[5],np.log10(warm[5]),color=colors[5],label=names[5],linestyle=lines[2])
+ax1.set_ylabel(r'log(Warm CGM Mean Metallicity) [T$^5$ - T$^6$]')
+ax1.set_xlabel('Time [Gyr]')
+ax1.legend()
+plt.savefig('ALL_warmCGMmetallicity_redshift.pdf')
+plt.show()
+plt.close()
+
+
+# HOT CGM Mean METALLICITY (for all gxys) vs Redshift                           
+fig = plt.figure()
+ax1 = fig.add_subplot(111)
+ax2 = ax1.twiny()
+
+ax1.plot(t[0],np.log10(hot[0]),color=colors[0],label=names[0],linestyle=lines[3])
+ax1.plot(t[1],np.log10(hot[1]),color=colors[1],label=names[1],linestyle=lines[2])
+ax1.plot(t[2],np.log10(hot[2]),color=colors[2],label=names[2],linestyle=lines[1])
+ax1.plot(t[3],np.log10(hot[3]),color=colors[3],label=names[3],linestyle=lines[0])
+ax1.plot(t[4],np.log10(hot[4]),color=colors[4],label=names[4],linestyle=lines[3])
+#ax1.plot(t[5],np.log10(hot[5]),color=colors[5],label=names[5],linestyle=lines[2])
+ax1.set_ylabel(r'log(Hot CGM Mean Metallicity) [T$^5$ - T$^6$]')
+ax1.set_xlabel('Time [Gyr]')
+ax1.legend()
+plt.savefig('ALL_hotCGMmetallicity_redshift.pdf')
+plt.show()
+plt.close()
+

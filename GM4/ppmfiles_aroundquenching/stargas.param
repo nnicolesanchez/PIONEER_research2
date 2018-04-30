@@ -1,0 +1,33 @@
+PATTERN IBBPBBPBBPBBPBB
+#standard PATTERN
+OUTPUT p243GM4.quenchtime.Cstargas.mpg
+
+
+INPUT_DIR ./
+
+INPUT
+p243GM4.Cstargas.00000*.ppm [1530-1739]
+END_INPUT
+
+
+INPUT_CONVERT *
+
+BASE_FILE_FORMAT PPM
+
+GOP_SIZE 15
+#not sure, but should be same as PATTERN frames
+
+SLICES_PER_FRAME 1
+
+PIXEL HALF
+RANGE 10
+#low range makes movie jerky
+PSEARCH_ALG LOGARITHMIC
+BSEARCH_ALG SIMPLE
+
+IQSCALE 4
+PQSCALE 6
+BQSCALE 12
+#higher SCALE nrs save space but make movie quality worse
+REFERENCE_FRAME DECODED
+

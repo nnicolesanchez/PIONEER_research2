@@ -1,0 +1,84 @@
+# This script creates a plot of the CGM density 
+# as a function of the MAIN HALO mass in the PIONEER
+# suite of ChaNGa Nbody Simulations:
+# P4, GM5, GM6 
+# Middle main halo mass, more, and less
+# (since the thing that is changing bw these is SAT mass)
+
+#     - Outputs:
+#         1. plot of total mass of gas between 10^4 & 10^5 K 
+#          as a function of satellite 
+#         2. plot of CGM density as func of satellite
+
+
+# N. Nicole Sanchez -- August 2017
+# Univ. of Wash.    -- Nbody Shop
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+import matplotlib as mpl
+import numpy as np
+import pynbody
+import sys
+
+plt.rc('font', size=12, family='serif', style='normal', variant='normal', stretch='normal', weight='normal')
+plt.rc('xtick', labelsize=12)
+plt.rc('xtick.major', size=6, width=1)
+plt.rc('lines', lw=2)
+plt.rc('axes', lw=1, labelsize=12)
+
+#P0 = pynbody.load('/nobackupp8/fgoverna/pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH.004096')             # Satellite Halo ID: h9
+#GM1 = pynbody.load('/nobackupp8/fgoverna/pioneer50h243GM1.1536gs1bwK1BH/pioneer50h243GM1.1536gst1bwK1BH.004096')     # Satellite Halo ID: h10
+#GM4 = pynbody.load('/nobackupp8/fgoverna/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.004096')    # Satellite Halo ID: h4
+#GM5 = pynbody.load('/nobackup/nnsanche/pioneer50h243GM5.1536gst1bwK1BH/pioneer50h243GM5.1536gst1bwK1BH.004096')
+#GM6 = pynbody.load('/nobackupp8/fgoverna/pioneer50h243GM6.1536gst1bwK1BH/pioneer50h243GM6.1536gst1bwK1BH.004096')
+
+sims = ['/nobackupp8/fgoverna/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.004096','/nobackup/nnsanche/pioneer50h243GM5.1536gst1bwK1BH/pioneer50h243GM5.1536gst1bwK1BH.004096','/nobackupp8/fgoverna/pioneer50h243GM6.1536gst1bwK1BH/pioneer50h243GM6.1536gst1bwK1BH.004096']
+names  = ['P0','GM1','GM4']
+colors = ['DodgerBlue','SteelBlue','IndianRed']
+
+for i in range(len(sims)):
+    sim = pynbody.load(sims[i])
+
+    print('simulations at z = ','%.2f' % sim.properties['z'] )
+
+    sim.properties
+    sim.properties['time'].in_units('Gyr')
+    sim.loadable_keys()
+    sim.physical_units()
+    h = sim.halos()
+    h1 = h[1]
+    pynbody.analysis.angmom.faceon(h1)
+
+    # Constants
+    m_H = 1.6733 * 10**-24 #g
+
+    # Want to isolate CGM  
+    # Isolate and remove disk stars within radius 0-10 kpc & vertically 4 kpc 
+    r_max = 10  # kpc
+    z_max = 4   # kpc
+
+    Rg_d = ((h1.g['x'].in_units('kpc'))**2. + (h1.g['y'].in_units('kpc'))**2.)**(0.5)
+    disk_gas_xymax =  (Rg_d < r_max)
+    disk_gas_zmax  = (h1.g['z'].in_units('kpc') < z_max) & (h1.g['z'].in_units('kpc') > -z_max)
+    
+    disk_gas_mask = disk_gas_xymax & disk_gas_zmax
+    disk_gas = h1.g[disk_gas_xymax & disk_gas_zmax]
+    CGM_gas  = h1.g[~disk_gas_mask]
+    
+    cool_stuff = (CGM_gas['temp'] < 10**5) & (CGM_gas['temp'] > 10**4)
+    cool_gas = CGM_gas[cool_stuff]
+    
+    total_cool_mass = np.sum(cool_gas['mass'])
+    print('Total mass of gas between 10^4-10^5 K:',total_cool_mass)
+    
+    total_halo_mass = np.loadtxt('../'+names[i]+'/'+names[i]+'_mainhalo.stat',dtype=float,skiprows=1,usecols=7,unpack=True)
+    total_halo_mass = float(total_halo_mass)
+    print('Total mass of main halo '+str(names[i])+':')
+    
+    plt.plot(total_cool_mass,total_halo_mass,label=names[i],marker='*')
+
+plt.xlabel(r'Total CGM Mass [M$_{sol}$] between 10$^4$-10$^5$ K')
+plt.ylabel('Main Halo Mass [M$_{sol}$]')
+plt.legend()
+plt.savefig('MainHalovsCGMcoolgas.pdf')
+plt.show()

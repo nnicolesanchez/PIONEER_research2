@@ -1,0 +1,140 @@
+# This script creates a plot of the CGM mass 
+# of different phases:
+#        Cool: 10^4   - 10^4.5
+#              10^4.5 - 10^5
+#        Warm: 10^5   - 10^5.7
+#              10^5.7 - 10^6
+#        Hot:  10^6   - 10^7
+
+#     - Outputs:
+#         1. Plot of warm CGM Mass vs Distance from center for 
+#            all sims (P0-GM7)
+#               - Maybe later add: one for cool, c/w, warm, hot
+
+# N. Nicole Sanchez -- September 2017
+# Univ. of Wash.    -- Nbody Shop
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+import matplotlib as mpl
+import numpy as np
+import pynbody 
+import sys
+
+# Set plot stuff
+plt.rc('font', size=12, family='serif', style='normal', variant='normal', stretch='normal', weight='normal')
+plt.rc('xtick', labelsize=12)
+plt.rc('xtick.major', size=6, width=1)
+plt.rc('lines', lw=2)
+plt.rc('axes', lw=1, labelsize=12)
+
+names     = ['P0','GM1','GM4','GM5','GM6','GM7']
+colors    = ['DodgerBlue','SteelBlue','FireBrick','IndianRed','Salmon','Orange']
+labels    = ['cool','cool/warm','warm','hot']
+
+
+sims = ['/nobackupp8/fgoverna/pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH.00','/nobackupp8/fgoverna/pioneer50h243GM1.1536gs1bwK1BH/pioneer50h243GM1.1536gst1bwK1BH.00','/nobackupp8/fgoverna/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.00','/nobackup/nnsanche/pioneer50h243GM5.1536gst1bwK1BH/pioneer50h243GM5.1536gst1bwK1BH.00','/nobackupp8/fgoverna/pioneer50h243GM6.1536gst1bwK1BH/pioneer50h243GM6.1536gst1bwK1BH.00','/nobackup/nnsanche/pioneer50h243GM7.1536gst1bwK1BH/pioneer50h243GM7.1536gst1bwK1BH.00']
+steps = ['0454','0972','1739','2554','3200','4096']
+labels2 = ['z = 4','z = 2','z = 1','z = 0.5','z = 0.25','z = 0']
+lines   = ['-','--','-.',':']
+colors2 = ['lightcoral','indianred','FireBrick','DarkRed','Purple','Violet']
+
+for k in range(1,2):#len(sims)):
+    for j in range(len(steps)):
+        print(str(sims[k])+str(steps[j]))
+        sim = pynbody.load(str(sims[k])+str(steps[j]))
+        print('simulations at z = ','%.2f' % sim.properties['z'] )
+
+        sim.properties
+        sim.properties['time'].in_units('Gyr')
+        print('time:', sim.properties['time'].in_units('Gyr'))
+    
+        sim.loadable_keys()
+        sim.physical_units()
+        h = sim.halos()
+        h1 = h[1]
+        pynbody.analysis.angmom.faceon(h1)
+    
+        # Want to isolate CGM  
+        # Isolate and remove disk stars within radius 0-10 kpc & vertically 4 kpc 
+        r_max = 10  # kpc
+        z_max = 4   # kpc
+    
+        Rg_d = ((h1.g['x'].in_units('kpc'))**2. + (h1.g['y'].in_units('kpc'))**2.)**(0.5)
+        disk_gas_xymax =  (Rg_d < r_max)
+        disk_gas_zmax  = (h1.g['z'].in_units('kpc') < z_max) & (h1.g['z'].in_units('kpc') > -z_max)
+        
+        disk_gas_mask = disk_gas_xymax & disk_gas_zmax
+        disk_gas = h1.g[disk_gas_xymax & disk_gas_zmax]
+        CGM_gas  = h1.g[~disk_gas_mask]
+        
+        print(np.min(CGM_gas['r']))
+        print(np.max(CGM_gas['r']))
+
+        dist_bins = np.arange(0,270)
+        CGM_cumudist = []
+
+        # TOTAL CGM MASS 
+        for i in range(len(dist_bins)-1):
+            print('Between ',dist_bins[i],' kpc and ',dist_bins[i+1],' kpc')
+            this_bin = (CGM_gas['r'] >= dist_bins[i]) & (CGM_gas['r'] <= dist_bins[i+1])
+            bin_mass = np.sum(CGM_gas['mass'][this_bin])
+            print('the total mass in CGM gas is: ', bin_mass)
+
+            CGM_cumudist.append(float(bin_mass))
+
+            np.savetxt(names[0]+'_totCGMmassvsradius.txt',np.array(CGM_cumudist))
+            np.savetxt(names[0]+'_radius.txt',np.array(dist_bins))
+            
+
+        # WARM CGM MASS
+        T_min = 10**5
+        T_max = 10**6
+
+        warm_stuff = (CGM_gas['temp'] <= T_max) & (CGM_gas['temp'] >= T_min)
+        warm_gas = CGM_gas[warm_stuff]
+        
+        warm_cumudist = []
+        for i in range(len(dist_bins)-1):
+            print('Between ',dist_bins[i],' kpc and ',dist_bins[i+1],' kpc')
+            this_bin = (warm_gas['r'] >= dist_bins[i]) & (warm_gas['r'] <= dist_bins[i+1])
+            bin_mass = np.sum(warm_gas['mass'][this_bin])
+            print('the total warm mass in CGM gas is: ', bin_mass)
+
+            warm_cumudist.append(float(bin_mass))
+            np.savetxt(names[0]+'_warmCGMmassvsradius.txt',np.array(warm_cumudist))
+            
+
+        # WARM HALF1 CGM MASS
+        T_min = 10**5
+        T_max = 10**5.7
+
+        warm1_stuff = (CGM_gas['temp'] <= T_max) & (CGM_gas['temp'] >= T_min)
+        warm1_gas = CGM_gas[warm1_stuff]
+        
+        warm1_cumudist = []
+        for i in range(len(dist_bins)-1):
+            print('Between ',dist_bins[i],' kpc and ',dist_bins[i+1],' kpc')
+            this_bin = (warm1_gas['r'] >= dist_bins[i]) & (warm1_gas['r'] <= dist_bins[i+1])
+            bin_mass = np.sum(warm1_gas['mass'][this_bin])
+            print('the total warm mass in CGM gas is: ', bin_mass)
+
+            warm1_cumudist.append(float(bin_mass))
+            np.savetxt(names[0]+'_warm_half1CGMmassvsradius.txt',np.array(warm1_cumudist))
+            
+
+        # WARM HALF1 CGM MASS
+        T_min = 10**5.7
+        T_max = 10**6
+
+        warm2_stuff = (CGM_gas['temp'] <= T_max) & (CGM_gas['temp'] >= T_min)
+        warm2_gas = CGM_gas[warm2_stuff]
+        
+        warm2_cumudist = []
+        for i in range(len(dist_bins)-1):
+            print('Between ',dist_bins[i],' kpc and ',dist_bins[i+1],' kpc')
+            this_bin = (warm2_gas['r'] >= dist_bins[i]) & (warm2_gas['r'] <= dist_bins[i+1])
+            bin_mass = np.sum(warm2_gas['mass'][this_bin])
+            print('the total warm mass in CGM gas is: ', bin_mass)
+
+            warm2_cumudist.append(float(bin_mass))
+            np.savetxt(names[0]+'_warm_half2CGMmassvsradius.txt',np.array(warm2_cumudist))

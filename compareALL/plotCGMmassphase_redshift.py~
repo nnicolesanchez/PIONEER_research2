@@ -1,0 +1,106 @@
+# This script creates a plot of the CGM mass 
+# of different phases:
+#        Cool: 10^4   - 10^4.5
+#              10^4.5 - 10^5
+#        Warm: 10^5   - 10^6
+#        Hot:  10^6   - 10^7
+
+#     - Outputs:
+#         1. Plot of CGM Mass vs redshift/time for 
+#            all sims (P0-GM7)
+#               - one for cool, c/w, warm, hot
+#         2. Plot of CGM Mass vs redshift for EACH sim
+#               - one of cool/c/w/warm/hot for P0, then GM1 etc
+#         3. Mean CGM metal fraction vs redshift/time
+#               - for each sim (divided by phase, like #2)
+
+# N. Nicole Sanchez -- August 2017
+# Univ. of Wash.    -- Nbody Shop
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+import matplotlib as mpl
+import numpy as np
+import sys
+
+plt.rc('font', size=12, family='serif', style='normal', variant='normal', stretch='normal', weight='normal')
+plt.rc('xtick', labelsize=12)
+plt.rc('xtick.major', size=6, width=1)
+plt.rc('lines', lw=2)
+plt.rc('axes', lw=1, labelsize=12)
+
+names  = ['P0','GM1','GM4','GM5','GM6','GM7']
+colors = ['DodgerBlue','SteelBlue','FireBrick','IndianRed','Salmon','Orange']
+labels = ['cool','cool/warm','warm','hot']
+lines = ['-','--','-.',':']
+colors2 = ['lightcoral','indianred','FireBrick','DarkRed']
+
+# Load in the data and create phase arrays
+cool = []
+cw   = []
+warm = []
+hot  = []
+t    = []
+z    = []
+j = 0
+print(names[j])
+for j in range(0):#len(names)):
+    cool.append(np.loadtxt(names[j]+'_phaseCGM_mass_cool.txt'))
+    cw.append(np.loadtxt(names[j]+'_phaseCGM_mass_cool_warm.txt'))
+    warm.append(np.loadtxt(names[j]+'_phaseCGM_mass_warm.txt'))
+    hot.append(np.loadtxt(names[j]+'_phaseCGM_mass_hot.txt'))
+    t.append(np.loadtxt(names[j]+'_time_Gyr.txt'))
+    z.append(np.loadtxt(names[j]+'_redshifts.txt'))
+
+
+# CGM Mass vs Redshift/Time per Simulation
+i = 0
+for i in range(1):#len(names)):
+    fig = plt.figure()
+    ax1 = fig.add_subplot(111)
+    ax2 = ax1.twiny()
+
+    print(i)
+    print(t)
+    print(np.log10(hot[i]))
+    ax1.plot(t[i],np.log10(hot[i]),color=colors2[3],label='hot',linestyle=lines[3])
+    ax1.plot(t[i],np.log10(warm[i]),color=colors2[2],label='warm',linestyle=lines[2])
+    ax1.plot(t[i],np.log10(cw[i]),color=colors2[1],label='cool/warm',linestyle=lines[1])
+    ax1.plot(t[i],np.log10(cool[i]),color=colors2[0],label=labels[0],linestyle=lines[0])
+    ax1.set_ylabel('log(CGM Mass by Phase)')
+    ax1.set_xlabel('Time [Gyr]')
+
+    new_tick_locations = [CGM_time_Gyr[3],CGM_time_Gyr[9],CGM_time_Gyr[12],CGM_time_Gyr[15],CGM_time_Gyr[21]]
+    new_tick_labels = ["%.0f" % CGM_redshift[3],"%.0f" % CGM_redshift[9],"%.0f" % CGM_redshift[12],"%.1f" % CGM_redshift[15],"%.0f" % CGM_redshift[21]]
+    print(new_tick_locations)
+    print(new_tick_labels)
+
+    ax2.set_xticks(new_tick_locations)
+    ax2.set_xticklabels(new_tick_labels)
+    ax2.set_xlabel('z')
+
+    ax1.set_xlim(-1, 15)
+    ax2.set_xlim(-1, 15)
+    ax1.legend(loc=4)
+    plt.text(-0.5,10.75,names[i],size=12)
+    plt.show()
+
+quit()
+# CGM Mass vs Redshift/Time per Phase
+k = 0
+#for k in range(4):
+fig = plt.figure()
+ax1 = fig.add_subplot(111)
+ax2 = ax1.twiny()
+
+ax1.plot(time[k],np.log10(cool[0]),color=colors[0],label=names[0],linestyle=lines[3])
+ax1.plot(time[k],np.log10(cool[1]),color=colors[1],label=names[1],linestyle=lines[2])
+ax1.plot(time[k],np.log10(cool[2]),color=colors[2],label=names[2],linestyle=lines[1])
+ax1.plot(time[k],np.log10(cool[3]),color=colors[3],label=names[3],linestyle=lines[0])
+ax1.plot(time[k],np.log10(cool[4]),color=colors[4],label=names[4],linestyle=lines[3])
+ax1.plot(time[k],np.log10(cool[5]),color=colors[5],label=names[5],linestyle=lines[2])
+ax1.set_ylabel('log(CGM Mass by Phase)')
+ax1.set_xlabel('Time [Gyr]')
+
+
+
+

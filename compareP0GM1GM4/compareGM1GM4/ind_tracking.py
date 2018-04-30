@@ -1,0 +1,43 @@
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+import pynbody
+
+N = 10
+
+GM1h1z0igasorder = np.loadtxt('GM1_h1_tracedigasorder.txt')
+print(len(GM1h1z0igasorder))
+
+timesteps = np.loadtxt('timesteps.txt',dtype='str')
+#i = 21 # final step in sim
+
+for i in range(len(timesteps)):
+    GM4_sim = pynbody.load('/nobackupp8/fgoverna/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.00'+timesteps[i])
+
+# We want to track particles that NEVER become stars in GM4
+    madestarsinGM4_mask = np.in1d(GM1h1z0igasorder,GM4_sim.s['igasorder'])
+    GM1h1z0igasorder = GM1h1z0igasorder[~madestarsinGM4_mask]   # matched gas that never made stars
+    print(len(GM1h1z0igasorder))
+    GM1h1z0igasorder = np.random.choice(GM1h1z0igasorder,size=10)
+    print(GM1h1z0igasorder)
+    
+    #GM1_sim = pynbody.load('/nobackupp8/fgoverna/pioneer50h243GM1.1536gs1bwK1BH/pioneer50h243GM1.1536gst1bwK1BH.00'+timesteps[i])
+
+    #j = 0
+    for j in range(len(GM1h1z0igasorder)):
+        gid = int(GM1h1z0igasorder[j])
+        print(gid)
+        gid_info = GM4_sim.g[np.where(GM4_sim.g['iord'] == gid)]
+        df_new = pd.DataFrame({'iord': gid_info['iord'], 'pos': gid_info['pos'], 'vel': gid_info['vel'], 'rho': gid_info['rho'], 'temp': gid_info['temp'], 'metals': gid_info['Metalsdot']})
+        
+        if j == 0 :
+            df = df_new
+        else :
+            df = df.append(df_new,ignore_index=True)
+
+            cols = df.columns.tolist()
+            cols = cols[:-1] + cols[-1:]
+            df = df[cols]
+            print(df)
+
+            df.to_csv('particletracking_'+str(i)+'.data',sep=' ')

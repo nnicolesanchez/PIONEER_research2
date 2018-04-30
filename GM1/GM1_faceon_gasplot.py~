@@ -1,0 +1,23 @@
+# This script plots face-on and edge-on plots of ChaNGa Nbody
+# simulations in gas density and overplots the virial radius
+
+
+# N. Nicole Sanchez -- July 5, 2017
+# U. W. Seattle     -- Nbody Shop
+import matplotlib.pyplot as plt
+import numpy as np
+import pynbody
+
+plt.rc('font', size=12, family='serif', style='normal', variant='normal', stretch='normal', weight='normal')
+plt.rc('xtick', labelsize=12)
+plt.rc('xtick.major', size=6, width=1)
+plt.rc('lines', lw=2)
+plt.rc('axes', lw=1, labelsize=12)
+
+if len(sys.argv) == 1:
+    print('No galaxy selected. Current options: P0, GM1, GM4')
+    print('Syntax: "GM_xygasplots.py GM1"')
+else:
+    if (str(sys.argv[1]) == 'GM1'):
+        sim = pynbody.load('/nobackupp8/fgoverna/pioneer50h243GM1.1536gs1bwK1BH/pioneer50h243GM1.1536gst1bwK1BH.004096')
+        print('GM1 simulation at: ',sim.properties['redshift'] )
