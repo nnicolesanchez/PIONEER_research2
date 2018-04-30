@@ -5,10 +5,10 @@ import numpy as np
 labels = ['P0','GM1','GM4','GM5','GM6','GM7']
 colors = ['DodgerBlue','SteelBlue','FireBrick','IndianRed','Salmon','Orange']
 
-k = 1
+k = 2
 ts = np.loadtxt('../'+labels[k]+'/timesteps.txt',dtype=str)
-z  = np.loadtxt('../'+labels[k]+'/redshifts.txt',dtype=float)
-for t in range(5,len(ts)):
+z  = np.loadtxt('../'+labels[k]+'/redshifts.txt',dtype=float,delimiter=',',usecols=1)
+for t in range(len(ts)):
     print('Timestep: ',ts[t],'Redshift:','%.2f' % z[t])
 #    for k in range(len(labels)-1):
     #    T = np.loadtxt(labels[k]+'_T_z0.np')
@@ -24,7 +24,7 @@ for t in range(5,len(ts)):
     plt.ylim(5.2,6.2)
     plt.xlim(-10,260)
     plt.legend()
-    plt.savefig('GM1_pdfs/'+labels[k]+'_T_R_'+ts[t]+'.pdf')
+    plt.savefig(labels[k]+'_pdfs/'+labels[k]+'_T_R_'+ts[t]+'.pdf')
 #    plt.show()
     plt.close()
 
