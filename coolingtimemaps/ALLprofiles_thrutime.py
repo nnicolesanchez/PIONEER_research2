@@ -26,7 +26,7 @@ print(ts)
 #for t in range(len(ts)):
 #print('Loading sim:',sim[k],' at timestep:',ts[t])
 
-for i in range(57,len(ts)):#54,len(ts)):
+for i in range(len(ts)-5,len(ts)):#54,len(ts)):
     print('LOADING TIMESTEP:',ts[i])
     ######################
     # READ IN SIMULATION #
@@ -50,11 +50,11 @@ for i in range(57,len(ts)):#54,len(ts)):
     h1.g['t_cool'] = (C_1*mu*m_H*(h1.g['temp'].in_units('K'))**(0.5))/((h1.g['rho'].in_units('g cm^-3'))*(1+(C_2*f_m/(h1.g['temp'].in_units('K'))))) / (3.154 * 10**7)# years
     print(h1.g['t_cool'])
 #    quit()
-    sph.image(h1.g,qty="t_cool",width=500,cmap="Blues",log=True,vmin=10**7,vmax=10**10,qtytitle=r't$_{cool}$')
+    sph.image(h1.g,qty="t_cool",width=50,cmap="Blues",log=True,vmin=10**7,vmax=10**10,qtytitle=r't$_{cool}$')
     print(np.average(h1.g['t_cool']),np.max(h1.g['t_cool']))
     plt.title('z = '+str('%.2f' % f.properties['z'])+', '+str('%.2f' % f.properties['time'].in_units('Gyr'))+' Gyr')
-    plt.savefig(labels[k]+'_tcoolmap_'+ts[i]+'.pdf')
-    plt.show()
+    plt.savefig(labels[k]+'_tcoolmap_zoomin'+ts[i]+'.pdf')
+#    plt.show()
 
 
 
