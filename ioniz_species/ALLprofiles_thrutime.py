@@ -11,7 +11,7 @@ from pynbody.analysis import profile
 
 
 # Just using k = 1 and k = 2, for GM1 & GM4 for now
-k = 5
+k = 0
 ## MOVED FILES FROM FABIO TO ALYSON BROOKS: /nobackupp8/ambrook2/fgoverna_pleiades_p8_files
 sim = ['/nobackupp8/ambrook2/fgoverna_pleiades_p8_files/pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH.00','/nobackupp8/ambrook2/fgoverna_pleiades_p8_files/pioneer50h243GM1.1536gs1bwK1BH/pioneer50h243GM1.1536gst1bwK1BH.00','/nobackupp8/ambrook2/fgoverna_pleiades_p8_files/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.00','/nobackup/nnsanche/pioneer50h243GM5.1536gst1bwK1BH/pioneer50h243GM5.1536gst1bwK1BH.00','/nobackupp8/ambrook2/fgoverna_pleiades_p8_files/pioneer50h243GM6.1536gst1bwK1BH/pioneer50h243GM6.1536gst1bwK1BH.00','/nobackup/nnsanche/pioneer50h243GM7.1536gst1bwK1BH/pioneer50h243GM7.1536gst1bwK1BH.00']
 labels = ['P0','GM1','GM4','GM5','GM6','GM7']
@@ -25,8 +25,11 @@ ts = np.loadtxt('../'+labels[k]+'/timesteps.txt',dtype=str)
 #for t in range(len(ts)):
 #print('Loading sim:',sim[k],' at timestep:',ts[t])
 
-for i in range(6,len(ts)):
+for i in range(len(ts)-3,len(ts)):
     print('LOADING TIMESTEP:',ts[i])
+    if k == 5:
+        if ts[i] == '4096':
+            continue
     ######################
     # READ IN SIMULATION #
     ######################
@@ -64,12 +67,15 @@ for i in range(6,len(ts)):
 
         CGMprofile = profile.Profile(CGM_gas,min='0.1 kpc',max='250 kpc')
 
-        np.savetxt('Novi_thrutime/'+labels[k]+'_Novi_'+ts[i]+'.np',np.log10((CGMprofile['mass'].in_units('g')*CGMprofile['OxMassFrac']*CGMprofile['ovi']/(16*m_p))/CGMprofile._binsize.in_units('cm**2')))
-        np.savetxt('T_thrutime/'+labels[k]+'_T_'+ts[i]+'.np',np.log10(CGMprofile['temp'].in_units('K')))
-        np.savetxt('rho_thrutime/'+labels[k]+'_rho_'+ts[i]+'.np',np.log10(CGMprofile['rho'].in_units('g cm^-3')))
-        np.savetxt('Omass_thrutime/'+labels[k]+'_Omass_'+ts[i]+'.np',np.log10(CGMprofile['mass'].in_units('g')*CGMprofile['OxMassFrac']/(16*m_p)))
-        np.savetxt('Rbins_thrutime/'+labels[k]+'_Rbins_'+ts[i]+'.np',CGMprofile['rbins'].in_units('kpc'))
-    
+#        np.savetxt('Novi_thrutime/'+labels[k]+'_Novi_'+ts[i]+'.np',np.log10((CGMprofile['mass'].in_units('g')*CGMprofile['OxMassFrac']*CGMprofile['ovi']/(16*m_p))/CGMprofile._binsize.in_units('cm**2')))
+#        np.savetxt('T_thrutime/'+labels[k]+'_T_'+ts[i]+'.np',np.log10(CGMprofile['temp'].in_units('K')))
+#        np.savetxt('rho_thrutime/'+labels[k]+'_rho_'+ts[i]+'.np',np.log10(CGMprofile['rho'].in_units('g cm^-3')))
+#        np.savetxt('Omass_thrutime/'+labels[k]+'_Omass_'+ts[i]+'.np',np.log10(CGMprofile['mass'].in_units('g')*CGMprofile['OxMassFrac']/(16*m_p)))
+#        np.savetxt('Rbins_thrutime/'+labels[k]+'_Rbins_'+ts[i]+'.np',CGMprofile['rbins'].in_units('kpc'))
+        np.savetxt('metals_thrutime/'+labels[k]+'_metals_'+ts[i]+'.np',CGMprofile['metals'])
+        print(CGMprofile['coolontime'].in_units('s').units)
+        np.savetxt('coolontime_thrutime/'+labels[k]+'_coolontime_'+ts[i]+'.np',CGMprofile['coolontime'].in_units('s'))
+   
 #        sph.image(CGM_gas,qty="temp",width=500,cmap="YlOrRd")
 #        plt.savefig(labels[k]+'_Tmap_'+ts[i]+'.pdf')
 #        plt.show()

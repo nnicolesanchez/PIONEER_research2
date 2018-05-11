@@ -5,8 +5,27 @@ import numpy as np
 labels = ['P0','GM1','GM4','GM5','GM6','GM7']
 colors = ['DodgerBlue','SteelBlue','FireBrick','IndianRed','Salmon','Orange']
 
+for k in range(len(labels)):
+    if labels[k] == 'GM7':
+        time = '3968'
+    else:
+        time = '4096'
+
+    cot = np.loadtxt('coolontime_thrutime/'+labels[k]+'_coolontime_'+time+'.np')
+    R = np.loadtxt('Rbins_thrutime/'+labels[k]+'_Rbins_'+time+'.np')
+    plt.plot(R,cot/(3.154*10**7)/(10**9),label=labels[k],color=colors[k])
 
 
+plt.title('z = 0.0')
+plt.ylabel(r'cool on time [Gyr]')
+plt.xlabel('R [kpc]')
+#plt.ylim(5.2,6.2)                                                                                                                                                                                                 
+plt.xlim(-10,260)
+plt.legend()
+plt.savefig('ALLGMs_coolontime_R.pdf')
+plt.show()
+plt.close()
+quit()
 
 for k in range(len(labels)):
     if labels[k] == 'GM7':
@@ -14,8 +33,28 @@ for k in range(len(labels)):
     else:
         time = '4096'
 
-#    T = np.loadtxt(labels[k]+'_T_z0.np')
-#    R = np.loadtxt(labels[k]+'_Rbins_z0.np')
+    Z = np.loadtxt('metals_thrutime/'+labels[k]+'_metals_'+time+'.np')
+    R = np.loadtxt('Rbins_thrutime/'+labels[k]+'_Rbins_'+time+'.np')
+    plt.plot(R,np.log(Z),label=labels[k],color=colors[k])
+
+
+plt.title('z = 0.0')
+plt.ylabel(r'log($Z$)')
+plt.xlabel('R [kpc]')
+#plt.ylim(5.2,6.2)
+plt.xlim(-10,260)
+plt.legend()
+plt.savefig('ALLGMs_metals_R.pdf')
+plt.show()
+plt.close()
+quit()
+
+for k in range(len(labels)):
+    if labels[k] == 'GM7':
+        time = '3968'
+    else:
+        time = '4096'
+
     T = np.loadtxt('T_thrutime/'+labels[k]+'_T_'+time+'.np')
     R = np.loadtxt('Rbins_thrutime/'+labels[k]+'_Rbins_'+time+'.np')
     plt.plot(R,T,label=labels[k],color=colors[k])
