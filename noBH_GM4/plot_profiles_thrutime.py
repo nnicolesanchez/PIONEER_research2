@@ -7,21 +7,21 @@ import pynbody
 labels = ['P0','GM1','GM4','GM5','GM6','GM7']
 colors = ['DodgerBlue','SteelBlue','FireBrick','IndianRed','Salmon','Orange']
 
-k = 2
-ts = np.loadtxt('../'+labels[k]+'/timesteps.txt',dtype=str)
-z  = np.loadtxt('../'+labels[k]+'/redshifts.txt',dtype=float,delimiter=',',usecols=1)
-ts = np.loadtxt('../'+labels[k]+'/timesteps.txt',dtype=str)
+#k = 2
+#ts = np.loadtxt('../'+labels[k]+'/timesteps.txt',dtype=str)
+#z  = np.loadtxt('../'+labels[k]+'/redshifts.txt',dtype=float,delimiter=',',usecols=1)
+#ts = np.loadtxt('../'+labels[k]+'/timesteps.txt',dtype=str)
 
-for j in range(len(labels)):
+#for j in range(len(labels)):
     #t = len(ts)-1
     #if j == 5:
     #    t = len(ts)-2
-    t = len(ts)-6
-    print('Timestep: ',ts[t],'Redshift:','%.2f' % z[t])
+#    t = len(ts)-6
+#    print('Timestep: ',ts[t],'Redshift:','%.2f' % z[t])
 
-    Novi = np.loadtxt('../ioniz_species/Novi_thrutime/'+labels[j]+'_Novi_3456.np')
-    R = np.loadtxt('../ioniz_species/Rbins_thrutime/'+labels[j]+'_Rbins_3456.np')
-    plt.plot(R,Novi,label=labels[j],color=colors[j])
+#    Novi = np.loadtxt('../ioniz_species/Novi_thrutime/'+labels[j]+'_Novi_3456.np')
+#    R = np.loadtxt('../ioniz_species/Rbins_thrutime/'+labels[j]+'_Rbins_3456.np')
+#    plt.plot(R,Novi,label=labels[j],color=colors[j])
 
 #plt.show()
 #quit()
@@ -58,7 +58,13 @@ np.savetxt('GM4noBHs_T_3456.np',np.log10(CGMprofile['temp'].in_units('K')))
 np.savetxt('GM4noBHs_rho_3456.np',np.log10(CGMprofile['rho'].in_units('g cm^-3')))
 np.savetxt('GM4noBHs_Omass_3456.np',np.log10(CGMprofile['mass'].in_units('g')*CGMprofile['OxMassFrac']/(16*m_p)))
 np.savetxt('GM4noBHs_Rbins_3456.np',CGMprofile['rbins'].in_units('kpc'))
+np.savetxt('GM4noBHs_totgasmass_3456.np',CGMprofile['mass'].in_units('g'))
+np.savetxt('GM4noBHs_Z_3456.np',CGMprofile['metals'])
+np.savetxt('GM4noBHs_coolontime_3456.np',CGMprofile['coolontime'].in_units('s'))
 
+quit()
+
+#quit()
 #        sph.image(CGM_gas,qty="temp",width=500,cmap="YlOrRd")
 #        plt.savefig(labels[k]+'_Tmap_'+ts[i]+'.pdf')
 #        plt.show()

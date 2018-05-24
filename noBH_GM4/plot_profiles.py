@@ -3,10 +3,53 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 labels = ['P0','GM1','GM4','GM5','GM6','GM7']
-colors = ['DodgerBlue','SteelBlue','FireBrick','IndianRed','Salmon','Orange']
+colors = ['DodgerBlue','SteelBlue','FireBrick','Red','Salmon','Orange']
 m_p = 1.6726 * 10**-24 #g 
 
 time = '3456'
+for k in range(len(labels)):
+    totgasmass = np.loadtxt('../ioniz_species/totgasmass_thrutime/'+labels[k]+'_totmassgas_'+time+'.np')
+    totgasmass = totgasmass/(5.976*10**27) #solar mass
+    R = np.loadtxt('../ioniz_species/Rbins_thrutime/'+labels[k]+'_Rbins_'+time+'.np')
+    plt.plot(R,np.log10(totgasmass),label=labels[k],color=colors[k])
+
+totgas_noBH = np.loadtxt('GM4noBHs_totgasmass_3456.np')
+totgas_noBH = totgas_noBH/(5.976*10**27) #solar mass
+R_noBH = np.loadtxt('GM4noBHs_Rbins_3456.np')
+plt.plot(R_noBH,np.log10(totgas_noBH),label='GM4_noBH',color='Green',linestyle='--')
+
+plt.title('z = 0.17')
+plt.ylabel('log(M$_{gas}$) [M$_{\odot}$]')
+plt.xlabel('R [kpc]')
+#plt.ylim(5.2,6.2)
+plt.xlim(-10,260)
+plt.legend()
+plt.savefig('ALLGMs_totgasmass_R_plusGM4noBH.pdf')
+plt.show()
+plt.close()
+
+
+for k in range(len(labels)):
+    Z = np.loadtxt('../ioniz_species/metals_thrutime/'+labels[k]+'_metals_'+time+'.np')
+    R = np.loadtxt('../ioniz_species/Rbins_thrutime/'+labels[k]+'_Rbins_'+time+'.np')
+    plt.plot(R,Z,label=labels[k],color=colors[k])
+
+Z_noBH = np.loadtxt('GM4noBHs_Z_3456.np')
+R_noBH = np.loadtxt('GM4noBHs_Rbins_3456.np')
+plt.plot(R_noBH,Z_noBH,label='GM4_noBH',color='Green',linestyle='--')
+
+plt.title('z = 0.17')
+plt.ylabel(r'$Z$')
+plt.xlabel('R [kpc]')
+#plt.ylim(5.2,6.2)
+plt.xlim(-10,260)
+plt.legend()
+plt.savefig('ALLGMs_metals_R.pdf')
+plt.show()
+plt.close()
+
+
+
 for k in range(len(labels)):
     T = np.loadtxt('../ioniz_species/T_thrutime/'+labels[k]+'_T_'+time+'.np')
     R = np.loadtxt('../ioniz_species/Rbins_thrutime/'+labels[k]+'_Rbins_'+time+'.np')
@@ -14,9 +57,9 @@ for k in range(len(labels)):
 
 T_noBH = np.loadtxt('GM4noBHs_T_3456.np')
 R_noBH = np.loadtxt('GM4noBHs_Rbins_3456.np')
-plt.plot(R_noBH,T_noBH,label='GM4_noBH',color='Green')
+plt.plot(R_noBH,T_noBH,label='GM4_noBH',color='Green',linestyle='--')
 
-plt.title('z = 0.0')
+plt.title('z = 0.17')
 plt.ylabel('log(T) [K]')
 plt.xlabel('R [kpc]')
 plt.ylim(5.2,6.2)
@@ -34,9 +77,9 @@ for j in range(len(labels)):
 
 Novi_noBH = np.loadtxt('GM4noBHs_Novi_3456.np')
 R_noBH = np.loadtxt('GM4noBHs_Rbins_3456.np')
-plt.plot(R_noBH,Novi_noBH,label='GM4_noBH',color='Green')
+plt.plot(R_noBH,Novi_noBH,label='GM4_noBH',color='Green',linestyle='--')
 
-plt.title('z = 0.0')
+plt.title('z = 0.17')
 plt.ylabel(r'log(N$_{ovi}$) [cm$^{-2}$]')
 plt.xlabel('R [kpc]')
 plt.ylim(12.5,16.5)
@@ -55,9 +98,9 @@ for j in range(len(labels)):
 Mox_noBH = np.loadtxt('GM4noBHs_Omass_3456.np')
 Mox_noBH = np.log10((10**Mox_noBH)*16*m_p/(5.97*10**27))
 R_noBH = np.loadtxt('GM4noBHs_Rbins_3456.np')
-plt.plot(R_noBH,Mox_noBH,label='GM4_noBH',color='Green')
+plt.plot(R_noBH,Mox_noBH,label='GM4_noBH',color='Green',linestyle='--')
 
-plt.title('z = 0.0')
+plt.title('z = 0.17')
 plt.ylabel(r'log(M$_{O}$) [M$_{\odot}$]')
 plt.xlabel('R [kpc]')
 #plt.ylim(12.5,16.5)
@@ -74,9 +117,9 @@ for j in range(len(labels)):
 
 rho_noBH = np.loadtxt('GM4noBHs_rho_3456.np')
 R_noBH = np.loadtxt('GM4noBHs_Rbins_3456.np')
-plt.plot(R_noBH,rho_noBH,label='GM4_noBH',color='Green')
+plt.plot(R_noBH,rho_noBH,label='GM4_noBH',color='Green',linestyle='--')
 
-plt.title('z = 0.0')
+plt.title('z = 0.17')
 plt.ylabel(r'log($\rho$) [g cm$^{-3}$]')
 plt.xlabel('R [kpc]')
 #plt.ylim(12.5,16.5) 
@@ -106,9 +149,9 @@ rho_noBH = np.loadtxt('GM4noBHs_rho_'+time+'.np')
 R_noBH = np.loadtxt('GM4noBHs_Rbins_'+time+'.np')
 T_noBH = np.loadtxt('GM4noBHs_T_'+time+'.np')
 t_cool_noBH = (C_1*mu*m_H*(10**T_noBH)**(0.5))/((10**rho_noBH)*(1+(C_2*f_m/(10**T_noBH)))) / (3.154 * 10**7)# years
-plt.plot(R,np.log10(t_cool_noBH),label='GM4_noBH',color='Green')
+plt.plot(R,np.log10(t_cool_noBH),label='GM4_noBH',color='Green',linestyle='--')
 
-plt.title('z = 0.0')
+plt.title('z = 0.17')
 plt.ylabel(r'log(t$_{cool}$) [years]')
 plt.xlabel('R [kpc]')
 #plt.ylim(-0.05,1.2)
@@ -117,49 +160,30 @@ plt.legend()
 plt.savefig('ALLGMs_tcool_R_plusGM4noBH.pdf')
 plt.show()
 
-quit()
+#quit()
 
 
 for k in range(len(labels)):
-    if labels[k] == 'GM7':
-        time = '3968'
-    else:
-        time = '4096'
-
-    cot = np.loadtxt('coolontime_thrutime/'+labels[k]+'_coolontime_'+time+'.np')
-    R = np.loadtxt('Rbins_thrutime/'+labels[k]+'_Rbins_'+time+'.np')
+    cot = np.loadtxt('../ioniz_species/coolontime_thrutime/'+labels[k]+'_coolontime_'+time+'.np')
+    R = np.loadtxt('../ioniz_species/Rbins_thrutime/'+labels[k]+'_Rbins_'+time+'.np')
     plt.plot(R,cot/(3.154*10**7)/(10**9),label=labels[k],color=colors[k])
 
+cot_noBH = np.loadtxt('GM4noBHs_coolontime_3456.np')
+R_noBH = np.loadtxt('GM4noBHs_Rbins_3456.np')
+plt.plot(R_noBH,cot_noBH/(3.154*10**7)/(10**9),label='GM4_noBH',color='Green',linestyle='--')
 
-plt.title('z = 0.0')
+plt.title('z = 0.17')
 plt.ylabel(r'cool on time [Gyr]')
 plt.xlabel('R [kpc]')
-#plt.ylim(5.2,6.2)                                                                                                                                                                                                 
+#plt.ylim(5.2,6.2)                          
 plt.xlim(-10,260)
 plt.legend()
-plt.savefig('ALLGMs_coolontime_R.pdf')
+plt.savefig('ALLGMs_coolontime_R_plusGM4noBH.pdf')
 plt.show()
 plt.close()
-quit()
-
-for k in range(len(labels)):
-    if labels[k] == 'GM7':
-        time = '3968'
-    else:
-        time = '4096'
-
-    Z = np.loadtxt('metals_thrutime/'+labels[k]+'_metals_'+time+'.np')
-    R = np.loadtxt('Rbins_thrutime/'+labels[k]+'_Rbins_'+time+'.np')
-    plt.plot(R,np.log(Z),label=labels[k],color=colors[k])
 
 
-plt.title('z = 0.0')
-plt.ylabel(r'log($Z$)')
-plt.xlabel('R [kpc]')
-#plt.ylim(5.2,6.2)
-plt.xlim(-10,260)
-plt.legend()
-plt.savefig('ALLGMs_metals_R.pdf')
-plt.show()
-plt.close()
+
+
+
 quit()
