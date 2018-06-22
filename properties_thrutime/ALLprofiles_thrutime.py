@@ -33,7 +33,7 @@ time_array     = []
 redshift_array = []
 
 ts = np.loadtxt('../'+labels[k]+'/timesteps.txt',dtype=str)
-for i in range(5,len(ts)):
+for i in range(0,len(ts)):
     print('LOADING TIMESTEP:',ts[i])
     if k == 5:
         if ts[i] == '4096':

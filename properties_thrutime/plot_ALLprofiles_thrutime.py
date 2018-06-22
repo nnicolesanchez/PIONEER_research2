@@ -31,9 +31,9 @@ totmetals_array = []
 CGMmetals_array = []
 
 ts       = np.loadtxt('../'+labels[k]+'/timesteps.txt',dtype=str)
-time_Gyr = np.loadtxt('../'+labels[k]+'/times_gyr.txt',dtype=str)  
-redshift = np.loadtxt('../'+labels[k]+'/redshifts.txt',dtype=str) 
-for i in range(5,len(ts)):
+time_Gyr = np.loadtxt('../'+labels[k]+'/time_Gyr.txt',dtype=str)  
+redshift = np.loadtxt('../'+labels[k]+'/redshifts.txt',dtype=float) 
+for i in range(0,len(ts)):
     print('TIMESTEP:',ts[i],'TIME:',time_Gyr[i],'z =',redshift[i])
     if k == 5:
         if ts[i] == '4096':
@@ -42,7 +42,7 @@ for i in range(5,len(ts)):
     Z     = np.loadtxt('TOTGXY_metals_thrutime/'+labels[k]+'_metals_'+ts[i]+'.np')
     Rbins = np.loadtxt('TOTGXY_Rbins_thrutime/'+labels[k]+'_Rbins_'+ts[i]+'.np')
     plt.plot(Rbins,Z)
-    plt.title('z = '+redshift[i])
+    plt.title('z = '+'%.2f' % redshift[i])
     plt.ylabel(r'$Z/Z_{\odot}$')
     plt.xlabel('R [kpc]')
     plt.ylim(0,0.05)
@@ -50,12 +50,12 @@ for i in range(5,len(ts)):
     plt.savefig(labels[k]+'_plots/TOTGXY_metals_Rbins_'+ts[i]+'.pdf')
     plt.clf()
 #    plt.show()
-
-    totmetals_array.append(np.mean(Z))
+    totmetals_array.append(np.nanmean(Z))
 
 np.savetxt(labels[k]+'_meanmetals_time.txt',totmetals_array)
 
-plt.plot(time_Gyr[5:],totmetals_array)
+print(totmetals_array)
+plt.plot(time_Gyr,totmetals_array)
 plt.xlabel('Time [Gyr]')
 plt.ylabel(r'$Z/Z_{\odot}$')
 plt.savefig(labels[k]+'_meanmetals_time.pdf')
