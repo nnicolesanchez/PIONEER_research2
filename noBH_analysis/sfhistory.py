@@ -6,14 +6,23 @@ import pynbody
 
 
 # Information for loading all available sims P0 - GM7
-sims = ['/nobackupp8/ambrook2/fgoverna_pleiades_p8_files/pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH.003456','/nobackup/nnsanche/pioneer50h243GM1.1536gs1bwK1BH/pioneer50h243GM1.1536gst1bwK1BH.003456','/nobackup/nnsanche/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.003456','/nobackup/nnsanche/pioneer50h243GM5.1536gst1bwK1BH/pioneer50h243GM5.1536gst1bwK1BH.003456','/nobackupp8/ambrook2/fgoverna_pleiades_p8_files/pioneer50h243GM6.1536gst1bwK1BH/pioneer50h243GM6.1536gst1bwK1BH.003456','/nobackup/nnsanche/pioneer50h243GM7.1536gst1bwK1BH/pioneer50h243GM7.1536gst1bwK1BH.003456','/nobackup/nnsanche/pioneer50h243GM4.1536gst1bwK1_laststep/pioneer50h243GM4.1536gst1bwK1.003456']
-labels = ['P0','GM1','GM4','GM5','GM6','GM7','GM4_noBH']
-colors = ['DodgerBlue','SteelBlue','FireBrick','IndianRed','Salmon','Orange','Green']
+#sims = ['/nobackupp8/ambrook2/fgoverna_pleiades_p8_files/pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH.003456','/nobackup/nnsanche/pioneer50h243GM1.1536gs1bwK1BH/pioneer50h243GM1.1536gst1bwK1BH.003456','/nobackup/nnsanche/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.003456','/nobackup/nnsanche/pioneer50h243GM5.1536gst1bwK1BH/pioneer50h243GM5.1536gst1bwK1BH.003456','/nobackupp8/ambrook2/fgoverna_pleiades_p8_files/pioneer50h243GM6.1536gst1bwK1BH/pioneer50h243GM6.1536gst1bwK1BH.003456','/nobackup/nnsanche/pioneer50h243GM7.1536gst1bwK1BH/pioneer50h243GM7.1536gst1bwK1BH.003456','/nobackup/nnsanche/pioneer50h243GM4.1536gst1bwK1_laststep/pioneer50h243GM4.1536gst1bwK1.003456']
+#labels = ['P0','GM1','GM4','GM5','GM6','GM7','GM4_noBH']
+#colors = ['DodgerBlue','SteelBlue','FireBrick','IndianRed','Salmon','Orange','Green']
+
+
+sims_noBHs = ['/nobackup/nnsanche/NO_BHs/pioneer50h243.1536gst1bwK1.003456','/nobackup/nnsanche/NO_BHs/pioneer50h243GM1.1536gst1bwK1.003456','/nobackup/nnsanche/NO_BHs/pioneer50h243GM4.1536gst1bwK1.003456','/nobackup/nnsanche/NO_BHs/pioneer50h243GM5.1536gst1bwK1.003456','/nobackup/nnsanche/NO_BHs/pioneer50h243GM6.1536gst1bwK1.003456','/nobackup/nnsanche/NO_BHs/pioneer50h243GM7.1536gst1bwK1.003456']
+# Include GM4 no BHs
+labels_noBHs = ['P0_noBH','GM1_noBH','GM4_noBH','GM5_noBH','GM6_noBH','GM7_noBH']
+colors_noBHs = ['DodgerBlue','SteelBlue','FireBrick','IndianRed','Salmon','Orange']
+linestyle = ['--']
+
+
 
 # Create sfh data arrays (also save 
-for i in range(len(sims)):
-    print(labels[i])
-    sim = pynbody.load(sims[i])
+for i in range(len(sims_noBHs)):
+    print(labels_noBHs[i])
+    sim = pynbody.load(sims_noBHs[i])
     h = sim.halos()
     h1 = h[1]
     pynbody.analysis.halo.center(h1,mode='ssc')
