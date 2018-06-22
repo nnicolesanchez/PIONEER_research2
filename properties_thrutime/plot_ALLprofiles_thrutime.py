@@ -55,7 +55,7 @@ for i in range(0,len(ts)):
 np.savetxt(labels[k]+'_meanmetals_time.txt',totmetals_array)
 
 print(totmetals_array)
-plt.plot(time_Gyr,totmetals_array)
+plt.plot(time_Gyr[0:31],totmetals_array)
 plt.xlabel('Time [Gyr]')
 plt.ylabel(r'$Z/Z_{\odot}$')
 plt.ylim(0.001,0.0055)
