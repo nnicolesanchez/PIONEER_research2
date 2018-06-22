@@ -58,6 +58,8 @@ print(totmetals_array)
 plt.plot(time_Gyr,totmetals_array)
 plt.xlabel('Time [Gyr]')
 plt.ylabel(r'$Z/Z_{\odot}$')
+plt.ylim(0.001,0.0055)
+plt.xlim(0,14)
 plt.savefig(labels[k]+'_meanmetals_time.pdf')
 plt.show()
 
