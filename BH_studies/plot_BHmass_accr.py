@@ -8,7 +8,7 @@
 #1;95;0c Univ. W, Seattle -- Edited: June 24, 2018
 import matplotlib.pyplot as plt
 import numpy as np
-import Simpy
+#import Simpy
 #matplotlib auto
 
 # Information for loading all available sims P0 - GM7
@@ -30,13 +30,14 @@ plt.xlabel('t [Gyr]')
 plt.legend()
 plt.savefig('ALLGM_BHmass.pdf')
 plt.show()
+plt.clf()
 
 for i in range(len(sims)):
     print(sims[i])
     BH_times = np.loadtxt(labels[i]+'_BHtime.txt')
     BH_mdot  = np.loadtxt(labels[i]+'_BHmdot.txt')
 
-    plt.plot(BH_times,np.log10(BH_mdot),color=colors[i],label=labels[i])
+    plt.plot(BH_times,BH_mdot,color=colors[i],label=labels[i])
 
 plt.ylabel(r'M$_{BH}$/M$_{\odot}$')
 plt.xlabel(r'Accretion rate [M$_{\odot}$ yr$^{-1}$]')
