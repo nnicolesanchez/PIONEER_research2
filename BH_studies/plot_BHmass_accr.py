@@ -5,7 +5,7 @@
 #       - BH accretion rate
 
 # N Nicole Sanchez -- Created: June 24, 2018
-# Univ. W, Seattle -- Edited: June 24, 2018
+#1;95;0c Univ. W, Seattle -- Edited: June 24, 2018
 import matplotlib.pyplot as plt
 import numpy as np
 import Simpy
@@ -22,7 +22,6 @@ for i in range(len(sims)):
     # Read in numpy array 
     BH_times = np.loadtxt(labels[i]+'_BHtime.txt')
     BH_mass  = np.loadtxt(labels[i]+'_BHmass.txt')
-    BH_mdot  = np.loadtxt(labels[i]+'_BHmdot.txt')
     
     plt.plot(BH_times,np.log10(BH_mass),color=colors[i],label=labels[i])
 
@@ -31,3 +30,17 @@ plt.xlabel('t [Gyr]')
 plt.legend()
 plt.savefig('ALLGM_BHmass.pdf')
 plt.show()
+
+for i in range(len(sims)):
+    print(sims[i])
+    BH_times = np.loadtxt(labels[i]+'_BHtime.txt')
+    BH_mdot  = np.loadtxt(labels[i]+'_BHmdot.txt')
+
+    plt.plot(BH_times,np.log10(BH_mdot),color=colors[i],label=labels[i])
+
+plt.ylabel(r'M$_{BH}$/M$_{\odot}$')
+plt.xlabel(r'Accretion rate [M$_{\odot}$ yr$^{-1}$]')
+plt.legend()
+plt.savefig('ALLGM_BHaccrrate.pdf')
+plt.show()
+
