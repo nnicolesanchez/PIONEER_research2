@@ -17,7 +17,7 @@ colors = ['DodgerBlue','SteelBlue','FireBrick','Salmon','DodgerBlue','SteelBlue'
 lines  = ['-','-','-','-','--','--','--','--']
 
 # Create sfh data arrays (also save 
-for i in range(0,4):
+for i in range(4,len(sims)):
     print(labels[i])
 
     if os.path.exists(labels[i]+'_sfhistory_bins.txt'):
@@ -51,9 +51,9 @@ for i in range(0,4):
 
 plt.ylabel(r'SFR [M$_{\odot}$ yr$^{-1}$]')
 plt.xlabel('Time [Gyr]')
-plt.ylim(0,18)
+plt.ylim(0,30)
 plt.xlim(0,14)
-plt.legend(loc=2)
+plt.legend()
 plt.savefig('ALLBH_noBH_sfh.pdf')
 plt.show()
 
