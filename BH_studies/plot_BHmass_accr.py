@@ -9,7 +9,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import Simpy
-
+#matplotlib auto
 
 # Information for loading all available sims P0 - GM7
 sims  = ['/nobackupp2/nnsanche/pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH','/nobackupp2/nnsanche/pioneer50h243GM1.1536gst1bwK1BH_alysonver/pioneer50h243GM1.1536gst1bwK1BH','/nobackupp2/nnsanche/pioneer50h243GM7.1536gst1bwK1BH/pioneer50h243GM7.1536gst1bwK1BH','/nobackupp2/nnsanche/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH']
@@ -24,10 +24,11 @@ for i in range(len(sims)):
     BH_mass  = np.loadtxt(labels[i]+'_BHmass.txt')
     BH_mdot  = np.loadtxt(labels[i]+'_BHmdot.txt')
     
-    plt.plot(BH_times,BH_mass,color=colors[i],label=labels[i])
+    plt.plot(BH_times,np.log10(BH_mass),color=colors[i],label=labels[i])
 
 plt.ylabel(r'M$_{BH}$/M$_{\odot}$')
 plt.xlabel('t [Gyr]')
+plt.legend()
 plt.show()
 
 
