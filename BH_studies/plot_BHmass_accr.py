@@ -29,9 +29,5 @@ for i in range(len(sims)):
 plt.ylabel(r'M$_{BH}$/M$_{\odot}$')
 plt.xlabel('t [Gyr]')
 plt.legend()
+plt.savefig('ALLGM_BHmass.pdf')
 plt.show()
-
-
-
-                        
-
