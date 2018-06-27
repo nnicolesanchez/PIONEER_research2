@@ -1,7 +1,7 @@
-0136
-0186
-0223
-0273
+#0136
+#0186 #Insufficient particles around center to get velocity
+#0223 #Insufficient particles around center to get velocity 
+#0273
 0345
 0384
 0454

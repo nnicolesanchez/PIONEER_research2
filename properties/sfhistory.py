@@ -1,3 +1,4 @@
+
 # This script plots the star formation history for the GM
 # suite for h243 (all on one plot)
 import matplotlib.pyplot as plt
@@ -6,7 +7,7 @@ import pynbody
 
 
 # Information for loading all available sims P0 - GM7
-sims = ['/nobackupp8/fgoverna/pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH.004096','/nobackupp8/fgoverna/pioneer50h243GM1.1536gs1bwK1BH/pioneer50h243GM1.1536gst1bwK1BH.004096','/nobackupp8/fgoverna/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.004096','/nobackup/nnsanche/pioneer50h243GM5.1536gst1bwK1BH/pioneer50h243GM5.1536gst1bwK1BH.004096','/nobackupp8/fgoverna/pioneer50h243GM6.1536gst1bwK1BH/pioneer50h243GM6.1536gst1bwK1BH.004096','/nobackup/nnsanche/pioneer50h243GM7.1536gst1bwK1BH/pioneer50h243GM7.1536gst1bwK1BH.004096']
+sims = ['/nobackupp2/nnsanche/pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH.004096','/nobackupp2/nnsanche/pioneer50h243GM1.1536gst1bwK1BH/pioneer50h243GM1.1536gst1bwK1BH.004096','/nobackupp2/nnsanche/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.004096','/nobackup/nnsanche/pioneer50h243GM5.1536gst1bwK1BH/pioneer50h243GM5.1536gst1bwK1BH.004096','/nobackupp2/nnsanche/pioneer50h243GM6.1536gst1bwK1BH/pioneer50h243GM6.1536gst1bwK1BH.004096','/nobackup/nnsanche/pioneer50h243GM7.1536gst1bwK1BH/pioneer50h243GM7.1536gst1bwK1BH.003968']
 labels = ['P0','GM1','GM4','GM5','GM6','GM7']
 colors = ['DodgerBlue','SteelBlue','FireBrick','IndianRed','Salmon','Orange']
 
@@ -21,7 +22,7 @@ for i in range(len(sims)):
     sim.physical_units()
 
     # Get sfh info for whole sim; change "sim" below to "h1" for Main Halo sfh
-    sfhist, bins = pynbody.plot.stars.sfh(sim,filename=labels[i]+'sfh_xlim.pdf',massform=True,color=colors[i],legend=True,trange=[0,14],label=labels[i])
+    sfhist, bins = pynbody.plot.stars.sfh(sim,filename=labels[i]+'sfh_xlim.pdf',massform=True,color=colors[i],legend=True,trange=[0,14],label=labels[i],bins=100)
 
 
     # Save for easier plot making later (tho this script doesn't take that long to run)

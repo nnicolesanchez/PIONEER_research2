@@ -1,9 +1,55 @@
+from pynbody.analysis import profile
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import matplotlib as mpl
 import seaborn as sns
 import numpy as np
 import pynbody
+import h5py
+
+#from ..array import SimArray
+from pynbody import config
+import logging
+logger = logging.getLogger('pynbody.analysis.ionfrac')
+
+#from scipy.interpolate import interp3d
+from scipy.interpolate import RegularGridInterpolator as rgi
+
+from pynbody.analysis.interpolate import _interpolate3d
+
+def interpolate3d(x, y, z, x_vals, y_vals, z_vals, vals):
+    """
+    Interpolate on a 3D regular grid. 
+    Yields results identical to scipy.interpolate.interpn. 
+
+    Input
+    -----
+
+    x,y,z : points where the interpolation will be performed
+
+    x_vals, y_vals, z_vals : xyz values of the reference grid
+
+    vals : grid values
+    """
+
+    # cast x_vals, y_vals and z_vals to float64
+
+    x_vals = x_vals.astype(np.float64)
+    y_vals = y_vals.astype(np.float64)
+    z_vals = z_vals.astype(np.float64)
+    vals = vals.astype(np.float64)
+
+    result_array = np.empty(len(x), dtype=np.float64)
+
+    _interpolate3d.interpolate3d(len(x),
+                                 x, y, z,
+                                 len(x_vals), x_vals,
+                                 len(y_vals), y_vals,
+                                 len(z_vals), z_vals,
+                                 vals,
+                                 result_array)
+
+    return result_array
 
 def N_OVI(f):
     ovi = pynbody.analysis.ionfrac_edit.calculate(f,ion='ovi',mode='new')
@@ -15,21 +61,52 @@ def N_OVI(f):
 
 
 def hdf5_ion_frac(sim, ion):
-    iffile = '/nobackupp8/nnsanche/hm2012_hr.h5'
+    if ion == 'oi':
+        print('Loading OI')
+        nion = 1
+    elif ion == 'oii':
+        print('Loading OII')
+        nion = 2
+    elif ion == 'oiii':
+        print('Loading OIII')
+        nion = 3
+    elif ion == 'oiv':
+        print('Loading OIV')
+        nion = 4
+    elif ion == 'ov':
+        print('Loading OV')
+        nion = 5
+    elif ion == 'ovi':
+        print('Loading OVI')
+        nion = 6
+    elif ion == 'ovii':
+        print('Loading OVII')
+        nion = 7
+    elif ion == 'oviii':
+        print('Loading OVIII')
+        nion = 8
+    else:
+        print('Specified ion incompatible; Try again.')
+        
+
+    iffile = '/home1/nnsanche/hm2012_hr.h5'
     ifs = h5py.File(iffile)
     
-    x_vals = ifs['redshiftvals'].view(np.ndarray)   # Redshifts
-    y_vals = ifs['tempvals'].view(np.ndarray)       # Temperatures
-    z_vals = ifs['denvals'].view(np.ndarray)        # Densities
-    vals = ifs[ion + 'if'].view(np.ndarray)
+    x_vals = ifs['O'].attrs['Parameter2']   # Redshifts
+    y_vals = ifs['O'].attrs['Temperature']  # Temperatures
+    z_vals = ifs['O'].attrs['Parameter1']   # Densities
+
+    vals = ifs['O'][nion]
     x = np.zeros(len(sim.gas))
     x[:] = sim.properties['z']
+    x = x
     y = np.log10(sim.gas['temp']).view(np.ndarray)
     z = np.log10(sim.gas['rho'].in_units('m_p cm^-3')).view(np.ndarray)
+ 
     n = len(sim.gas)
-    n_x_vals = len(x_vals)
-    n_y_vals = len(y_vals)
     n_z_vals = len(z_vals)
+    n_y_vals = len(y_vals)
+    n_x_vals = len(x_vals)
     
     # get values off grid to minmax                 
     x[np.where(x < np.min(x_vals))] = np.min(x_vals)
@@ -40,235 +117,88 @@ def hdf5_ion_frac(sim, ion):
     z[np.where(z > np.max(z_vals))] = np.max(z_vals)
     
     # interpolate                              
-    logger.info("Interpolation %s values" % ion)
+#    logger.info("Interpolation %s values" % ion)
     result_array = interpolate3d(x, y, z, x_vals, y_vals, z_vals, vals)
+#    my_interpolating_function = rgi((x,y,z), vals)
+#    result_array = my_interpolating_function(array([x_vals,y_vals,z_vals]).T)
 
     return 10 ** result_array
 
 
 
+if __name__ == '__main__':
 
-quit()
-
-
-k = 1
-sim = ['/nobackupp2/nnsanche/pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH.004096','/nobackupp2/nnsanche/pioneer50h243GM1.1536gs1bwK1BH/pioneer50h243GM1.1536gst1bwK1BH.004096','/nobackupp2/nnsanche/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.004096','/nobackup/nnsanche/pioneer50h243GM5.1536gst1bwK1BH/pioneer50h243GM5.1536gst1bwK1BH.004096','/nobackupp2/nnsanche/pioneer50h243GM6.1536gst1bwK1BH/pioneer50h243GM6.1536gst1bwK1BH.004096','/nobackup/nnsanche/pioneer50h243GM7.1536gst1bwK1BH/pioneer50h243GM7.1536gst1bwK1BH.004096']
-labels = ['P0','GM1','GM4','GM5','GM6','GM7']
-colors = sns.cubehelix_palette(8)
-Z_sun = 0.0142 # (Asplund 2009; https://arxiv.org/pdf/0909.0948.pdf)
-print('LOADING SIM:',labels[k])
-
-######################
-# READ IN SIMULATION #
-######################
-f = pynbody.load(sim[k])
-pynbody.analysis.halo.center(f.star)
-f.physical_units()
-h = f.halos()
-h1 = h[1]
-pynbody.analysis.angmom.faceon(h1)
-
-###################
-# ISOLATE CGM GAS #   
-###################
-# Isolate and remove disk stars within radius 0-10 kpc & vertically 10 kpc 
-r_max = 10  # kpc
-twenty_kpc_incm = 6.171*(10**22)
-#z_max = 10 #4 # kpc
-
-Rg_d = ((h1.g['x'].in_units('kpc'))**2. + (h1.g['y'].in_units('kpc'))**2. + (h1.g['z'].in_units('kpc'))**2.)**(0.5)
-disk_gas_xyzmax =  (Rg_d < r_max)
-#disk_gas_zmax  = (h1.g['z'].in_units('kpc') < z_max) & (h1.g['z'].in_units('kpc') > -z_max)
-disk_gas_mask = disk_gas_xyzmax #& disk_gas_zmax
-disk_gas = h1.g[disk_gas_mask] #& disk_gas_zmax]
-CGM_gas  = h1.g[~disk_gas_mask]
-
-
-#########################
-# CALCULATE OVI DENSITY #
-#########################
-# Ionization fraction of OVI compare to total Oxygen
-ovi = pynbody.analysis.ionfrac_edit.calculate(CGM_gas,ion='ovi',mode='new') 
-m_p = 1.6726 * 10**-24 #g
-
-print('Total mass in OVI in CGM:', np.sum(CGM_gas['OxMassFrac']*CGM_gas['mass']*ovi))
-print('OVI fractions:',np.average(ovi))
-
-quit()
-# OVI density = total CGM gas density * fraction of oxygen * fraction of OVI / mass of oxygen
-OVI = CGM_gas['rho'].in_units('g cm**-3')*ovi*CGM_gas['OxMassFrac']/(16*m_p)
-print('Total mass in CGM:', np.sum(CGM_gas['mass']))
-print('Total mass in metals:',np.sum(CGM_gas['mass']*CGM_gas['metals'])) # 'metals' *IS* metallicity
-print('Total mass Oxygen in CGM:', np.sum(CGM_gas['OxMassFrac']*CGM_gas['mass']),CGM_gas['mass'].units)
-print('Total mass in OVI in CGM:', np.sum(CGM_gas['OxMassFrac']*CGM_gas['mass']*ovi))
-#print('OVI Density: ',OVI,OVI.units)
-print('OVI fractions:',np.average(ovi))
-
-CGM_temp = np.array(CGM_gas['temp'])
-#print(len(CGM_temp[CGM_temp < 10000]))
-#print(np.min(CGM_temp))
-
-#plt.plot(np.log10(CGM_temp[10000:20000]),ovi[10000:20000],'.')
-#plt.plot(np.log10(CGM_temp[CGM_temp < 10000]),ovi[CGM_temp < 10000],'.')
-#plt.ylabel(r'f$_{OVI}$')
-#plt.xlabel('log(T [K])')
-#plt.savefig(str(labels[k])+'_fracOVI_temp.pdf')
-#plt.show()
-
-#######################################################
-# Color code f_ovi vs temp by density and metallicity #
-#######################################################
-# METALLICITY
-CGM_metallicity = CGM_gas['metals']/Z_sun
-fig = plt.figure(figsize=(7, 5))
-plt.hist2d(np.log10(CGM_temp),ovi,(100,100),weights=(CGM_metallicity),cmap=cm.jet,norm=mpl.colors.LogNorm())
-plt.ylabel(r'$f_{OVI}$')
-plt.xlabel(r'Log(T [K])')
-plt.colorbar(label=(r'Z/Z$_{\odot}$'))
-plt.text(3.9,0.185,labels[k], color='midnightblue',size=12)
-#plt.text(0.7,6.7,'z = 0',color='midnightblue',size=12)
-plt.xlim(3.7,6.7)
-plt.ylim(0,0.2)
-plt.savefig(labels[k]+'_fracovi_temp_metallicity.pdf')
-plt.show()
-
-# DENSITY
-fig = plt.figure(figsize=(7, 5))
-plt.hist2d(np.log10(CGM_temp),ovi,(100,100),weights=(CGM_gas['rho'].in_units('g cm**-3')),cmap=cm.jet,norm=mpl.colors.LogNorm())
-plt.ylabel(r'$f_{OVI}$')
-plt.xlabel(r'Log(T [K])')
-plt.colorbar(label=str('g cm$^{-3}$'))
-plt.text(3.9,0.185,labels[k], color='midnightblue',size=12)
-#plt.text(0.7,6.7,'z = 0',color='midnightblue',size=12) 
-plt.xlim(3.7,6.7)
-plt.ylim(0,0.2)
-plt.savefig(labels[k]+'_fracovi_temp_density.pdf')
-plt.show()
-
-
-######################
-# DENSITY HISTOGRAMS #
-######################
-
-
-
-
-
-
-
-
-
-
-
-
-
-#quit()
-
-#############################################################
-# DIVIDE PARTICLES INTO SHELLS & CALCULATE COLUMN DENSITIES #
-#############################################################
-# In shells of 10 kpc, take an average density and line of sight L for each shell
-shell_bounds = np.arange(0,275,5)
-CGM_r = (CGM_gas['x']**2 + CGM_gas['y']**2)**(0.5)
-R_vir = int(np.max(CGM_r))
-print('R_vir',int(np.max(CGM_r)),CGM_gas['x'].units)
-
-
-fig = plt.figure(figsize=(8, 8))
-ax1 = fig.add_subplot(221)
-ax2 = fig.add_subplot(222)
-CGM_Novi = []
-pathlength = []
-for i in range(len(shell_bounds)-1):
-    shell = CGM_gas[(np.abs(CGM_r) > shell_bounds[i]) & (np.abs(CGM_r) < shell_bounds[i+1])]
-    shell_ovi_frac = ovi[(np.abs(CGM_r) > shell_bounds[i]) & (np.abs(CGM_r) < shell_bounds[i+1])]
-    shell_OVI_rho = shell['rho'].in_units('g cm**-3')*shell_ovi_frac*shell['OxMassFrac']/(16*m_p)
-    #    pynbody.plot.sph.image(shell,qty="rho",units="g cm^-3",width=300,z_camera=)
-
-    # Test some stuff to make sure I'm doing my path length measurements right
-    shell_x = np.array(shell['x'])
-    shell_y = np.array(shell['y'])
-    shell_z = np.array(shell['z'])
-
-    ax1.plot(shell_x,shell_y,'.')#color=sns.cubehelix_palette(8)[i])
-    j = 1 - i/26.
-    print(j)
-    ax2.plot(shell_x,shell_z,'.',alpha=j)
-    print(np.min(shell_z),np.max(shell_z))
-
-    avg_shell_OVI_rho = np.average(shell_OVI_rho)
-    print(avg_shell_OVI_rho,shell_OVI_rho.units)
-
-#    r = shell_bounds[i] + 5
-#    average_L = (R_vir**2 - r**2)**0.5 #geometry!
-#    print(average_L*2)
-    shell_z = np.max(shell['z'].in_units('cm')) - np.min(shell['z'].in_units('cm'))
-    print(shell_z)
+    k = 2
+    sim = ['/nobackupp2/nnsanche/pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH.004096','/nobackupp2/nnsanche/pioneer50h243GM1.1536gst1bwK1BH/pioneer50h243GM1.1536gst1bwK1BH.004096','/nobackupp2/nnsanche/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.004096','/nobackup/nnsanche/pioneer50h243GM5.1536gst1bwK1BH/pioneer50h243GM5.1536gst1bwK1BH.004096','/nobackupp2/nnsanche/pioneer50h243GM6.1536gst1bwK1BH/pioneer50h243GM6.1536gst1bwK1BH.004096','/nobackup/nnsanche/pioneer50h243GM7.1536gst1bwK1BH/pioneer50h243GM7.1536gst1bwK1BH.004096']
+    labels = ['P0','GM1','GM4','GM5','GM6','GM7']
+    colors = sns.cubehelix_palette(8)
+    Z_sun = 0.0142 # (Asplund 2009; https://arxiv.org/pdf/0909.0948.pdf)
+    m_p = 1.6726 * 10**-24 #g
+    print('LOADING SIM:',labels[k])
     
-    if i <= 1 :
-        CGM_Novi.append(avg_shell_OVI_rho*(shell_z - twenty_kpc_incm))
-        print('Remove 20 kpc in z because of empty center within 10 kpc radius')
-    else:
-        CGM_Novi.append(avg_shell_OVI_rho*shell_z) # Using shell_z to underestimate gas
-        pathlength.append(shell_z/(3.086*10**21))
-
-plt.show()
-print(CGM_Novi)
-
-b_impact = shell_bounds + 5
-print(b_impact)
-
-pathlength_kpc = pathlength #kpc
-
-#plt.plot(shell_bounds[:-3],pathlength_kpc)
-#plt.show()
-#quit()
-
-# import observations
-COS = np.loadtxt('COShalo_obs.txt')
-COS_ID = COS[1]
-COS_Rkpc = COS[8]
-COS_OVI = COS[10]
-
-
-plt.plot(COS_Rkpc,COS_OVI,'.',color='Salmon',label='COS Observations')
-plt.plot(shell_bounds[:-1],np.log10(CGM_Novi),marker='.')
-plt.ylabel(r'N$_{OVI}$ [cm$^{-2}$]')
-plt.xlabel(r'$r$ [kpc]')
-plt.ylim(12,17.5)
-plt.xlim(-10,260)
-plt.text(240,17.25,str(labels[k]))
-plt.legend()
-plt.savefig(labels[k]+'_NOVI_b_new.pdf')
-plt.show()
-
-
-
-
-
-
-
-quit()
-##########################################
-# PLOT COLUMN DENSITY AS FUNCTION OF X,Y #
-##########################################
-# From Pontzen's code
-pynbody.plot.sph.image(CGM_gas,qty='N_OVI',width='500 kpc',cmap='magma',show_cbar=False,units="g cm^-2",vmin=1e13,vmax=1e15)
-
-plt.text(200,200,str(labels[i]),color='White')
-plt.colorbar(label=r'N$_{OVI}$ cm$^{-2}$')
-#plt.savefig(str(labels[i])+'_OVI.pdf')
-plt.show()
-
-
-
-
-
-
-
-
-
-
-
-
-
+    ######################
+    # READ IN SIMULATION #
+    ######################
+    f = pynbody.load(sim[k])
+    pynbody.analysis.halo.center(f.star)
+    f.physical_units()
+    h = f.halos()
+    h1 = h[1]
+    pynbody.analysis.angmom.faceon(h1)
+    
+    ###################
+    # ISOLATE CGM GAS #   
+    ###################
+    # Isolate and remove disk stars within radius 0-10 kpc & vertically 10 kpc 
+    r_max = 10  # kpc
+    twenty_kpc_incm = 6.171*(10**22)
+    #z_max = 10 #4 # kpc
+    
+    Rg_d = ((h1.g['x'].in_units('kpc'))**2. + (h1.g['y'].in_units('kpc'))**2. + (h1.g['z'].in_units('kpc'))**2.)**(0.5)
+    disk_gas_xyzmax =  (Rg_d < r_max)
+    #disk_gas_zmax  = (h1.g['z'].in_units('kpc') < z_max) & (h1.g['z'].in_units('kpc') > -z_max)
+    disk_gas_mask = disk_gas_xyzmax #& disk_gas_zmax
+    disk_gas = h1.g[disk_gas_mask] #& disk_gas_zmax]
+    CGM_gas  = h1.g[~disk_gas_mask]
+    
+    CGM_gas['ovi_npz'] = pynbody.analysis.ionfrac.calculate(CGM_gas,ion='ovi',mode='new') 
+    CGM_gas['ovi_hdf5'] = hdf5_ion_frac(CGM_gas,ion='ovi')
+    
+    CGMprofile = profile.Profile(CGM_gas,min='0.1 kpc',max='250 kpc')
+    
+    # Column Densities
+    Novi_npz = np.log10((CGMprofile['mass'].in_units('g')*CGMprofile['OxMassFrac']*CGMprofile['ovi_npz']/(16*m_p))/CGMprofile._binsize.in_units('cm**2'))
+    Novi_hdf5 = np.log10((CGMprofile['mass'].in_units('g')*CGMprofile['OxMassFrac']*CGMprofile['ovi_hdf5']/(16*m_p))/CGMprofile._binsize.in_units('cm**2'))
+    
+    print('USING .NPZ DATA:')
+    #print('Total mass in OVI in CGM:', np.sum(CGM_gas['OxMassFrac']*CGM_gas['mass']*CGM_gas['ovi_npz']))
+    print('OVI fractions:',np.average(CGM_gas['ovi_npz']))
+    
+    print('USING HDF5 DATA:')
+    #print('Total mass in OVI in CGM:', np.sum(CGM_gas['OxMassFrac']*CGM_gas['mass']*ovi))
+    print('OVI fractions:',np.average(CGM_gas['ovi_hdf5']))
+    
+    plt.plot(CGMprofile['rbins'].in_units('kpc'),Novi_hdf5,color='Salmon')
+    plt.plot(CGMprofile['rbins'].in_units('kpc'),Novi_npz,color='SteelBlue')
+    
+    plt.title('z = 0.17')
+    plt.ylabel(r'log(N$_{ovi}$) [cm$^{-2}$]',size=15)
+    plt.xlabel('R [kpc]',size=15)
+    plt.ylim(12.5,17.5)
+    plt.xlim(-10,260)
+    plt.legend(ncol=2,fontsize=15)
+    #plt.savefig('ALLGMs_plusnoBH_Novi_R.pdf')
+    plt.show()
+    plt.close()
+    
+    
+    quit()
+    OVI = CGM_gas['rho'].in_units('g cm**-3')*ovi*CGM_gas['OxMassFrac']/(16*m_p)
+    print('Total mass in CGM:', np.sum(CGM_gas['mass']))
+    print('Total mass in metals:',np.sum(CGM_gas['mass']*CGM_gas['metals'])) # 'metals' *IS* metallicity
+    print('Total mass Oxygen in CGM:', np.sum(CGM_gas['OxMassFrac']*CGM_gas['mass']),CGM_gas['mass'].units)
+    print('Total mass in OVI in CGM:', np.sum(CGM_gas['OxMassFrac']*CGM_gas['mass']*ovi))
+    #print('OVI Density: ',OVI,OVI.units)
+    print('OVI fractions:',np.average(ovi))
+    
+    quit()

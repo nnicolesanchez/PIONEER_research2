@@ -44,5 +44,5 @@ for j in range(len(sims)):
         pynbody.analysis.angmom.faceon(h1)
         
         totalstellar_mass.append(h1.s['mass'].sum())
-        
+
     np.savetxt(names[j]+'_totstellarmass.txt',totalstellar_mass)

@@ -1,7 +1,7 @@
-9.99
-7.98
-6.98
-5.99
+#9.99
+#7.98 #Insufficient particles around center to get velocity
+#6.98 #Insufficient particles around center to get velocity
+#5.99
 4.99
 4.58
 4.00

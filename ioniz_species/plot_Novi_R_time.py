@@ -11,7 +11,7 @@ print(labels[k])
 
 
 for t in range(len(ts)):
-#    t = len(ts)-1
+    t = len(ts)-1
     print(ts[t],z[t])
     Novi = np.loadtxt(labels[k]+'_ionizNovi_'+ts[t]+'_ydata.np')
     R = np.loadtxt(labels[k]+'_ionizb_'+ts[t]+'_xdata.np')

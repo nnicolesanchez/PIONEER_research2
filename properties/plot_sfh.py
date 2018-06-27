@@ -29,7 +29,7 @@ for i in range(len(data)):
     SFR = dt[0]
     t = dt[1]
 
-    plt.plot(t,SFR,color=colors[i],label=labels[i])#,drawstyle='steps')
+    plt.plot(t,SFR,color=colors[i],label=labels[i],drawstyle='steps')
 
     print(t)
     print(ticks[i][2])
@@ -42,8 +42,8 @@ for i in range(len(data)):
 #ax2.set_xticklabels(new_tick_labels)
 #ax2.set_xlabel('z')
 
-ax1.set_ylim(0,6)
-ax1.set_xlim(5,6.5)
+ax1.set_ylim(0,12)
+ax1.set_xlim(0,14)
 #ax2.set_xlim(5,6.5)
 ax1.set_ylabel(r'SFR [M$_{\odot}$ yr$^{-1}$]')
 ax1.set_xlabel('Time [Gyr]')

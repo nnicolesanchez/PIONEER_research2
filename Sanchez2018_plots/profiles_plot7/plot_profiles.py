@@ -121,14 +121,47 @@ for j in range(len(labels_noBHs)):
     noBH_R = np.loadtxt(labels_noBHs[j]+'/'+labels_noBHs[j]+'_Rbins_'+time+'.np')
     plt.plot(noBH_R,noBH_Novi,color=colors_noBHs[j],linestyle=noBHline)
 
-#OLDGM4noBH_Novi = np.loadtxt('OLDGM4noBHs_Novi_3456.np')
-#OLDGM4noBH_R = np.loadtxt('OLDGM4noBHs_Rbins_3456.np')
-#plt.plot(OLDGM4noBH_R,OLDGM4noBH_Novi,label='GM4_noBH',color='Green',linestyle='--')
+
+COS = pd.read_csv('COSHALOdata.txt',comment='#',index_col=False,header=None)
+
+print('Average z for COS halos:',COS[1].mean())
+print(COS[2],COS[15])
+for p in range(len(COS[0])):
+    print(COS[0][p])
+    if COS[17][p] == ' RED' :
+        mark = 's'
+        lab = 'COS Ellipticals'
+    else:
+        mark = 'o'
+        lab = 'COS Spirals'
+    if COS[14][p] == ' <':
+        upperlims = True
+        lowerlims = False
+        errors = 0.1
+        face = 'none'
+    elif COS[14][p] == ' >':
+        upperlims = False
+        lowerlims = True
+        errors = 0.1
+        face = 'none'
+    else:
+        upperlims = False
+        lowerlims = False
+        face = 'Black'
+        errors = 0
+
+    print(COS[2][p],COS[15][p])
+    plt.errorbar(COS[2][p],COS[15][p],yerr=errors,markerfacecolor=face,marker=mark,markersize=5,
+color='Black',uplims=upperlims,lolims=lowerlims)
+
+plt.plot([1,2],[1,2],marker='s',label='COS Elliptical',color='Black',linestyle='None')
+plt.plot([1,2],[1,2],marker='o',label='COS Spiral',color='Black',linestyle='None')
+
 
 plt.title('z = 0.17')
 plt.ylabel(r'log(N$_{ovi}$) [cm$^{-2}$]',size=15)
 plt.xlabel('R [kpc]',size=15)
-plt.ylim(12.5,16.5)
+plt.ylim(12.5,17.5)
 plt.xlim(-10,260)
 plt.legend(ncol=2,fontsize=15)
 plt.savefig('ALLGMs_plusnoBH_Novi_R.pdf')

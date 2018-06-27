@@ -30,8 +30,8 @@ for i in range(len(sims)):
     bh_iords = np.array(bhorbit.bhiords)
 
     # Sanity check to make sure index 0 is the most massive BH: It is.
-    #for bh in range(len(bh_iords)):
-    #    print(bhorbit.single_BH_data(bh_iords[bh], 'mass')[-1])
+    for bh in range(len(bh_iords)):
+        print(bhorbit.single_BH_data(bh_iords[bh], 'mass')[-1])
     
     BH_times = np.array(bhorbit.single_BH_data(bh_iords[0], 'time'))
     BH_mass  = np.array(bhorbit.single_BH_data(bh_iords[0], 'mass'))

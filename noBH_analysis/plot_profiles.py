@@ -14,6 +14,7 @@ noBHline = '--'
 #OLDGM4_color = 'Green'
 m_p = 1.6726 * 10**-24 #g 
 time = '3456'
+Z_sun = 0.0142 # (Asplund 2009; https://arxiv.org/pdf/0909.0948.pdf) 
 
 solid = [0,0.1]
 dashed = [0,0.1]
@@ -67,27 +68,29 @@ plt.close()
 #plt.savefig('ALLGMs_plusnoBHGMs_sfh_R.pdf')
 #plt.show()
 
-
-
+solid = [-0.05,-0.1]
+dashed = [-0.05,-0.1]
+plt.plot(solid,dashed,color='Black',linestyle='-',label='BH')
+plt.plot(solid,dashed,color='Black',linestyle='--',label='NO BH')
 for k in range(len(labels)):
     Z = np.loadtxt('../ioniz_species/metals_thrutime/'+labels[k]+'_metals_'+time+'.np')
     R = np.loadtxt('../ioniz_species/Rbins_thrutime/'+labels[k]+'_Rbins_'+time+'.np')
-    plt.plot(R,Z,label=NEW_lab[k],color=colors[k])
+    plt.plot(R,Z/Z_sun,label=NEW_lab[k],color=colors[k])
 
 for j in range(len(labels_noBHs)):
     print('Read in: ',labels_noBHs[j])
     noBH_Z = np.loadtxt(labels_noBHs[j]+'_Z_'+time+'.np')
     noBH_R = np.loadtxt(labels_noBHs[j]+'_Rbins_'+time+'.np')
-    plt.plot(noBH_R,noBH_Z,label=NEW_lab_noBHs[j],color=colors_noBHs[j],linestyle=noBHline)
+    plt.plot(noBH_R,noBH_Z/Z_sun,color=colors_noBHs[j],linestyle=noBHline)
 
 #OLDGM4noBH_sfh = np.loadtxt('OLDGM4noBHs_sfh_3456.np')
 #OLDGM4noBH_R = np.loadtxt('OLDGM4noBHs_Rbins_3456.np')
 #plt.plot(OLDGM4noBH_R,OLDGM4noBH_sfh,label='GM4_noBH',color='Green',linestyle='--')
 
 plt.title('z = 0.17')
-plt.ylabel(r'$Z$',size=15)
+plt.ylabel(r'$Z/Z_{\odot}$',size=15)
 plt.xlabel('R [kpc]',size=15)
-#plt.ylim(5.2,6.2)
+plt.ylim(0,1)
 plt.xlim(-10,260)
 plt.legend(ncol=2,fontsize=15)
 plt.savefig('ALLGMs_plusnoBH_Z_R.pdf')
@@ -95,7 +98,10 @@ plt.show()
 plt.close()
 
 
-
+solid = [0,0.1]
+dashed = [0,0.1]
+plt.plot(solid,dashed,color='Black',linestyle='-',label='BH')
+plt.plot(solid,dashed,color='Black',linestyle='--',label='NO BH')
 for k in range(len(labels)):
     T = np.loadtxt('../ioniz_species/T_thrutime/'+labels[k]+'_T_'+time+'.np')
     R = np.loadtxt('../ioniz_species/Rbins_thrutime/'+labels[k]+'_Rbins_'+time+'.np')
@@ -105,7 +111,7 @@ for j in range(len(labels_noBHs)):
     print('Read in: ',labels_noBHs[j])
     noBH_T = np.loadtxt(labels_noBHs[j]+'_T_'+time+'.np')
     noBH_R = np.loadtxt(labels_noBHs[j]+'_Rbins_'+time+'.np')
-    plt.plot(noBH_R,noBH_T,label=NEW_lab_noBHs[j],color=colors_noBHs[j],linestyle=noBHline)
+    plt.plot(noBH_R,noBH_T,color=colors_noBHs[j],linestyle=noBHline)
 
 #OLDGM4noBH_T = np.loadtxt('OLDGM4noBHs_T_3456.np')
 #OLDGM4noBH_R = np.loadtxt('OLDGM4noBHs_Rbins_3456.np')
@@ -121,7 +127,10 @@ plt.savefig('ALLGMs_plusnoBH_T_R.pdf')
 plt.show()
 plt.close()
 
-
+solid = [0,0.1]
+dashed = [0,0.1]
+plt.plot(solid,dashed,color='Black',linestyle='-',label='BH')
+plt.plot(solid,dashed,color='Black',linestyle='--',label='NO BH')
 for j in range(len(labels)):
     Novi = np.loadtxt('../ioniz_species/Novi_thrutime/'+labels[j]+'_Novi_'+time+'.np')
     R = np.loadtxt('../ioniz_species/Rbins_thrutime/'+labels[j]+'_Rbins_'+time+'.np')
@@ -131,7 +140,7 @@ for j in range(len(labels_noBHs)):
     print('Read in: ',labels_noBHs[j])
     noBH_Novi = np.loadtxt(labels_noBHs[j]+'_Novi_'+time+'.np')
     noBH_R = np.loadtxt(labels_noBHs[j]+'_Rbins_'+time+'.np')
-    plt.plot(noBH_R,noBH_Novi,label=NEW_lab_noBHs[j],color=colors_noBHs[j],linestyle=noBHline)
+    plt.plot(noBH_R,noBH_Novi,color=colors_noBHs[j],linestyle=noBHline)
 
 #OLDGM4noBH_Novi = np.loadtxt('OLDGM4noBHs_Novi_3456.np')
 #OLDGM4noBH_R = np.loadtxt('OLDGM4noBHs_Rbins_3456.np')
@@ -147,6 +156,10 @@ plt.savefig('ALLGMs_plusnoBH_Novi_R.pdf')
 plt.show()
 plt.close()
 
+solid = [0,0.1]
+dashed = [0,0.1]
+plt.plot(solid,dashed,color='Black',linestyle='-',label='BH')
+plt.plot(solid,dashed,color='Black',linestyle='--',label='NO BH')
 for j in range(len(labels)):
     rho = np.loadtxt('../ioniz_species/rho_thrutime/'+labels[j]+'_rho_'+time+'.np')
     R = np.loadtxt('../ioniz_species/Rbins_thrutime/'+labels[j]+'_Rbins_'+time+'.np')
@@ -156,12 +169,12 @@ for j in range(len(labels_noBHs)):
     print('Read in: ',labels_noBHs[j])
     noBH_rho = np.loadtxt(labels_noBHs[j]+'_rho_'+time+'.np')
     noBH_R = np.loadtxt(labels_noBHs[j]+'_Rbins_'+time+'.np')
-    plt.plot(noBH_R,noBH_rho,label=NEW_lab_noBHs[j],color=colors_noBHs[j],linestyle=noBHline)
+    plt.plot(noBH_R,noBH_rho,color=colors_noBHs[j],linestyle=noBHline)
 
 plt.title('z = 0.17')
 plt.ylabel(r'log($\rho$) [g cm$^{-3}$]',size=15)
 plt.xlabel('R [kpc]',size=15)
-#plt.ylim(12.5,16.5) 
+plt.ylim(-27,-24.5) 
 plt.xlim(-10,260)
 plt.legend(fontsize=15,ncol=2)
 plt.savefig('ALLGMs_plusnoBH_rho_R.pdf')
