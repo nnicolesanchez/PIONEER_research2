@@ -22,6 +22,7 @@ elif (str(sys.argv[1]) == 'BH'):
     lab     = lab[::-1]
     print(lab)
     MH_mass = [1.54E+12,1.93E+12,1.66E+12,1.50E+12,1.22E+12,1.34E+12,1.38E+12,1.32E+12,1.21E+12,1.09E+12,1.20E+12,9.78E+11,8.05E+11,9.15E+11,7.91E+11,8.42E+11,9.13E+11,8.83E+11,7.63E+11,7.90E+11,7.10E+11,7.21E+11,7.37E+11,7.10E+11,7.59E+11] # log of MH mass
+    MH_mass = MH_mass[::-1]
 
 #    print('Loading in GM runs with BH physics.')
 #    lab     = ['P0','GM1','GM7','GM4']
