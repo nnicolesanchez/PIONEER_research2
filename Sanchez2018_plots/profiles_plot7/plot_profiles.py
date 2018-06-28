@@ -143,38 +143,38 @@ for p in range(len(COS[0])):
     print(COS[0][p])
     if COS[17][p] == ' RED' :
         mark = 's'
+        markerface = 'IndianRed'
         lab = 'COS Ellipticals'
     else:
         mark = 'o'
+        markerface = 'SteelBlue'
         lab = 'COS Spirals'
     if COS[14][p] == ' <':
         upperlims = True
         lowerlims = False
         errors = 0.1
-        face = 'none'
+        markerface = 'none'
     elif COS[14][p] == ' >':
         upperlims = False
         lowerlims = True
         errors = 0.1
-        face = 'none'
     else:
         upperlims = False
         lowerlims = False
-        face = 'Black'
         errors = 0
 
     print(COS[2][p],COS[15][p])
-    plt.errorbar(COS[2][p],COS[15][p],yerr=errors,markerfacecolor=face,marker=mark,markersize=5,
+    plt.errorbar(COS[2][p],COS[15][p],yerr=errors,markerfacecolor=markerface,marker=mark,markersize=7,
 color='Black',uplims=upperlims,lolims=lowerlims)
 
-plt.plot([1,2],[1,2],marker='s',label='COS Elliptical',color='Black',linestyle='None')
-plt.plot([1,2],[1,2],marker='o',label='COS Spiral',color='Black',linestyle='None')
+plt.plot([1,2],[1,2],marker='s',label='COS Elliptical',color='Black',mfc='IndianRed',linestyle='None')
+plt.plot([1,2],[1,2],marker='o',label='COS Spiral',color='Black',mfc='SteelBlue',linestyle='None')
 
 
 plt.title('z = 0.17')
 plt.ylabel(r'log(N$_{ovi}$) [cm$^{-2}$]',size=15)
-plt.xlabel('R [kpc]',size=15)
-plt.ylim(12.5,17.5)
+plt.xlabel('R [kpc]',size=14)
+plt.ylim(12.5,16.5)
 plt.xlim(-10,260)
 plt.legend(ncol=2,fontsize=15)
 plt.savefig('ALLGMs_plusnoBH_Novi_R.pdf')
@@ -199,7 +199,7 @@ for j in range(len(labels_noBHs)):
 plt.title('z = 0.17')
 plt.ylabel(r'log($\rho$) [g cm$^{-3}$]',size=15)
 plt.xlabel('R [kpc]',size=15)
-plt.ylim(-28.7,-24.7) 
+plt.ylim(-28.7,-24.3) 
 plt.xlim(-10,260)
 #plt.legend(fontsize=15,ncol=2)
 plt.savefig('ALLGMs_plusnoBH_rho_R.pdf')
