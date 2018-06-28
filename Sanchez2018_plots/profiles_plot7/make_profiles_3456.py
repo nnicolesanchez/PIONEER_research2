@@ -75,8 +75,9 @@ CGM_gas  = h1.g[~disk_gas_mask]
 CGM_temp = np.array(CGM_gas['temp'])
 
 for j in range(len(ion_labels)):
-    CGM_gas[ion_labels[j]] = hdf5_ion_frac(CGM_gas,ion=ion_labels[j])
-    
+#    CGM_gas[ion_labels[j]] = hdf5_ion_frac(CGM_gas,ion=ion_labels[j])
+    CGM_gas[ion_labels[j]] = hdf5_ion_frac(CGM_gas,ion=ion_labels[j]) 
+   
 CGMprofile = profile.Profile(CGM_gas,min='0.1 kpc',max='250 kpc')
 
 for k in range(len(ion_labels)):

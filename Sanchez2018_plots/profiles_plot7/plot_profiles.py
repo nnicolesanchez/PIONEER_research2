@@ -1,5 +1,5 @@
 import matplotlib
-matplotlib.use('Agg')
+#matplotlib.use('Agg')
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -9,7 +9,7 @@ labels = ['P0','GM1','GM7','GM4']
 NEW_lab = ['P0','GM1','GM2','GM3']
 colors = ['DodgerBlue','SteelBlue','FireBrick','Salmon']#''Red','Salmon','Orange']
 labels_noBHs = ['P0noBH','GM1noBH','GM7noBH','GM4noBH']
-NEW_lab_noBHs = ['P0_noBH','GM1_noBH','GM2_noBH','GM3_noBH']
+NEW_lab_noBHs = ['P0_noBH','GM1_noBH','GM7_noBH','GM4_noBH']
 colors_noBHs = ['DodgerBlue','SteelBlue','FireBrick','Salmon']#,'Orange']
 noBHline = '--'
 
@@ -40,11 +40,11 @@ for j in range(len(labels_noBHs)):
 plt.title('z = 0.17')
 plt.ylabel('log(M$_{gas}$) [M$_{\odot}$]',size=15)
 plt.xlabel('R [kpc]',size=15)
-plt.ylim(13,15)
+plt.ylim(13,15.05)
 plt.xlim(-10,260)
 #plt.legend(ncol=2,loc=3,fontsize=15)
 plt.savefig('ALLGMs_plusnoBH_totgasmass_R.pdf')
-plt.show()
+#plt.show()
 plt.close()
 
 solid = [-0.05,-0.1]
@@ -73,7 +73,7 @@ plt.ylim(0,1)
 plt.xlim(-10,260)
 #plt.legend(ncol=2,fontsize=15)
 plt.savefig('ALLGMs_plusnoBH_Z_R.pdf')
-plt.show()
+#plt.show()
 plt.close()
 
 
@@ -101,9 +101,9 @@ plt.ylabel('log(T) [K]',size=15)
 plt.xlabel('R [kpc]',size=15)
 plt.ylim(5.2,6.2)
 plt.xlim(-10,260)
-#plt.legend(ncol=2,fontsize=15)
+plt.legend(ncol=2,fontsize=15)
 plt.savefig('ALLGMs_plusnoBH_T_R.pdf')
-plt.show()
+#plt.show()
 plt.close()
 
 solid = [0,0.1]
@@ -111,15 +111,28 @@ dashed = [0,0.1]
 plt.plot(solid,dashed,color='Black',linestyle='-',label='BH')
 plt.plot(solid,dashed,color='Black',linestyle='--',label='NO BH')
 for j in range(len(labels)):
-    Novi = np.loadtxt(labels[j]+'/'+labels[j]+'_Novi_'+time+'.np')
-    R = np.loadtxt(labels[j]+'/'+labels[j]+'_Rbins_'+time+'.np')
+    Novi = np.loadtxt('/home1/nnsanche/PIONEER_research2/ioniz_species/Novi_thrutime/'+labels[j]+'_Novi_'+time+'.np')
+    R = np.loadtxt('/home1/nnsanche/PIONEER_research2/ioniz_species/Rbins_thrutime/'+labels[j]+'_Rbins_'+time+'.np')
     plt.plot(R,Novi,label=NEW_lab[j],color=colors[j])
 
 for j in range(len(labels_noBHs)):
     print('Read in: ',labels_noBHs[j])
-    noBH_Novi = np.loadtxt(labels_noBHs[j]+'/'+labels_noBHs[j]+'_Novi_'+time+'.np')
-    noBH_R = np.loadtxt(labels_noBHs[j]+'/'+labels_noBHs[j]+'_Rbins_'+time+'.np')
+    noBH_Novi = np.loadtxt('/home1/nnsanche/PIONEER_research2/noBH_analysis/'+NEW_lab_noBHs[j]+'_Novi_'+time+'.np')
+    noBH_R = np.loadtxt('/home1/nnsanche/PIONEER_research2/noBH_analysis/'+NEW_lab_noBHs[j]+'_Rbins_'+time+'.np')
     plt.plot(noBH_R,noBH_Novi,color=colors_noBHs[j],linestyle=noBHline)
+
+
+# TURN ON FOR HDF5 DATA 
+#for j in range(len(labels)):
+#    Novi = np.loadtxt(labels[j]+'/hdf5_Nion/'+labels[j]+'_Novi_'+time+'.np')
+#    R = np.loadtxt(labels[j]+'/hdf5_Nion/'+labels[j]+'_Rbins_'+time+'.np')
+#    plt.plot(R,Novi,label=NEW_lab[j],color=colors[j])
+
+#for j in range(len(labels_noBHs)):
+#    print('Read in: ',labels_noBHs[j])
+#    noBH_Novi = np.loadtxt(labels_noBHs[j]+'/hdf5_Nion/'+labels_noBHs[j]+'_Novi_'+time+'.np')
+#    noBH_R = np.loadtxt(labels_noBHs[j]+'/hdf5_Nion/'+labels_noBHs[j]+'_Rbins_'+time+'.np')
+#    plt.plot(noBH_R,noBH_Novi,color=colors_noBHs[j],linestyle=noBHline)
 
 
 COS = pd.read_csv('COSHALOdata.txt',comment='#',index_col=False,header=None)
@@ -163,7 +176,7 @@ plt.ylabel(r'log(N$_{ovi}$) [cm$^{-2}$]',size=15)
 plt.xlabel('R [kpc]',size=15)
 plt.ylim(12.5,17.5)
 plt.xlim(-10,260)
-#plt.legend(ncol=2,fontsize=15)
+plt.legend(ncol=2,fontsize=15)
 plt.savefig('ALLGMs_plusnoBH_Novi_R.pdf')
 plt.show()
 plt.close()
@@ -186,7 +199,7 @@ for j in range(len(labels_noBHs)):
 plt.title('z = 0.17')
 plt.ylabel(r'log($\rho$) [g cm$^{-3}$]',size=15)
 plt.xlabel('R [kpc]',size=15)
-plt.ylim(-27,-24.5) 
+plt.ylim(-28.7,-24.7) 
 plt.xlim(-10,260)
 #plt.legend(fontsize=15,ncol=2)
 plt.savefig('ALLGMs_plusnoBH_rho_R.pdf')
