@@ -22,9 +22,9 @@ elif (str(sys.argv[1]) == 'BH'):
     lab     = lab[::-1]
     print(lab)
     #halo = [2,4,6,8,10,11,14,16,18,20,22]
-    labels = ['2','4','6','8','10','12','14','16','18','20','22']
+#    labels = ['2','4','6','8','10','12','14','16','18','20','22']
 
-    MH_mass = [1.66E+13,1.36E+13,8.6E+12,7.88E+12,5.72E+12,5.12E+12,3.89E+12,3.16E+12,2.66E+12,2.39E+12,1.54E+12,1.93E+12,1.66E+12,1.50E+12,1.22E+12,1.34E+12,1.38E+12,1.32E+12,1.21E+12,1.09E+12,1.20E+12,9.78E+11,8.05E+11,9.15E+11,7.91E+11,8.42E+11,9.13E+11,8.83E+11,7.63E+11,7.90E+11,7.10E+11,7.21E+11,7.37E+11,7.10E+11,7.59E+11] # log of MH mass
+    MH_mass = [1.66E+13,1.36E+13,8.6E+12,7.88E+12,5.72E+12,5.12E+12,3.89E+12,3.16E+12,2.66E+12,2.39E+12,2.42E+12,1.54E+12,1.93E+12,1.66E+12,1.50E+12,1.22E+12,1.34E+12,1.38E+12,1.32E+12,1.21E+12,1.09E+12,1.20E+12,9.78E+11,8.05E+11,9.15E+11,7.91E+11,8.42E+11,9.13E+11,8.83E+11,7.63E+11,7.90E+11,7.10E+11,7.21E+11,7.37E+11,7.10E+11,7.59E+11] # log of MH mass
     MH_mass = MH_mass[::-1]
 
 #    print('Loading in GM runs with BH physics.')
@@ -52,6 +52,7 @@ ion_array  = []
 # Read in the OxMass and Ion Fractions to calculate the amount of 
 # mass in every ion and total oxygen mass
 
+plt.figure(num=None, figsize=(10, 3))
 
 for i in range(len(ion_labels)):
     print('Making ion array for:',ion_labels[i])
@@ -78,8 +79,9 @@ for i in range(len(ion_labels)):
 
 plt.ylabel(r'Oxygen Fraction (CGM <R$_{200}$)')
 
-text_place = -0.3
+text_place = -0.6
 for m in range(len(MH_mass)):
+#    print(lab[m],"%.1f" % np.log10(MH_mass[m]),MH_mass[m])
     plt.text(text_place,0.1,str("%.1f" % np.log10(MH_mass[m])),color='White',rotation=90)
     text_place = text_place + 2
 
