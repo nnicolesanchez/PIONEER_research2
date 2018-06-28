@@ -14,11 +14,11 @@ import numpy as np
 import pynbody
 import sys
 
-plt.rc('font', size=12, family='serif', style='normal', variant='normal', stretch='normal', weight='normal')
-plt.rc('xtick', labelsize=12)
-plt.rc('xtick.major', size=6, width=1)
-plt.rc('lines', lw=2)
-plt.rc('axes', lw=1, labelsize=12)
+#plt.rc('font', size=12, family='serif', style='normal', variant='normal', stretch='normal', weight='normal')
+#plt.rc('xtick', labelsize=12)
+#plt.rc('xtick.major', size=6, width=1)
+#plt.rc('lines', lw=2)
+#plt.rc('axes', lw=1, labelsize=12)
 
 ts = '3456'
 
