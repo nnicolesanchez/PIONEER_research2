@@ -25,9 +25,9 @@ for i in range(len(sims)):
     
     plt.plot(BH_times,np.log10(BH_mass),color=colors[i],label=labels[i])
 
-plt.ylabel(r'M$_{BH}$/M$_{\odot}$')
-plt.xlabel('t [Gyr]')
-plt.legend()
+plt.ylabel(r'M$_{BH}$/M$_{\odot}$',size=15)
+plt.xlabel('t [Gyr]',size=15)
+plt.legend(fontsize=15)
 plt.savefig('ALLGM_BHmass.pdf')
 plt.show()
 plt.clf()
@@ -39,9 +39,9 @@ for i in range(len(sims)):
 
     plt.plot(BH_times,BH_mdot,color=colors[i],label=labels[i])
 
-plt.ylabel(r'M$_{BH}$/M$_{\odot}$')
-plt.xlabel(r'Accretion rate [M$_{\odot}$ yr$^{-1}$]')
-plt.legend()
+plt.ylabel(r'M$_{BH}$/M$_{\odot}$',size=15)
+plt.xlabel(r'Accretion rate [M$_{\odot}$ yr$^{-1}$]',size=15)
+plt.legend(fontsize=15)
 plt.savefig('ALLGM_BHaccrrate.pdf')
 plt.show()
 
