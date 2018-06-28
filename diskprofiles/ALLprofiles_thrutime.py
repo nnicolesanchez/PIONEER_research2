@@ -13,13 +13,15 @@ from pynbody.analysis import profile
 # Just using k = 1 and k = 2, for GM1 & GM4 for now
 k = 0
 ## MOVED FILES FROM FABIO TO ALYSON BROOKS: /nobackupp8/ambrook2/fgoverna_pleiades_p8_files
-sim = ['/nobackupp8/ambrook2/fgoverna_pleiades_p8_files/pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH.00','/nobackupp8/ambrook2/fgoverna_pleiades_p8_files/pioneer50h243GM1.1536gs1bwK1BH/pioneer50h243GM1.1536gst1bwK1BH.00','/nobackupp8/ambrook2/fgoverna_pleiades_p8_files/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.00','/nobackup/nnsanche/pioneer50h243GM5.1536gst1bwK1BH/pioneer50h243GM5.1536gst1bwK1BH.00','/nobackupp8/ambrook2/fgoverna_pleiades_p8_files/pioneer50h243GM6.1536gst1bwK1BH/pioneer50h243GM6.1536gst1bwK1BH.00','/nobackup/nnsanche/pioneer50h243GM7.1536gst1bwK1BH/pioneer50h243GM7.1536gst1bwK1BH.00','/nobackup/nnsanche/pioneer50h243GM4.1536gst1bwK1_laststep/pioneer50h243GM4.1536gst1bwK1.00']
-labels = ['P0','GM1','GM4','GM5','GM6','GM7','GM4_noBH']
-colors = sns.cubehelix_palette(8)
-#print('LOADING SIM:',labels[k])
+sim = ['/nobackupp2/nnsanche/pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH.00','/nobackupp2/nnsanche/pioneer50h243GM1.1536gst1bwK1BH/pioneer50h243GM1.1536gst1bwK1BH.00','/nobackupp2/nnsanche/pioneer50h243GM7.1536gst1bwK1BH/pioneer50h243GM7.1536gst1bwK1BH.00','/nobackup/nnsanche/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.00','/nobackupp2/nnsanche/NO_BHs/pioneer50h243.1536gst1bwK1/pioneer50h243.1536gst1bwK1.00','/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM1.1536gst1bwK1/pioneer50h243GM1.1536gst1bwK1.00','/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM7.1536gst1bwK1/pioneer50h243GM7.1536gst1bwK1.00','/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM4.1536gst1bwK1/pioneer50h243GM4.1536gst1bwK1.00']
+
+labels = ['P0','GM1','GM7','GM4','P0noBH','GM1noBH','GM7noBH','GM4noBH']
+colors = ['DodgerBlue','SteelBlue','FireBrick','Salmon','DodgerBlue','SteelBlue','FireBrick','Salmon']
+lines  = ['-','-','-','-','--','--','--','--']
 
 ts = np.loadtxt('../'+labels[k]+'/timesteps.txt',dtype=str)
 time = '3456'
+Z_sun = 0.0142 # (Asplund 2009; https://arxiv.org/pdf/0909.0948.pdf)
 
 #for i in range(len(ts)-7,len(ts)):
 for i in range(len(sim)):
@@ -54,15 +56,15 @@ for i in range(len(sim)):
     np.savetxt(labels[i]+'_metals_'+time+'.np',disk_profile['metals'])
     np.savetxt(labels[i]+'_Rbins_'+time+'.np',disk_profile['rbins'].in_units('kpc')) 
 
-    plt.plot(disk_profile['rbins'].in_units('kpc'),disk_profile['metals'],label=labels[i],color=colors[i])
+    plt.plot(disk_profile['rbins'].in_units('kpc'),disk_profile['metals']/Z_sun,label=labels[i],color=colors[i],linestyle=lines[i])
 
 plt.title('z = 0.17')
-plt.ylabel(r'$Z$')
+plt.ylabel(r'$Z/Z_{\odot}$')
 plt.xlabel('R [kpc]')
 #plt.ylim(5.2,6.2)
 plt.xlim(-1,11)
 plt.legend()
-plt.savefig('ALLGMs_DISKmetals_R_plusGM4noBH.pdf')
+plt.savefig('ALLGMs_DISKmetals_R_plusnoBHs.pdf')
 plt.show()
 plt.close()
 

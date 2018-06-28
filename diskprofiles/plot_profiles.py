@@ -14,6 +14,7 @@ for k in range(len(labels)):
     R = np.loadtxt('../ioniz_species/Rbins_thrutime/'+labels[k]+'_Rbins_'+time+'.np')
     plt.plot(R,Z,label=labels[k],color=colors[k])
 
+for i in range(len())
 Z_noBH = np.loadtxt('GM4noBHs_metals_3456.np')
 R_noBH = np.loadtxt('GM4noBHs_Rbins_3456.np')
 plt.plot(R_noBH,Z_noBH,label='GM4_noBH',color='Green',linestyle='--')
