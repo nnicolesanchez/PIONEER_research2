@@ -52,7 +52,7 @@ ion_array  = []
 # Read in the OxMass and Ion Fractions to calculate the amount of 
 # mass in every ion and total oxygen mass
 
-plt.figure(num=None, figsize=(10, 3))
+plt.figure(num=None, figsize=(10, 4))
 
 for i in range(len(ion_labels)):
     print('Making ion array for:',ion_labels[i])
