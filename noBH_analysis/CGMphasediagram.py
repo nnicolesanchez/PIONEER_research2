@@ -45,7 +45,12 @@ else:
         print('Syntax: "CGMphasediagram.py GM1"')
         quit()    
 
-    name = str(sys.argv[1])+'_noBH'
+    if str(sys.argv[1]) == 'GM7':
+        name = 'GM2noBH'
+    elif str(sys.argv[1])== 'GM4':
+        name = 'GM3noBH'
+    else:
+        name = str(sys.argv[1])+'noBH'
     print(name+' simulation at z = ','%.2f' % sim.properties['z'],' and time = ',sim.properties['time'].in_units("Gyr") )
 
 sim.properties
@@ -84,11 +89,11 @@ print(CGM_gas['mass'].units)
 
 fig = plt.figure(figsize=(7, 5))
 plt.hist2d(x,y,(100,100),weights=z,cmap=cm.jet,norm=mpl.colors.LogNorm())
-plt.ylabel(r'Log$_{10}$ T ('+str(CGM_gas['temp'].units)+')')
-plt.xlabel(r'Log$_{10}$ n$_H$ (cm$^{-3}$)')
+plt.ylabel(r'Log$_{10}$ T ('+str(CGM_gas['temp'].units)+')',size=15)
+plt.xlabel(r'Log$_{10}$ n$_H$ (cm$^{-3}$)',size=15)
 plt.colorbar(label=(r'Log M (M$_{\odot}$)'))
-plt.text(-5.5,6.7,name, color='midnightblue',size=12)
-plt.text(0.4,6.7,'z = '+str('%.2f' % sim.properties['z']),color='midnightblue',size=12)
+plt.text(-5.5,6.7,name, color='black',size=15)
+plt.text(0,6.7,'z = '+str('%.2f' % sim.properties['z']),color='black',size=15)
 plt.xlim(-6,2)
 plt.ylim(3.5,7)
 plt.savefig(name+'_phasediagram.pdf')
