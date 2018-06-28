@@ -94,6 +94,7 @@ def hdf5_ion_frac(sim, ion):
     ifs = h5py.File(iffile)
     
     x_vals = ifs['O'].attrs['Parameter2']   # Redshifts
+    print(x_vals)
     y_vals = ifs['O'].attrs['Temperature']  # Temperatures
     z_vals = ifs['O'].attrs['Parameter1']   # Densities
 
@@ -117,8 +118,6 @@ def hdf5_ion_frac(sim, ion):
     z[np.where(z < np.min(z_vals))] = np.min(z_vals)
     z[np.where(z > np.max(z_vals))] = np.max(z_vals)
     
-    # interpolate                              
-#    logger.info("Interpolation %s values" % ion)
     result_array = interpolate3d(x, y, z, x_vals, y_vals, z_vals, vals)
 #    my_interpolating_function = rgi((x,y,z), vals)
 #    result_array = my_interpolating_function(array([x_vals,y_vals,z_vals]).T)
