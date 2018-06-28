@@ -14,11 +14,11 @@ import numpy as np
 import pynbody
 import sys
 
-plt.rc('font', size=12, family='serif', style='normal', variant='normal', stretch='normal', weight='normal')
-plt.rc('xtick', labelsize=12)
-plt.rc('xtick.major', size=6, width=1)
-plt.rc('lines', lw=2)
-plt.rc('axes', lw=1, labelsize=12)
+#plt.rc('font', size=12, family='serif', style='normal', variant='normal', stretch#='normal', weight='normal')
+#plt.rc('xtick', labelsize=12)
+#plt.rc('xtick.major', size=6, width=1)
+#plt.rc('lines', lw=2)
+#plt.rc('axes', lw=1, labelsize=12)
 
 if len(sys.argv) == 1:
     print('No galaxy selected. Current options: P0, GM1, GM4, GM5, GM6')
@@ -26,24 +26,29 @@ if len(sys.argv) == 1:
     quit()
 else:
     if (str(sys.argv[1]) == 'P0'):
-        sim = pynbody.load('/nobackupp8/fgoverna/pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH.004096')
+        sim = pynbody.load('/nobackupp2/nnsanche/pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH.003456')
     elif (str(sys.argv[1]) == 'GM1'):
-        sim = pynbody.load('/nobackupp8/fgoverna/pioneer50h243GM1.1536gs1bwK1BH/pioneer50h243GM1.1536gst1bwK1BH.004096')
+        sim = pynbody.load('/nobackupp2/nnsanche/pioneer50h243GM1.1536gst1bwK1BH/pioneer50h243GM1.1536gst1bwK1BH.003456')
     elif (str(sys.argv[1]) == 'GM4'):
-        sim = pynbody.load('/nobackupp8/fgoverna/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.004096')    
+        sim = pynbody.load('/nobackupp2/nnsanche/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.003456')    
     elif (str(sys.argv[1]) == 'GM5'):
-        sim = pynbody.load('/nobackup/nnsanche/pioneer50h243GM5.1536gst1bwK1BH/pioneer50h243GM5.1536gst1bwK1BH.004096')
+        sim = pynbody.load('/nobackup/nnsanche/pioneer50h243GM5.1536gst1bwK1BH/pioneer50h243GM5.1536gst1bwK1BH.003546')
     elif (str(sys.argv[1]) == 'GM6'):
-        sim = pynbody.load('/nobackupp8/fgoverna/pioneer50h243GM6.1536gst1bwK1BH/pioneer50h243GM6.1536gst1bwK1BH.004096')
+        sim = pynbody.load('/nobackupp8/fgoverna/pioneer50h243GM6.1536gst1bwK1BH/pioneer50h243GM6.1536gst1bwK1BH.003456')
     elif (str(sys.argv[1]) == 'GM7'):
-        sim = pynbody.load('/nobackup/nnsanche/pioneer50h243GM7.1536gst1bwK1BH/pioneer50h243GM7.1536gst1bwK1BH.004096') 
+        sim = pynbody.load('/nobackupp2/nnsanche/pioneer50h243GM7.1536gst1bwK1BH/pioneer50h243GM7.1536gst1bwK1BH.003456') 
 
     else :
         print('Not a valid option. Current options: P0, GM1, GM4')
         print('Syntax: "GM_xygasplots.py GM1"')
         quit()    
 
-    name = str(sys.argv[1])
+    if str(sys.argv[1]) == 'GM4':
+        name = 'GM3'
+    elif str(sys.argv[1]) == 'GM7':
+        name = 'GM2'
+    else:
+        name = str(sys.argv[1])
     print(name+' simulation at z = ','%.2f' % sim.properties['z'] )
 
 sim.properties
@@ -77,11 +82,11 @@ z = np.log10(CGM_gas['mass'])
 
 fig = plt.figure(figsize=(7, 5))
 plt.hist2d(x,y,(100,100),weights=z,cmap=cm.jet,norm=mpl.colors.LogNorm())
-plt.ylabel(r'Log$_{10}$ T ('+str(CGM_gas['temp'].units)+')')
-plt.xlabel(r'Log$_{10}$ n$_H$ (cm$^{-3}$)')
+plt.ylabel(r'Log$_{10}$ T ('+str(CGM_gas['temp'].units)+')',size=15)
+plt.xlabel(r'Log$_{10}$ n$_H$ (cm$^{-3}$)',size=15)
 plt.colorbar(label=(r'Log M (M$_{\odot}$)'))
-plt.text(-5.5,6.7,name, color='midnightblue',size=12)
-plt.text(0.7,6.7,'z = 0',color='midnightblue',size=12)
+plt.text(-5.5,6.7,name, color='black',size=15)
+plt.text(0,6.7,'z = 0.17',color='black',size=15)
 plt.xlim(-6,2)
 plt.ylim(3.5,7)
 plt.savefig(name+'_phasediagram.pdf')
