@@ -2,30 +2,35 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-labels = ['P0','GM1','GM4','GM5','GM6','GM7']
+labels = ['P0','GM1','GM7','GM4']
+lab_NEW = ['P0','GM1','GM2','GM3'] 
+lab_NB = ['P0noBH','GM1noBH','GM7noBH','GM4noBH']
 colors = ['DodgerBlue','SteelBlue','FireBrick','Red','Salmon','Orange']
 m_p = 1.6726 * 10**-24 #g 
 
 time = '3456'
-
-
+Z_sun = 0.0142 # (Asplund 2009; https://arxiv.org/pdf/0909.0948.pdf) 
+solid = [-0.1,-0.1]
+dashed = [-0.1,-0.1]
+plt.plot(solid,dashed,color='Black',linestyle='-',label='BH')
+plt.plot(solid,dashed,color='Black',linestyle='--',label='NO BH')
 for k in range(len(labels)):
-    Z = np.loadtxt('../ioniz_species/metals_thrutime/'+labels[k]+'_metals_'+time+'.np')
-    R = np.loadtxt('../ioniz_species/Rbins_thrutime/'+labels[k]+'_Rbins_'+time+'.np')
-    plt.plot(R,Z,label=labels[k],color=colors[k])
+    Z = np.loadtxt(labels[k]+'_metals_'+time+'.np')
+    R = np.loadtxt(labels[k]+'_Rbins_'+time+'.np')
+    plt.plot(R,Z/Z_sun,label=lab_NEW[k],color=colors[k])
 
-for i in range(len())
-Z_noBH = np.loadtxt('GM4noBHs_metals_3456.np')
-R_noBH = np.loadtxt('GM4noBHs_Rbins_3456.np')
-plt.plot(R_noBH,Z_noBH,label='GM4_noBH',color='Green',linestyle='--')
+for i in range(len(labels)):
+    Z_noBH = np.loadtxt(lab_NB[i]+'_metals_3456.np')
+    R_noBH = np.loadtxt(lab_NB[i]+'_Rbins_3456.np')
+    plt.plot(R_noBH,Z_noBH/Z_sun,color=colors[i],linestyle='--')
 
-plt.title('z = 0.17')
-plt.ylabel(r'$Z$')
-plt.xlabel('R [kpc]')
-#plt.ylim(5.2,6.2)
-plt.xlim(-10,20)
-plt.legend()
-plt.savefig('ALLGMs_DISKmetals_R_plusGM4noBH.pdf')
+plt.title('Disk Profile at z = 0.17')
+plt.ylabel(r'$Z/Z_{\odot}$',size=15)
+plt.xlabel('R [kpc]',size=15)
+plt.ylim(0,4)
+plt.xlim(0,10)
+plt.legend(ncol=2,fontsize=15)
+plt.savefig('ALLGMs_DISKmetals_R_plusnoBH.pdf')
 plt.show()
 plt.close()
 
