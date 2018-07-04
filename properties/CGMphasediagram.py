@@ -6,7 +6,7 @@
 
 
 # N. Nicole Sanchez -- July 2 2017
-# Univ. of Wash.    -- Nbody Shop
+# Univ. of Wash.    -- Edited: June 28, 2018
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import matplotlib as mpl
@@ -39,7 +39,7 @@ else:
         sim = pynbody.load('/nobackupp2/nnsanche/pioneer50h243GM7.1536gst1bwK1BH/pioneer50h243GM7.1536gst1bwK1BH.003456') 
 
     else :
-        print('Not a valid option. Current options: P0, GM1, GM4')
+        print('Not a valid option. Current options: P0, GM1, GM4, GM7')
         print('Syntax: "GM_xygasplots.py GM1"')
         quit()    
 
@@ -65,7 +65,7 @@ m_H = 1.6733 * 10**-24 #g
 # Want to isolate CGM  
 # Isolate and remove disk stars within radius 0-10 kpc & vertically 4 kpc 
 r_max = 10  # kpc
-z_max = 4   # kpc
+z_max = 10   # kpc
 
 Rg_d = ((h1.g['x'].in_units('kpc'))**2. + (h1.g['y'].in_units('kpc'))**2.)**(0.5)
 disk_gas_xymax =  (Rg_d < r_max)
@@ -75,19 +75,33 @@ disk_gas_mask = disk_gas_xymax & disk_gas_zmax
 disk_gas = h1.g[disk_gas_xymax & disk_gas_zmax]
 CGM_gas  = h1.g[~disk_gas_mask]
 
+Z_sun = 0.0142 # (Asplund 2009; https://arxiv.org/pdf/0909.0948.pdf)
 x = np.log10(CGM_gas['rho'].in_units('g cm**-3')/m_H)
 y = np.log10(CGM_gas['temp'])
-z = np.log10(CGM_gas['mass'])
+#z = np.log10(CGM_gas['mass'].in_units('Msol'))
+#z = CGM_gas['metals']/Z_sun
+z = CGM_gas['r'].in_units('kpc')
+#print(np.max(CGM_gas['mass'].in_units('Msol')),np.min(CGM_gas['mass'].in_units('Msol')))
+print(CGM_gas['r'].min(),np.sort(CGM_gas['r']))
 #print(CGM_gas['mass'].units)
 
+
 fig = plt.figure(figsize=(7, 5))
-plt.hist2d(x,y,(100,100),weights=z,cmap=cm.jet,norm=mpl.colors.LogNorm())
+
+#plt.hexbin(x,y,C=z,reduce_C_function=np.sum,cmap=cm.jet,mincnt=1,bins='log',vmin=1.25,vmax=3.75)
+#plt.hexbin(x,y,C=z,vmin=0,vmax=1)#mincnt=1,bins='log',vmin=1.25,vmax=3.75)
+plt.hexbin(x,y,C=z,vmin=0,vmax=250)
+
 plt.ylabel(r'Log$_{10}$ T ('+str(CGM_gas['temp'].units)+')',size=15)
 plt.xlabel(r'Log$_{10}$ n$_H$ (cm$^{-3}$)',size=15)
-plt.colorbar(label=(r'Log M (M$_{\odot}$)'))
+#plt.colorbar(label=r'M$_{CGM}$/M$_{\odot}$')
+#plt.colorbar(label=(r'Z/Z$_{\odot}$'))
+plt.colorbar(label=(r'R [kpc]'))
 plt.text(-5.5,6.7,name, color='black',size=15)
 plt.text(0,6.7,'z = 0.17',color='black',size=15)
 plt.xlim(-6,2)
 plt.ylim(3.5,7)
-plt.savefig(name+'_phasediagram.pdf')
+#plt.savefig(name+'_phasediagram_mass.pdf')
+#plt.savefig(name+'_phasediagram_metallicity.pdf')
+plt.savefig(name+'_phasediagram_Rkpc.pdf')
 plt.show()
