@@ -82,15 +82,15 @@ y = np.log10(CGM_gas['temp'])
 #z = CGM_gas['metals']/Z_sun
 z = CGM_gas['r'].in_units('kpc')
 #print(np.max(CGM_gas['mass'].in_units('Msol')),np.min(CGM_gas['mass'].in_units('Msol')))
-print(CGM_gas['r'].min(),np.sort(CGM_gas['r']))
+#print(CGM_gas['r'].min(),np.sort(CGM_gas['r']))
 #print(CGM_gas['mass'].units)
 
 
 fig = plt.figure(figsize=(7, 5))
 
 #plt.hexbin(x,y,C=z,reduce_C_function=np.sum,cmap=cm.jet,mincnt=1,bins='log',vmin=1.25,vmax=3.75)
-#plt.hexbin(x,y,C=z,vmin=0,vmax=1)#mincnt=1,bins='log',vmin=1.25,vmax=3.75)
-plt.hexbin(x,y,C=z,vmin=0,vmax=250)
+#plt.hexbin(x,y,C=z,vmin=0.01,vmax=1)#mincnt=1,bins='log',vmin=1.25,vmax=3.75)
+plt.hexbin(x,y,C=z,cmap=cm.plasma,vmin=10,vmax=int(CGM_gas['r'].max()))
 
 plt.ylabel(r'Log$_{10}$ T ('+str(CGM_gas['temp'].units)+')',size=15)
 plt.xlabel(r'Log$_{10}$ n$_H$ (cm$^{-3}$)',size=15)
