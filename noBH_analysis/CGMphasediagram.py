@@ -63,6 +63,7 @@ pynbody.analysis.angmom.faceon(h1)
 
 # Constants
 m_H = 1.6733 * 10**-24 #g
+Z_sun = 0.0142 # (Asplund 2009; https://arxiv.org/pdf/0909.0948.pdf) 
 
 # Want to isolate CGM  
 # Isolate and remove disk stars within radius 0-10 kpc & vertically 4 kpc 
@@ -79,22 +80,30 @@ CGM_gas  = h1.g[~disk_gas_mask]
 
 x = np.log10(CGM_gas['rho'].in_units('g cm**-3')/m_H)
 y = np.log10(CGM_gas['temp'])
-z = np.log10(CGM_gas['mass'])
-print(CGM_gas['mass'][0:20])
-print(CGM_gas['temp'][0:20])
-print(CGM_gas['rho'][0:20])
-
-print(CGM_gas['mass'].units)
+z = np.log10(CGM_gas['mass'].in_units('Msol'))
+#z = CGM_gas['metals']/Z_sun
+#z = CGM_gas['r'].in_units('kpc')
+#print(np.max(CGM_gas['mass'].in_units('Msol')),np.min(CGM_gas['mass'].in_units('Msol')))
+#print(CGM_gas['r'].min(),np.sort(CGM_gas['r']))
+#print(CGM_gas['mass'].units)
 
 
 fig = plt.figure(figsize=(7, 5))
-plt.hist2d(x,y,(100,100),weights=z,cmap=cm.jet,norm=mpl.colors.LogNorm())
+
+plt.hexbin(x,y,C=z,reduce_C_function=np.sum,cmap=cm.jet,mincnt=1,bins='log',vmin=1.25,vmax=3.75)
+#plt.hexbin(x,y,C=z,vmin=0.01,vmax=1)#mincnt=1,bins='log',vmin=1.25,vmax=3.75)
+#plt.hexbin(x,y,C=z,cmap=cm.plasma,vmin=10,vmax=int(CGM_gas['r'].max()))
+
 plt.ylabel(r'Log$_{10}$ T ('+str(CGM_gas['temp'].units)+')',size=15)
 plt.xlabel(r'Log$_{10}$ n$_H$ (cm$^{-3}$)',size=15)
-plt.colorbar(label=(r'Log M (M$_{\odot}$)'))
+plt.colorbar(label=r'M$_{CGM}$/M$_{\odot}$')
+#plt.colorbar(label=(r'Z/Z$_{\odot}$'))
+#plt.colorbar(label=(r'R [kpc]'))
 plt.text(-5.5,6.7,name, color='black',size=15)
-plt.text(0,6.7,'z = '+str('%.2f' % sim.properties['z']),color='black',size=15)
+plt.text(0,6.7,'z = 0.17',color='black',size=15)
 plt.xlim(-6,2)
 plt.ylim(3.5,7)
-plt.savefig(name+'_phasediagram.pdf')
+plt.savefig(name+'_phasediagram_mass.pdf')
+#plt.savefig(name+'_phasediagram_metallicity.pdf')
+#plt.savefig(name+'_phasediagram_Rkpc.pdf')
 plt.show()
