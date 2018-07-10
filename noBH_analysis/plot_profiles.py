@@ -132,13 +132,13 @@ dashed = [0,0.1]
 plt.plot(solid,dashed,color='Black',linestyle='-',label='BH')
 plt.plot(solid,dashed,color='Black',linestyle='--',label='NO BH')
 for j in range(len(labels)):
-    Novi = np.loadtxt('../ioniz_species/Novi_thrutime/'+labels[j]+'_Novi_'+time+'.np')
-    R = np.loadtxt('../ioniz_species/Rbins_thrutime/'+labels[j]+'_Rbins_'+time+'.np')
+    Novi = np.loadtxt('../ioniz_species/'+labels[j]+'_Novi_'+time+'_hdf5.np')
+    R = np.loadtxt('../ioniz_species/'+labels[j]+'_Rbins_'+time+'.np')
     plt.plot(R,Novi,label=NEW_lab[j],color=colors[j])
 
 for j in range(len(labels_noBHs)):
     print('Read in: ',labels_noBHs[j])
-    noBH_Novi = np.loadtxt(labels_noBHs[j]+'_Novi_'+time+'.np')
+    noBH_Novi = np.loadtxt(labels_noBHs[j]+'_Novi_'+time+'_hdf5.np')
     noBH_R = np.loadtxt(labels_noBHs[j]+'_Rbins_'+time+'.np')
     plt.plot(noBH_R,noBH_Novi,color=colors_noBHs[j],linestyle=noBHline)
 

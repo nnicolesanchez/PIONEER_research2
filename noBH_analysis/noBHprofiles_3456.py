@@ -1,7 +1,9 @@
-import pandas as pd
-import matplotlib.pyplot as plt
-import numpy as np
+
 from pynbody.analysis import profile
+import matplotlib.pyplot as plt
+from hdf5_Novi_R import *
+import pandas as pd
+import numpy as np
 import pynbody
 
 #labels = ['P0','GM1','GM4','GM5','GM6','GM7']
@@ -25,8 +27,8 @@ import pynbody
 
 #plt.show()
 #quit()
-i = 5
-sims_noBHs = ['/nobackup/nnsanche/NO_BHs/pioneer50h243.1536gst1bwK1.003456','/nobackup/nnsanche/NO_BHs/pioneer50h243GM1.1536gst1bwK1.003456','/nobackup/nnsanche/NO_BHs/pioneer50h243GM4.1536gst1bwK1.003456','/nobackup/nnsanche/NO_BHs/pioneer50h243GM5.1536gst1bwK1.003456','/nobackup/nnsanche/NO_BHs/pioneer50h243GM6.1536gst1bwK1.003456','/nobackup/nnsanche/NO_BHs/pioneer50h243GM7.1536gst1bwK1.003456']
+i = 2
+sims_noBHs = ['/nobackup/nnsanche/NO_BHs/pioneer50h243.1536gst1bwK1/pioneer50h243.1536gst1bwK1.003456','/nobackup/nnsanche/NO_BHs/pioneer50h243GM1.1536gst1bwK1/pioneer50h243GM1.1536gst1bwK1.003456','/nobackup/nnsanche/NO_BHs/pioneer50h243GM4.1536gst1bwK1/pioneer50h243GM4.1536gst1bwK1.003456','/nobackup/nnsanche/NO_BHs/pioneer50h243GM5.1536gst1bwK1/pioneer50h243GM5.1536gst1bwK1.003456','/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM6.1536gst1bwK1/pioneer50h243GM6.1536gst1bwK1.003456','/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM7.1536gst1bwK1/pioneer50h243GM7.1536gst1bwK1.003456']
 
 # Include GM4 no BHs
 labels_noBHs = ['P0_noBH','GM1_noBH','GM4_noBH','GM5_noBH','GM6_noBH','GM7_noBH']
@@ -57,13 +59,13 @@ disk_gas = h1.g[disk_gas_mask] #& disk_gas_zmax]
 CGM_gas  = h1.g[~disk_gas_mask]
 CGM_temp = np.array(CGM_gas['temp'])
 
-CGM_gas['ovi'] = pynbody.analysis.ionfrac.calculate(CGM_gas,ion='ovi',mode='new') 
+CGM_gas['ovi'] = hdf5_ion_frac(CGM_gas,ion='ovi') 
 m_p = 1.6726 * 10**-24 #g
 print('Total mass in CGM:', np.sum(CGM_gas['mass']))
     
 CGMprofile = profile.Profile(CGM_gas,min='0.1 kpc',max='250 kpc')
 
-np.savetxt(labels_noBHs[i]+'_Novi_3456.np',np.log10((CGMprofile['mass'].in_units('g')*CGMprofile['OxMassFrac']*CGMprofile['ovi']/(16*m_p))/CGMprofile._binsize.in_units('cm**2')))
+np.savetxt(labels_noBHs[i]+'_Novi_3456_hdf5.np',np.log10((CGMprofile['mass'].in_units('g')*CGMprofile['OxMassFrac']*CGMprofile['ovi']/(16*m_p))/CGMprofile._binsize.in_units('cm**2')))
 np.savetxt(labels_noBHs[i]+'_T_3456.np',np.log10(CGMprofile['temp'].in_units('K')))
 np.savetxt(labels_noBHs[i]+'_rho_3456.np',np.log10(CGMprofile['rho'].in_units('g cm^-3')))
 np.savetxt(labels_noBHs[i]+'_Omass_3456.np',np.log10(CGMprofile['mass'].in_units('g')*CGMprofile['OxMassFrac']/(16*m_p)))
