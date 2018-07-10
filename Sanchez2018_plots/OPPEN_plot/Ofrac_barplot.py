@@ -82,7 +82,7 @@ plt.ylabel(r'Oxygen Fraction (CGM <R$_{200}$)')
 text_place = -0.6
 for m in range(len(MH_mass)):
 #    print(lab[m],"%.1f" % np.log10(MH_mass[m]),MH_mass[m])
-    plt.text(text_place,0.1,str("%.1f" % np.log10(MH_mass[m])),color='White',rotation=90)
+    plt.text(text_place,0.5,str("%.1f" % np.log10(MH_mass[m])),color='Black',rotation=90)
     text_place = text_place + 2
 
 plt.legend(ncol=4)
