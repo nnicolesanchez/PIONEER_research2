@@ -15,7 +15,7 @@ import pandas as pd
 import numpy as np
 import pynbody
 import h5py
-import os
+import sys
 
 if len(sys.argv) == 1:
     print('No galaxy selected. Current options: P0, GM1, GM7, GM4')
