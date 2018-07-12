@@ -117,9 +117,9 @@ for i in range(len(ion_labels)):
         plt.text(4.6,0.1+t,str('%.3f' % ion_array[i][2]),color=colors[i])
         t = t + 0.1
 
-plt.text(-0.7,0.98,r'5 $\times$ 10$^{10}$ - 5 $\times$ 10$^{11}$')
-plt.text(1.3,0.98,r'5 $\times$ 10^$^{11}$ - 2 $\times$ 10$^{12}$ ')
-plt.text(3.3,0.98,r'2 $\times$ 10$^{12}$ -- 2 $\times$ 10$^{13}$ ')
+plt.text(-0.7,0.97,r'5 $\times$ 10$^{10}$ - 5 $\times$ 10$^{11}$')
+plt.text(1.3,0.97,r'5 $\times$ 10$^{11}$ - 2 $\times$ 10$^{12}$ ')
+plt.text(3.3,0.97,r'2 $\times$ 10$^{12}$ - 2 $\times$ 10$^{13}$ ')
 plt.ylabel(r'Oxygen Fraction (CGM <R$_{200}$)')
 plt.ylim(0,1.2)
 plt.xlim(-0.75,5.25)
