@@ -26,9 +26,9 @@ GM4_SFR_property_object = GM4_halo.get_objects("SFR_histogram")[0]
 GM4_SFR_time_bins = GM4_SFR_property_object.x_values()
 
 
-plt.plot(P0_SFR_time_bins, P0_BH_accrate,color='DodgerBlue',label='P0')
-plt.plot(GM7_SFR_time_bins, GM7_BH_accrate,color='FireBrick',label='GM2')
-plt.plot(GM4_SFR_time_bins, GM4_BH_accrate,color='Salmon',label='GM3')
+plt.plot(P0_SFR_time_bins, np.log10(P0_BH_accrate),color='DodgerBlue',label='P0')
+plt.plot(GM7_SFR_time_bins, np.log10(GM7_BH_accrate),color='FireBrick',label='GM2')
+plt.plot(GM4_SFR_time_bins, np.log10(GM4_BH_accrate),color='Salmon',label='GM3')
 plt.xlabel("Age/Gyr")
 plt.ylabel("BH accretion rate/$M_{\odot}\,yr^{-1}$")
 plt.legend()
