@@ -87,6 +87,6 @@ for k in range(len(ion_labels)):
 np.savetxt(lab+'/'+lab+'_T_3456.np',np.log10(CGMprofile['temp'].in_units('K')))
 np.savetxt(lab+'/'+lab+'_rho_3456.np',np.log10(CGMprofile['rho'].in_units('g cm^-3')))
 np.savetxt(lab+'/'+lab+'_Rbins_3456.np',CGMprofile['rbins'].in_units('kpc'))
-np.savetxt(lab+'/'+lab+'_totgasmass_3456.np',CGMprofile['mass'].in_units('g'))
+np.savetxt(lab+'/'+lab+'_totgasmass_3456.np',CGMprofile['mass'].in_units('Msol'))
 np.savetxt(lab+'/'+lab+'_Z_3456.np',CGMprofile['metals'])
 np.savetxt(lab+'/'+lab+'_Omass_3456.np',CGMprofile['OxMassFrac']*CGMprofile['mass'].in_units('g')) # in units g
