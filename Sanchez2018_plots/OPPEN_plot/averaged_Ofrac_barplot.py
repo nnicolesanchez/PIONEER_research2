@@ -117,10 +117,11 @@ for i in range(len(ion_labels)):
         plt.text(4.6,0.1+t,str('%.3f' % ion_array[i][2]),color=colors[i])
         t = t + 0.1
 
-plt.text(0,1,r'5 $\times$ 10$^{10}$ - 5 $\times$ 10$^{11}$')
-plt.text(2,1,r'5 $\times$ 10^$^{11}$ - 2 $\times$ 10$^{12}$ ')
-plt.text(4,1,r'2 $\times$ 10$^{12}$ -- 2 $\times$ 10$^{13}$ ')
+plt.text(-0.5,1,r'5 $\times$ 10$^{10}$ - 5 $\times$ 10$^{11}$')
+plt.text(1.5,1,r'5 $\times$ 10^$^{11}$ - 2 $\times$ 10$^{12}$ ')
+plt.text(3.5,1,r'2 $\times$ 10$^{12}$ -- 2 $\times$ 10$^{13}$ ')
 plt.ylabel(r'Oxygen Fraction (CGM <R$_{200}$)')
+plt.ylim(0,1.2)
 plt.xlim(-0.75,5.25)
 plt.legend(ncol=4)
 plt.savefig('OPPEN_fig10_ROMgxys_averaged.pdf')
