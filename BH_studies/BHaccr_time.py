@@ -34,6 +34,7 @@ plt.ylabel("BH accretion rate/$M_{\odot}\,yr^{-1}$")
 plt.legend()
 plt.savefig('P0_GM4and7_bhaccr_age.pdf')
 #plt.show()
+plt.clf()
 
 P0_BH = P0_halo['BH'][0]
 GM7_BH = GM7_halo['BH'][0]
