@@ -99,9 +99,9 @@ for i in range(len(ion_labels)):
         plt.bar(indec,ion_array[i],width=wid,label=ion_labels[i],color=colors[i],edgecolor='Black')
         ion_butt = np.array(ion_array[i]) 
         print('ion butts:',ion_butt)
-        plt.text(0.6,0.1,str('%.3f' % ion_array[i][0]),color=colors[i])
-        plt.text(2.6,0.1,str('%.3f' % ion_array[i][1]),color=colors[i])
-        plt.text(4.6,0.1,str('%.3f' % ion_array[i][2]),color=colors[i])
+        plt.text(0.6,0.1,str('%.3f' % ion_array[i][0]),color=colors[i],size=12)
+        plt.text(2.6,0.1,str('%.3f' % ion_array[i][1]),color=colors[i],size=12)
+        plt.text(4.6,0.1,str('%.3f' % ion_array[i][2]),color=colors[i],size=12)
         t = 0.1
 
     else :
@@ -109,16 +109,16 @@ for i in range(len(ion_labels)):
         plt.bar(indec,ion_array[i],width=wid,label=ion_labels[i],color=colors[i],edgecolor='Black',bottom=ion_butt)
         ion_butt = np.array(ion_butt) + np.array(ion_array[i])
         print('ion butts:',ion_butt)
-        plt.text(0.6,0.1+t,str('%.3f' % ion_array[i][0]),color=colors[i])
-        plt.text(2.6,0.1+t,str('%.3f' % ion_array[i][1]),color=colors[i])
-        plt.text(4.6,0.1+t,str('%.3f' % ion_array[i][2]),color=colors[i])
+        plt.text(0.6,0.1+t,str('%.3f' % ion_array[i][0]),color=colors[i],size=12)
+        plt.text(2.6,0.1+t,str('%.3f' % ion_array[i][1]),color=colors[i],size=12)
+        plt.text(4.6,0.1+t,str('%.3f' % ion_array[i][2]),color=colors[i],size=12)
         t = t + 0.1
 
-plt.text(-0.7,-0.06,r'5 $\times$ 10$^{10}$ - 5 $\times$ 10$^{11}$')
-plt.text(1.3,-0.06,r'5 $\times$ 10$^{11}$ - 2 $\times$ 10$^{12}$ ')
-plt.text(3.3,-0.06,r'2 $\times$ 10$^{12}$ - 2 $\times$ 10$^{13}$ ')
-plt.text(1.2,-0.12,r'Averaged M$_{halo}$ Range')
-plt.ylabel(r'Oxygen Fraction (CGM <R$_{200}$)')
+plt.text(-0.7,-0.06,r'5 $\times$ 10$^{10}$ - 5 $\times$ 10$^{11}$',size=11)
+plt.text(1.3,-0.06,r'5 $\times$ 10$^{11}$ - 2 $\times$ 10$^{12}$ ',size=11)
+plt.text(3.3,-0.06,r'2 $\times$ 10$^{12}$ - 2 $\times$ 10$^{13}$ ',size=11)
+plt.text(1,-0.12,r'Averaged M$_{halo}$ Range',size=13)
+plt.ylabel(r'Oxygen Fraction (CGM <R$_{200}$)',size=13)
 plt.ylim(0,1.15)
 plt.xticks([])
 plt.xlim(-0.75,5.25)
