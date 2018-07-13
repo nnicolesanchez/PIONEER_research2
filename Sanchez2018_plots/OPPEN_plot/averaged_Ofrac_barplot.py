@@ -117,7 +117,7 @@ for i in range(len(ion_labels)):
 plt.text(-0.7,-0.06,r'5 $\times$ 10$^{10}$ - 5 $\times$ 10$^{11}$',size=11)
 plt.text(1.3,-0.06,r'5 $\times$ 10$^{11}$ - 2 $\times$ 10$^{12}$ ',size=11)
 plt.text(3.3,-0.06,r'2 $\times$ 10$^{12}$ - 2 $\times$ 10$^{13}$ ',size=11)
-plt.text(1,-0.12,r'Averaged M$_{halo}$ Range',size=13)
+plt.text(0.95,-0.12,r'Averaged M$_{halo}$ Range',size=13)
 plt.ylabel(r'Oxygen Fraction (CGM <R$_{200}$)',size=13)
 plt.ylim(0,1.15)
 plt.xticks([])
