@@ -49,7 +49,7 @@ P0_halo = tangos.get_halo("pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1
 P0_SFR = P0_halo["SFR_histogram"]
 P0_BH_accrate = P0_halo.calculate('BH.BH_mdot_histogram')
 #P0_BH_accrate_hat = savitzky_golay(P0_BH_accrate, 51, 3)
-P0_BH_accrate_hat = smooth(P0_BH_accrate, 15)
+P0_BH_accrate_hat = smooth(P0_BH_accrate, 21)
 P0_SFR_property_object = P0_halo.get_objects("SFR_histogram")[0]
 P0_SFR_time_bins = P0_SFR_property_object.x_values()
 
@@ -57,7 +57,7 @@ GM1_halo = tangos.get_halo("pioneer50h243GM1.1536gst1bwK1BH_no3072/pioneer50h243
 GM1_SFR = GM1_halo["SFR_histogram"]
 GM1_BH_accrate = GM1_halo.calculate('BH.BH_mdot_histogram')
 #GM1_BH_accrate_hat = savitzky_golay(GM1_BH_accrate, 51, 3)
-GM1_BH_accrate_hat = smooth(GM1_BH_accrate, 15)
+GM1_BH_accrate_hat = smooth(GM1_BH_accrate, 21)
 GM1_SFR_property_object = GM1_halo.get_objects("SFR_histogram")[0]
 GM1_SFR_time_bins = GM1_SFR_property_object.x_values()
 
@@ -65,7 +65,7 @@ GM7_halo = tangos.get_halo("pioneer50h243GM7.1536gst1bwK1BH/pioneer50h243GM7.153
 GM7_SFR = GM7_halo["SFR_histogram"]
 GM7_BH_accrate = GM7_halo.calculate('BH.BH_mdot_histogram')
 #GM7_BH_accrate_hat = savitzky_golay(GM7_BH_accrate, 51, 3)
-GM7_BH_accrate_hat = smooth(GM7_BH_accrate, 15)
+GM7_BH_accrate_hat = smooth(GM7_BH_accrate, 21)
 GM7_SFR_property_object = GM7_halo.get_objects("SFR_histogram")[0]
 GM7_SFR_time_bins = GM7_SFR_property_object.x_values()
 
@@ -73,7 +73,7 @@ GM4_halo = tangos.get_halo("pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.153
 GM4_SFR = GM4_halo["SFR_histogram"]
 GM4_BH_accrate = GM4_halo.calculate('BH.BH_mdot_histogram')
 #GM4_BH_accrate_hat = savitzky_golay(GM4_BH_accrate, 51, 3)
-GM4_BH_accrate_hat = smooth(GM4_BH_accrate, 15)
+GM4_BH_accrate_hat = smooth(GM4_BH_accrate, 21)
 GM4_SFR_property_object = GM4_halo.get_objects("SFR_histogram")[0]
 GM4_SFR_time_bins = GM4_SFR_property_object.x_values()
 
