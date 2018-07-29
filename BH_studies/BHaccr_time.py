@@ -42,18 +42,21 @@ from scipy.signal import savgol_filter
 P0_halo = tangos.get_halo("pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH.004096/halo_1")
 P0_SFR = P0_halo["SFR_histogram"]
 P0_BH_accrate = P0_halo.calculate('BH.BH_mdot_histogram')
+P0_BH_accrate_hat = savitzky_golay(P0_BH_accrate, 51, 3)
 P0_SFR_property_object = P0_halo.get_objects("SFR_histogram")[0]
 P0_SFR_time_bins = P0_SFR_property_object.x_values()
 
 GM1_halo = tangos.get_halo("pioneer50h243GM1.1536gst1bwK1BH_no3072/pioneer50h243GM1.1536gst1bwK1BH.004096/halo_1")
 GM1_SFR = GM1_halo["SFR_histogram"]
 GM1_BH_accrate = GM1_halo.calculate('BH.BH_mdot_histogram')
+GM1_BH_accrate_hat = savitzky_golay(GM1_BH_accrate, 51, 3)
 GM1_SFR_property_object = GM1_halo.get_objects("SFR_histogram")[0]
 GM1_SFR_time_bins = GM1_SFR_property_object.x_values()
 
 GM7_halo = tangos.get_halo("pioneer50h243GM7.1536gst1bwK1BH/pioneer50h243GM7.1536gst1bwK1BH.003968/halo_1")
 GM7_SFR = GM7_halo["SFR_histogram"]
 GM7_BH_accrate = GM7_halo.calculate('BH.BH_mdot_histogram')
+GM7_BH_accrate_hat = savitzky_golay(GM7_BH_accrate, 51, 3)
 GM7_SFR_property_object = GM7_halo.get_objects("SFR_histogram")[0]
 GM7_SFR_time_bins = GM7_SFR_property_object.x_values()
 
@@ -66,10 +69,9 @@ GM4_SFR_property_object = GM4_halo.get_objects("SFR_histogram")[0]
 GM4_SFR_time_bins = GM4_SFR_property_object.x_values()
 
 
-
-plt.plot(P0_SFR_time_bins, np.log10(P0_BH_accrate),color='DodgerBlue',label='P0')
-plt.plot(GM1_SFR_time_bins, np.log10(GM1_BH_accrate),color='SteelBlue',label='GM1')
-plt.plot(GM7_SFR_time_bins, np.log10(GM7_BH_accrate),color='FireBrick',label='GM2')
+plt.plot(P0_SFR_time_bins, np.log10(P0_BH_accrate_hat),color='DodgerBlue',label='P0')
+plt.plot(GM1_SFR_time_bins, np.log10(GM1_BH_accrate_hat),color='SteelBlue',label='GM1')
+plt.plot(GM7_SFR_time_bins, np.log10(GM7_BH_accrate_hat),color='FireBrick',label='GM2')
 plt.plot(GM4_SFR_time_bins, np.log10(GM4_BH_accrate_hat),color='Salmon',label='GM3')
 plt.xlabel("Age/Gyr")
 plt.ylabel("BH accretion rate/$M_{\odot}\,yr^{-1}$")
