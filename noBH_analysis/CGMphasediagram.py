@@ -42,13 +42,13 @@ else:
     elif (str(sys.argv[1]) == 'GM4'):
         sim = pynbody.load('/nobackupp2/nnsanche/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.00'+ts)    
     elif (str(sys.argv[1]) == 'P0noBH'):
-        sim = pynbody.load('/nobackupp2/nnsanche/NO_BHs/pioneer50h243.1536gst1bwK1/pioneer50h243.1536gst1bwK1.00'+ts)
+        sim = pynbody.load('/nobackupp2/nnsanche/NO_BHs/pioneer50h243.1536gst1bwK1_3456/pioneer50h243.1536gst1bwK1.00'+ts)
     elif (str(sys.argv[1]) == 'GM1noBH'):
-        sim = pynbody.load('/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM1.1536gst1bwK1/pioneer50h243GM1.1536gst1bwK1.00'+ts)
+        sim = pynbody.load('/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM1.1536gst1bwK1_3456/pioneer50h243GM1.1536gst1bwK1.00'+ts)
     elif (str(sys.argv[1]) == 'GM7noBH'):
-        sim = pynbody.load('/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM7.1536gst1bwK1/pioneer50h243GM7.1536gst1bwK1.00'+ts) 
+        sim = pynbody.load('/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM7.1536gst1bwK1_3456/pioneer50h243GM7.1536gst1bwK1.00'+ts) 
     elif (str(sys.argv[1]) == 'GM4noBH'):
-        sim = pynbody.load('/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM4.1536gst1bwK1/pioneer50h243GM4.1536gst1bwK1.00'+ts)    
+        sim = pynbody.load('/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM4.1536gst1bwK1_3456/pioneer50h243GM4.1536gst1bwK1.00'+ts)    
 
     else :
         print('Not a valid option. Current options: P0, GM1, GM7 (aka GM2), GM4 (aka GM3)')
@@ -145,16 +145,16 @@ plt.clf()
 
 # Radius
 #fig = plt.figure(figsize=(7, 5))
-z = CGM_gas['r'].in_units('kpc')
-plt.hexbin(x,y,C=z,cmap=cm.plasma,vmin=10,vmax=int(CGM_gas['r'].max()))
+z = CGM_gas['r'].in_units('kpc')/int(CGM_gas['r'].max())
+plt.hexbin(x,y,C=z,cmap=cm.plasma,vmin=0.1,vmax=1)
 plt.ylabel(r'Log$_{10}$ T ('+str(CGM_gas['temp'].units)+')',size=15)
 plt.xlabel(r'Log$_{10}$ n$_H$ (cm$^{-3}$)',size=15)
 
-plt.colorbar(label=(r'R [kpc]'))
+plt.colorbar(label=(r'R [kpc]/R$_{vir}$'))
 plt.text(-5.5,6.7,name, color='black',size=15)
 plt.text(0,6.7,'z = '+str('%.2f' % sim.properties['z']),color='black',size=15)
 plt.xlim(-6,2)
 plt.ylim(3.5,7)
 plt.savefig(name+'_phasediagram_Rkpc_'+ts+'.pdf')
-#plt.show()
+plt.show()
 plt.clf()
