@@ -18,7 +18,7 @@ timesteps = ['1280','1408','1536','1664','1739']
 sims = ['/nobackupp2/nnsanche/pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH.00','/nobackupp2/nnsanche/pioneer50h243GM1.1536gst1bwK1BH/pioneer50h243GM1.1536gst1bwK1BH.00','/nobackupp2/nnsanche/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.00','/nobackupp2/nnsanche/pioneer50h243GM5.1536gst1bwK1BH/pioneer50h243GM5.1536gst1bwK1BH.00','/nobackupp2/nnsanche/pioneer50h243GM6.1536gst1bwK1BH/pioneer50h243GM6.1536gst1bwK1BH.00','/nobackupp2/nnsanche/pioneer50h243GM7.1536gst1bwK1BH/pioneer50h243GM7.1536gst1bwK1BH.00']
 labels = ['P0','GM1','GM4','GM5','GM6','GM7']
 
-for i in range(len(sims)):
+for i in range(len(sims)-2):
     if i == 0 or i == 3:
         continue
     else:
@@ -30,8 +30,8 @@ for i in range(len(sims)):
             h1 = h[1]
             pynbody.analysis.angmom.faceon(h1)
             
-            pynbody.plot.sph.image(h1.g,qty='temp',width='50 kpc')
-            plt.savefig(labels[i]+'_xy_temp_50kpc_'+timesteps[j]+'.pdf')
+            pynbody.plot.sph.image(h1.g,qty='temp',width='20 kpc')
+            plt.savefig(labels[i]+'_xy_temp_20kpc_'+timesteps[j]+'.pdf')
 #            plt.show()
     
 
