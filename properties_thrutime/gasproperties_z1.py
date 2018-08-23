@@ -31,6 +31,7 @@ for i in range(len(sims)-2):
             pynbody.analysis.angmom.faceon(h1)
             
             pynbody.plot.sph.image(h1.g,qty='temp',width='20 kpc',vmin=0.1, vmax=10**6)
+            plt.title(labels[i]+', z ='+timesteps[j])
             plt.savefig(labels[i]+'_xy_temp_20kpc_'+timesteps[j]+'.pdf')
 #            plt.show()
     
