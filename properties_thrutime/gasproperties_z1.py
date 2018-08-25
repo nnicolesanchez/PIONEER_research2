@@ -32,13 +32,8 @@ for i in range(len(sims)-2):
             h1 = h[1]
             pynbody.analysis.angmom.faceon(h1)
             
-            pynbody.plot.sph.image(h1.g,qty='temp',width='20 kpc',vmin=0.1, vmax=10**6)
+            MH_gas = sim.g[sim.g['r'].in_units('kpc') < 250]
+            pynbody.plot.sph.image(MH_gas,qty='temp',width='20 kpc',vmin=10**4, vmax=5*10**7)
             plt.title(labels[i]+', z ='+timesteps[j])
             plt.savefig(labels[i]+'_xy_temp_20kpc_'+timesteps[j]+'_grp.pdf')
 #            plt.show()
-    
-
-    
-
-        
-
