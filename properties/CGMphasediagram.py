@@ -90,7 +90,7 @@ z = CGM_gas['mass'].in_units('Msol')
 
 fig = plt.figure(figsize=(7, 5))
 
-plt.hexbin(x,y,C=z,reduce_C_function=np.sum,cmap=cm.jet,mincnt=1,bins='log',vmin=1.25,vmax=3.75)
+plt.hexbin(x,y,C=z,reduce_C_function=np.sum,cmap=cm.jet,mincnt=1,bins='log',vmin=5.25,vmax=8.75)
 #plt.hexbin(x,y,C=z,vmin=0.01,vmax=1)#mincnt=1,bins='log',vmin=1.25,vmax=3.75)
 #plt.hexbin(x,y,C=z,cmap=cm.plasma,vmin=0.1,vmax=1)#vmin=10,vmax=270)#int(CGM_gas['r'].max()))
 
@@ -106,4 +106,4 @@ plt.ylim(3.5,7)
 plt.savefig(name+'_phasediagram_mass.pdf')
 #plt.savefig(name+'_phasediagram_metallicity.pdf')
 #plt.savefig(name+'_phasediagram_Rkpc.pdf')
-#plt.show()
+plt.show()
