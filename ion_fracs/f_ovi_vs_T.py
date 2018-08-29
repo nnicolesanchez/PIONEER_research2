@@ -97,10 +97,10 @@ plt.savefig(name+'_fovi_T_hdf5.pdf')
 plt.show()
 
 
-plt.hexbin(np.log10(CGM_gas['rho'].in_units('g cm**-3')/m_H),CGMg_fovi,C=np.log10(CGM_gas['rho']),cmap=cm.plasma)
+plt.hexbin(np.log10(CGM_gas['rho'].in_units('g cm**-3')/m_H),CGMg_fovi,C=np.log10(CGM_gas['temp']),cmap=cm.plasma)
 plt.ylabel(r'f$_{OVI}$')
 plt.xlabel(r'Log$_{10}$ n$_H$ (cm$^{-3}$)',size=15)
-plt.colorbar(label=r'$\rho$')
+plt.colorbar(label=r'T [K]')
 plt.title(name+', using hdf5 table')
 plt.savefig(name+'_fovi_rho_hdf5.pdf')
 plt.show()
