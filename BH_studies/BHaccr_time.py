@@ -25,6 +25,8 @@ P0_SFR_time_bins = P0_SFR_property_object.x_values()
 GM1_halo = tangos.get_halo("pioneer50h243GM1.1536gst1bwK1BH_no3072/pioneer50h243GM1.1536gst1bwK1BH.004096/halo_1")
 GM1_SFR = GM1_halo["SFR_histogram"]
 GM1_BH_accrate = GM1_halo.calculate('BH.BH_mdot_histogram')
+print(GM1_BH_accrate[0:100])
+print(np.sum(GM1_BH_accrate))
 GM1_BH_accrate_hat = smooth(GM1_BH_accrate, 50)
 GM1_SFR_property_object = GM1_halo.get_objects("SFR_histogram")[0]
 GM1_SFR_time_bins = GM1_SFR_property_object.x_values()
@@ -53,9 +55,9 @@ plt.ylabel("BH accretion rate/$M_{\odot}\,yr^{-1}$")
 plt.ylim(-6,-1)
 plt.legend()
 plt.savefig('ALL_bhaccr_age.pdf')
-plt.show()
+#plt.show()
 plt.clf()
-quit()
+
 P0_BH = P0_halo['BH'][0]
 GM1_BH = GM1_halo['BH'][0]
 GM7_BH = GM7_halo['BH'][0]
@@ -84,6 +86,8 @@ GM1_BH_mdot = GM1_BH['BH_mdot_histogram']
 GM1_BH_property_object = GM1_BH.get_objects("BH_mdot_histogram")[0]
 GM1_BH_time_bins = GM1_BH_property_object.x_values()
 GM1_BH_all = GM1_BH.calculate('reassemble(BH_mdot_histogram, "sum")')
+print(GM1_BH_all[0:100])
+print(np.sum(GM1_BH_all))
 GM1_BH_all_hat = smooth(GM1_BH_all, 50)
 
 GM7_BH_mdot = GM7_BH['BH_mdot_histogram']
@@ -98,10 +102,10 @@ GM4_BH_time_bins = GM4_BH_property_object.x_values()
 GM4_BH_all = GM4_BH.calculate('reassemble(BH_mdot_histogram, "sum")')
 GM4_BH_all_hat = smooth(GM4_BH_all, 50)
 
-plt.plot(P0_BH_time_bins, np.log10(P0_BH_all_hat),color='DodgerBlue',label='P0')
-plt.plot(GM1_BH_time_bins, np.log10(GM1_BH_all_hat),color='SteelBlue',label='GM1')
-plt.plot(GM7_BH_time_bins, np.log10(GM7_BH_all_hat),color='FireBrick',label='GM2')
-plt.plot(GM4_BH_time_bins, np.log10(GM4_BH_all_hat),color='Salmon',label='GM3')
+plt.plot(P0_BH_time_bins, np.log10(np.cumsum(P0_BH_all_hat*np.diff(P0_BH_time_bins)[0])),color='DodgerBlue',label='P0')
+plt.plot(GM1_BH_time_bins, np.log10(np.cumsum(GM1_BH_all_hat*np.diff(GM1_BH_time_bins)[0])),color='SteelBlue',label='GM1')
+plt.plot(GM7_BH_time_bins, np.log10(np.cumsum(GM7_BH_all_hat*np.diff(GM7_BH_time_bins)[0])),color='FireBrick',label='GM2')
+plt.plot(GM4_BH_time_bins, np.log10(np.cumsum(GM4_BH_all_hat*np.diff(GM4_BH_time_bins)[0])),color='Salmon',label='GM3')
 plt.xlabel("Age/Gyr")
 plt.ylabel("Cumulative BH accreted mass/$M_{\odot}$")
 plt.legend()
