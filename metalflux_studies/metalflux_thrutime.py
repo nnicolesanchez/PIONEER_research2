@@ -10,6 +10,7 @@
 # N. Nicole Sanchez -- Aug 20 2018
 # Univ. of Wash.    -- Nbody Shop
 import matplotlib.pyplot as plt
+import matplotlib.patches as pat
 #import matplotlib.cm as cm
 #import matplotlib as mpl
 import numpy as np
@@ -132,8 +133,8 @@ if k == 2 :
     plt.plot(BH_data.calculate_for_progenitors('t()')[0],np.log10(BH_data.calculate_for_progenitors('BH_mass')[0]),color='DodgerBlue',label='BH mass',linewidth=2)
 else:
     plt.plot(BH_data.calculate_for_progenitors('t()')[0][:m],np.log10(BH_data.calculate_for_progenitors('BH_mass')[0]),color='DodgerBlue',label='BH mass',linewidth=2)
-plt.plot(times,np.log10(Zmass_inner),label=r'Mass of gas in metals within 20 kpc',linestyle='--',color='Salmon')
-plt.plot(times,np.log10(Zmass_outer),label=r'Mass of gas in metals with 20 kpc < r < R$_{vir}$',linestyle=':',color='SteelBlue')
+plt.plot(times,np.log10(Zmass_inner),label=r'Mass of gas in metals within 10 kpc',linestyle='--',color='Salmon')
+plt.plot(times,np.log10(Zmass_outer),label=r'Mass of gas in metals with 10 kpc < r < R$_{vir}$',linestyle=':',color='SteelBlue')
 plt.ylim(4.9,9.1)
 plt.xlabel('Age/Gyr',fontsize=15)
 plt.ylabel(r'log M/M$_{\odot}$',fontsize=15)
@@ -141,7 +142,6 @@ plt.text(0.2,8.8,name,size=15)
 plt.legend()
 plt.savefig(name+'_Zmass_BHmass_thrutime.pdf')
 plt.show()
-
-
+plt.clf()
 
 
