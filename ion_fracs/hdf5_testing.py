@@ -7,15 +7,84 @@ import numpy as np
 import pynbody
 import h5py
 
-#from ..array import SimArray
-from pynbody import config
-import logging
-logger = logging.getLogger('pynbody.analysis.ionfrac')
+# NPZ STUFF
+npz = np.load('../../pynbody/pynbody/analysis/ionfracs.npz')
+print(npz.keys())
+print('npz redshifts:',npz['redshiftvals'])iffile = '/home1/nnsanche/hm2012_hr.h5'
+ifs = h5py.File(iffile)
 
-#from scipy.interpolate import interp3d
-from scipy.interpolate import RegularGridInterpolator as rgi
+x_vals = ifs['O'].attrs['Parameter2']   # Redshifts                                        
+print('hdf5 redshifts:',x_vals)
+y_vals = ifs['O'].attrs['Temperature']  # Temperatures                                     
+print('hdf5 temperatures:',y_vals)
+z_vals = ifs['O'].attrs['Parameter1']
+print('hdf5 densities:',z_vals)
 
-from pynbody.analysis.interpolate import _interpolate3d
+print('npz temperatures:',npz['tempvals'])
+print('npz densities:',npz['denvals'])
+
+print('npz OVI where redshift = 0',npz['oviif'][npz['redshiftvals'] == 0])
+print('npz OVI where temp = 3.5',npz['oviif'][npz['tempvals'] == 3.5])
+
+quit()
+# HDF5 STUFF    
+iffile = '/home1/nnsanche/hm2012_hr.h5'
+ifs = h5py.File(iffile)
+
+x_vals = ifs['O'].attrs['Parameter2']   # Redshifts                    
+print('hdf5 redshifts:',x_vals)                                              
+y_vals = ifs['O'].attrs['Temperature']  # Temperatures
+print('hdf5 temperatures:',y_vals)          
+z_vals = ifs['O'].attrs['Parameter1'] 
+print('hdf5 densities:',z_vals)
+
+k = 0
+sim = ['/nobackupp2/nnsanche/pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH.0\
+04096']
+
+f = pynbody.load(sim[k])
+pynbody.analysis.halo.center(f.star)
+f.physical_units()
+h = f.halos()
+h1 = h[1]
+pynbody.analysis.angmom.faceon(h1)
+r_max = 10  # kpc                                                 
+
+Rg_d = ((h1.g['x'].in_units('kpc'))**2. + (h1.g['y'].in_units('kpc'))**2. + (h1.g['z'].in_units('kpc'))**2.)**(0.5)
+disk_gas_xyzmax =  (Rg_d < r_max)
+disk_gas_mask = disk_gas_xyzmax
+disk_gas = h1.g[disk_gas_mask] 
+CGM_gas  = h1.g[~disk_gas_mask]
+
+
+
+
+
+
+
+
+
+
+
+
+quit()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def interpolate3d(x, y, z, x_vals, y_vals, z_vals, vals):
     """
@@ -59,6 +128,7 @@ def N_OVI(f):
     #print(f.gas['rho'].in_units('g cm**-3')*ovi*f.gas['OxMassFrac']/(16*m_p))
     return f.gas['rho'].in_units('g cm**-3')*ovi*f.gas['OxMassFrac']/(16*m_p)
 
+
 def hdf5_ion_frac(sim, ion):
     if ion == 'oi':
         print('Loading OI')
@@ -87,19 +157,23 @@ def hdf5_ion_frac(sim, ion):
     else:
         print('Specified ion incompatible; Try again.')
         
+
     iffile = '/home1/nnsanche/hm2012_hr.h5'
     ifs = h5py.File(iffile)
     
-    x_vals = ifs['O'].attrs['Parameter1']   # HYDROGEN Densities
-    y_vals = ifs['O'].attrs['Parameter2']   # Redshifts
-    z_vals = ifs['O'].attrs['Temperature']  # Temperatures
+    x_vals = ifs['O'].attrs['Parameter2']   # Redshifts
+    #print('hdf5 redshifts:',x_vals)
+    y_vals = ifs['O'].attrs['Temperature']  # Temperatures
+    #print('hdf5 temperatures:',y_vals)
+    z_vals = ifs['O'].attrs['Parameter1']   # HYDROGEN Densities
+    #print('hdf5 densities',z_vals)
 
     vals = ifs['O'][nion]
-    y = np.zeros(len(sim.gas))
-    x = np.log10(sim.gas['rho'].in_units('m_p cm^-3')).view(np.ndarray)
-    y[:] = sim.properties['z']
-    y = y
-    z = np.log10(sim.gas['temp']).view(np.ndarray)
+    x = np.zeros(len(sim.gas))
+    x[:] = sim.properties['z']
+    x = x
+    y = np.log10(sim.gas['temp']).view(np.ndarray)
+    z = np.log10(sim.gas['rho'].in_units('m_p cm^-3')).view(np.ndarray)
  
     n = len(sim.gas)
     n_z_vals = len(z_vals)
@@ -119,8 +193,6 @@ def hdf5_ion_frac(sim, ion):
 
 
     return 10 ** result_array
-
-
 
 if __name__ == '__main__':
 
@@ -157,9 +229,22 @@ if __name__ == '__main__':
     disk_gas = h1.g[disk_gas_mask] #& disk_gas_zmax]
     CGM_gas  = h1.g[~disk_gas_mask]
     
+
+
+    
+
+
+
+
+
+
+
+
+
+
+    quit
     CGM_gas['ovi_npz'] = pynbody.analysis.ionfrac.calculate(CGM_gas,ion='ovi',mode='new') 
     CGM_gas['ovi_hdf5'] = hdf5_ion_frac(CGM_gas,ion='ovi')
-#    quit()
     
     CGMprofile = profile.Profile(CGM_gas,min='0.1 kpc',max='250 kpc')
     

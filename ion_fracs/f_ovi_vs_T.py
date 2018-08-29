@@ -74,15 +74,15 @@ ovi_npz    = pynbody.analysis.ionfrac.calculate(CGM_gas,ion='ovi',mode='new')
 #rho_10_m2  = (CGM_gas['rho'] > 0.05) & (CGM_gas['rho'] > 0.005)
 #CGMg_10_m2 = CGM_gas[rho_10_m2]
 
-CGMg_fovi = (CGM_gas['mass']*CGM_gas['OxMassFrac']*ovi_npz)/CGM_gas['mass']
-plt.hexbin(np.log10(CGM_gas['temp']),CGMg_fovi,C=np.log10(CGM_gas['rho']),cmap=cm.plasma)
+#CGMg_fovi = (CGM_gas['mass']*CGM_gas['OxMassFrac']*ovi_npz)/CGM_gas['mass']
+#plt.hexbin(np.log10(CGM_gas['temp']),CGMg_fovi,C=np.log10(CGM_gas['rho']),cmap=cm.plasma)
 #plt.plot(CGMg_10_m2['temp'],CGMg_10_m2['mass']*CGMg_10_m2['OxMassFrac']*ovi_npz[rho_10_m2],label=density_array[0],linestyle=None,marker='.')
-plt.ylabel(r'f$_{OVI}$')
-plt.xlabel('T [K]')
-plt.colorbar(label=r'$\rho$')
-plt.title(name+', using .npz table')
-plt.savefig(name+'_fovi_T_npz.pdf')
-plt.show()
+#plt.ylabel(r'f$_{OVI}$')
+#plt.xlabel('T [K]')
+#plt.colorbar(label=r'$\rho$')
+#plt.title(name+', using .npz table')
+#plt.savefig(name+'_fovi_T_npz.pdf')
+#plt.show()
 
 # Using new HDF5 table from Corlies and Hummels
 ovi_hdf5    = hdf5_ion_frac(CGM_gas,ion='ovi')
@@ -97,7 +97,13 @@ plt.savefig(name+'_fovi_T_hdf5.pdf')
 plt.show()
 
 
-
+plt.hexbin(np.log10(CGM_gas['rho'].in_units('g cm**-3')/m_H),CGMg_fovi,C=np.log10(CGM_gas['rho']),cmap=cm.plasma)
+plt.ylabel(r'f$_{OVI}$')
+plt.xlabel(r'Log$_{10}$ n$_H$ (cm$^{-3}$)',size=15)
+plt.colorbar(label=r'$\rho$')
+plt.title(name+', using hdf5 table')
+plt.savefig(name+'_fovi_rho_hdf5.pdf')
+plt.show()
 
 
 
