@@ -43,4 +43,6 @@ plt.xlabel('Age/Gyr',fontsize=15)
 plt.ylim(-1.2,0.8)
 plt.xlim(0,14)
 plt.legend()
+plt.savefig('dflux_thrutime.pdf')
 plt.show()
+
