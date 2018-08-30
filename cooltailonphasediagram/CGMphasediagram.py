@@ -6,7 +6,7 @@
 
 
 # N. Nicole Sanchez -- July 2 2017
-# Univ. of Wash.    -- Nbody Shop
+# Univ. of Wash.    -- Edited: June 28, 2018
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import matplotlib as mpl
@@ -14,39 +14,43 @@ import numpy as np
 import pynbody
 import sys
 
-sim = ['/nobackupp8/ambrook2/fgoverna_pleiades_p8_files/pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH.00','/nobackupp8/ambrook2/fgoverna_pleiades_p8_files/pioneer50h243GM1.1536gs1bwK1BH/pioneer50h243GM1.1536gst1bwK1BH.00','/nobackupp8/ambrook2/fgoverna_pleiades_p8_files/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.00','/nobackup/nnsanche/pioneer50h243GM5.1536gst1bwK1BH/pioneer50h243GM5.1536gst1bwK1BH.00','/nobackupp8/ambrook2/fgoverna_pleiades_p8_files/pioneer50h243GM6.1536gst1bwK1BH/pioneer50h243GM6.1536gst1bwK1BH.00','/nobackup/nnsanche/pioneer50h243GM7.1536gst1bwK1BH/pioneer50h243GM7.1536gst1bwK1BH.00']
-labels = ['P0','GM1','GM4','GM5','GM6','GM7']
+#plt.rc('font', size=12, family='serif', style='normal', variant='normal', stretch#='normal', weight='normal')
+#plt.rc('xtick', labelsize=12)
+#plt.rc('xtick.major', size=6, width=1)
+#plt.rc('lines', lw=2)
+#plt.rc('axes', lw=1, labelsize=12)
 
-
-
+time = '3456'
+#time = '1739'
 if len(sys.argv) == 1:
     print('No galaxy selected. Current options: P0, GM1, GM4, GM5, GM6')
-    print('Syntax: "CGMphasediagram.py GM1"')
+    print('Syntax: "GM_xygasplots.py GM1"')
     quit()
 else:
     if (str(sys.argv[1]) == 'P0'):
-        k = 0 
+        sim = pynbody.load('/nobackupp2/nnsanche/pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH.00'+time)
     elif (str(sys.argv[1]) == 'GM1'):
-        k = 1
+        sim = pynbody.load('/nobackupp2/nnsanche/pioneer50h243GM1.1536gst1bwK1BH/pioneer50h243GM1.1536gst1bwK1BH.00'+time)
     elif (str(sys.argv[1]) == 'GM4'):
-        k = 2
+        sim = pynbody.load('/nobackupp2/nnsanche/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.00'+time)    
     elif (str(sys.argv[1]) == 'GM5'):
-        k = 3
+        sim = pynbody.load('/nobackup/nnsanche/pioneer50h243GM5.1536gst1bwK1BH/pioneer50h243GM5.1536gst1bwK1BH.00'+time)
     elif (str(sys.argv[1]) == 'GM6'):
-        k = 4
+        sim = pynbody.load('/nobackupp8/fgoverna/pioneer50h243GM6.1536gst1bwK1BH/pioneer50h243GM6.1536gst1bwK1BH.00'+time)
     elif (str(sys.argv[1]) == 'GM7'):
-        k = 5
+        sim = pynbody.load('/nobackupp2/nnsanche/pioneer50h243GM7.1536gst1bwK1BH/pioneer50h243GM7.1536gst1bwK1BH.00'+time) 
+
     else :
-        print('Not a valid option. Current options: P0, GM1, GM4, GM5, GM6, GM7')
-        print('Syntax: "CGMphasediagram.py GM1"')
+        print('Not a valid option. Current options: P0, GM1, GM4, GM7')
+        print('Syntax: "GM_xygasplots.py GM1"')
         quit()    
 
-    ts = np.loadtxt('../'+labels[k]+'/timesteps.txt',dtype=str)
-    t = len(ts)-1
-    if k == 5:
-        t = len(ts)-2
-    sim = pynbody.load(sim[k]+ts[t])
-    name = str(sys.argv[1])
+    if str(sys.argv[1]) == 'GM4':
+        name = 'GM3'
+    elif str(sys.argv[1]) == 'GM7':
+        name = 'GM2'
+    else:
+        name = str(sys.argv[1])
     print(name+' simulation at z = ','%.2f' % sim.properties['z'] )
 
 sim.properties
@@ -73,36 +77,41 @@ disk_gas_mask = disk_gas_xymax & disk_gas_zmax
 disk_gas = h1.g[disk_gas_xymax & disk_gas_zmax]
 CGM_gas  = h1.g[~disk_gas_mask]
 
-x = np.log10(CGM_gas['rho'].in_units('g cm**-3')/m_H)
-y = np.log10(CGM_gas['temp'])
-z = np.log10(CGM_gas['mass'])
+CGM_tail = CGM_gas[CGM_gas['temp'] < 10**4.4]
 
-# Specifically isolate the cool/dense tail
-x = x[y < 4.4]
-z = z[y < 4.4]
-y = y[y < 4.4]
-
-pynbody.plot.sph.faceon_image(CGM_gas, qty='rho', width='200 kpc', resolution=500,units='g cm^-3')
+pynbody.plot.sph.image(CGM_tail,qty='rho',width="250 kpc")
+plt.title(name)
+plt.savefig(name+'_cooltail_xy_rho.pdf')
 plt.show()
 
-pynbody.plot.sph.sideon_image(CGM_gas, qty='rho', width='200 kpc', resolution=500,units='g cm^-3')
+quit()
+
+Z_sun = 0.0142 # (Asplund 2009; https://arxiv.org/pdf/0909.0948.pdf)
+x = np.log10(CGM_tail['rho'].in_units('g cm**-3')/m_H)
+y = np.log10(CGM_tail['temp'])
+#z = np.log10(CGM_gas['mass'].in_units('Msol'))
+#z = CGM_gas['metals']/Z_sun
+z = CGM_tail['r'].in_units('kpc')/int(CGM_tail['r'].max())
+#print(np.max(CGM_gas['mass'].in_units('Msol')),np.min(CGM_gas['mass'].in_units('Msol')))
+#print(CGM_gas['r'].min(),np.sort(CGM_gas['r']))
+#print(CGM_gas['mass'].units)
+
+fig = plt.figure(figsize=(7, 5))
+
+#plt.hexbin(x,y,C=z,reduce_C_function=np.sum,cmap=cm.jet,mincnt=1,bins='log',vmin=1.25,vmax=3.75)
+#plt.hexbin(x,y,C=z,vmin=0.01,vmax=1)#mincnt=1,bins='log',vmin=1.25,vmax=3.75)
+plt.hexbin(x,y,C=z,cmap=cm.plasma,vmin=0.1,vmax=1)#vmin=10,vmax=270)#int(CGM_gas['r'].max()))
+
+plt.ylabel(r'Log$_{10}$ T ('+str(CGM_tail['temp'].units)+')',size=15)
+plt.xlabel(r'Log$_{10}$ n$_H$ (cm$^{-3}$)',size=15)
+#plt.colorbar(label=r'M$_{CGM}$/M$_{\odot}$')
+#plt.colorbar(label=(r'Z/Z$_{\odot}$'))
+plt.colorbar(label=(r'R [kpc]/R$_{vir}$'))
+plt.text(-5.5,6.7,name, color='black',size=15)
+plt.text(0,6.7,'z = '+str('%.2f' % sim.properties['z']),color='black',size=15)
+plt.xlim(-6,2)
+plt.ylim(3.5,7)
+#plt.savefig(name+'_phasediagram_mass.pdf')
+#plt.savefig(name+'_phasediagram_metallicity.pdf')
+#plt.savefig(name+'_phasediagram_Rkpc.pdf')
 plt.show()
-
-pynbody.plot.sph.sideon_image(CGM_gas[CGM_gas['temp'] < 10**4.4], qty='rho', width='200 kpc', resolution=500,units='g cm^-3')
-plt.show()
-
-pynbody.plot.sph.faceon_image(CGM_gas[CGM_gas['temp'] < 10**4.4], qty='rho', width='200 kpc', resolution=500,units='g cm^-3')
-plt.show()
-
-#fig = plt.figure(figsize=(7, 5))
-#plt.hist2d(x,y,(100,100),weights=z,cmap=cm.jet,norm=mpl.colors.LogNorm())
-#plt.ylabel(r'Log$_{10}$ T ('+str(CGM_gas['temp'].units)+')')
-#plt.xlabel(r'Log$_{10}$ n$_H$ (cm$^{-3}$)')
-#plt.colorbar(label=(r'Log M (M$_{\odot}$)'))
-#plt.text(-5.5,6.7,name, color='midnightblue',size=12)
-#plt.text(0.7,6.7,'z = 0',color='midnightblue',size=12)
-#plt.xlim(-6,2)
-#plt.ylim(3.5,7)
-#plt.savefig(name+'_phasediagram.pdf')
-#plt.show()
-
