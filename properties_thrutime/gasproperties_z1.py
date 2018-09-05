@@ -33,7 +33,16 @@ for i in range(len(sims)-2):
             pynbody.analysis.angmom.faceon(h1)
             
             MH_gas = sim.g[sim.g['r'].in_units('kpc') < 250]
-            pynbody.plot.sph.image(MH_gas,qty='temp',width='20 kpc',vmin=10**4, vmax=5*10**7)
+            pynbody.plot.sph.image(MH_gas,qty='temp',width='100 kpc',vmin=10**4, vmax=5*10**7)
             plt.title(labels[i]+', z ='+timesteps[j])
-            plt.savefig(labels[i]+'_xy_temp_20kpc_'+timesteps[j]+'_grp.pdf')
+            plt.savefig(labels[i]+'_xy_temp_100kpc_avzF_'+timesteps[j]+'_grp.pdf')
+
+            pynbody.plot.sph.image(MH_gas,qty='temp',width='100 kpc',vmin=10**4, vmax=5*10**7,av_z=True)
+            plt.title(labels[i]+', z ='+timesteps[j])
+            plt.savefig(labels[i]+'_xy_temp_100kpc_avzT_'+timesteps[j]+'_grp.pdf')
+
+            pynbody.plot.sph.velocity_image(MH_gas,width='100 kpc',key_length="10 km s**-1")
+            plt.title(labels[i]+', z ='+timesteps[j])
+            plt.savefig(labels[i]+'_velocity_100kpc_'+timesteps[j]+'_grp.pdf')
+
 #            plt.show()
