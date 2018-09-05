@@ -59,7 +59,8 @@ sim.loadable_keys()
 sim.physical_units()
 h = sim.halos()
 h1 = h[1]
-pynbody.analysis.angmom.faceon(h1)
+#pynbody.analysis.angmom.faceon(h1)
+pynbody.analysis.angmom.sideon(h1)
 
 # Constants
 m_H = 1.6733 * 10**-24 #g
@@ -79,12 +80,32 @@ CGM_gas  = h1.g[~disk_gas_mask]
 
 CGM_tail = CGM_gas[CGM_gas['temp'] < 10**4.4]
 
-pynbody.plot.sph.image(CGM_tail,qty='rho',width="250 kpc")
+#pynbody.plot.sph.image(CGM_tail,qty='temp',width="50 kpc")
+#plt.title(name)
+#plt.savefig(name+'_cooltail_faceon_temp.pdf')
+#plt.show()
+
+#pynbody.plot.sph.velocity_image(CGM_tail,width="50 kpc")
+#plt.title(name)
+#plt.savefig(name+'_cooltail_faceon_velocity.pdf')
+#plt.show()
+
+pynbody.plot.sph.image(CGM_tail,qty='temp',width="50 kpc")
 plt.title(name)
-plt.savefig(name+'_cooltail_xy_rho.pdf')
-plt.show()
+plt.savefig(name+'_cooltail_edgeon_temp.pdf')
+#plt.show()
+
+pynbody.plot.sph.velocity_image(CGM_tail,width="50 kpc")
+plt.title(name)
+plt.savefig(name+'_cooltail_edgeon_velocity.pdf')
+#plt.show()
 
 quit()
+
+
+
+
+
 
 Z_sun = 0.0142 # (Asplund 2009; https://arxiv.org/pdf/0909.0948.pdf)
 x = np.log10(CGM_tail['rho'].in_units('g cm**-3')/m_H)
