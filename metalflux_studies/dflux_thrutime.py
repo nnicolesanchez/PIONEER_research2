@@ -1,7 +1,7 @@
 # This script reads in the data created by metalflux_thrutime.py
 # Creates a plot of the metal flux through 10 kpc
 #      - total mass of inner metals - total mass of outer metals
-#                  / total metals in timestep
+#1;95;0c                  / total metals in timestep
 
 # N. Nicole Sanchez -- Aug 20 2018
 # Univ. of Wash.    -- Nbody Shop 
@@ -21,28 +21,41 @@ colors = ['SteelBlue','DodgerBlue','FireBrick','Salmon']
 
 print('Reading in files from metalflux_data/')
 for i in range(len(name)):
-    totmass_inner = np.loadtxt('metalflux_data/'+name[i]+'totmass_inner.txt',unpack=True)
-    Zmass_inner   = np.loadtxt('metalflux_data/'+name[i]+'Zmass_inner.txt',unpack=True)
-    totmass_outer  = np.loadtxt('metalflux_data/'+name[i]+'totmass_outer.txt',unpack=True)
-    Zmass_outer    = np.loadtxt('metalflux_data/'+name[i]+'Zmass_outer.txt',unpack=True)
+    #totmass_inner_t1 = np.loadtxt('metalflux_data/'+name[i]+'totmass_inner.txt',unpack=True)
+    #totmass_outer  = np.loadtxt('metalflux_data/'+name[i]+'totmass_outer.txt',unpack=True)
+    Zmass_inner = np.loadtxt('metalflux_data/'+name[i]+'Zmass_inner.txt',unpack=True)
+    Zmass_outer = np.loadtxt('metalflux_data/'+name[i]+'Zmass_outer.txt',unpack=True)
     times = np.loadtxt('metalflux_data/'+name[i]+'times.txt',unpack=True)
 
-    dflux = (Zmass_inner - Zmass_outer)/(Zmass_inner + Zmass_outer)
-#    print(dflux)
-    plt.plot(times,dflux,label=labels[i],color=colors[i])
+    dt   = []
+    dM_z = []
+    for j in range(1,len(times)):
+        dt.append(times[j]-times[j-1])
+        dM_t1 = Zmass_inner[j-1] - Zmass_outer[j-1]
+        dM_t2 = Zmass_inner[j] - Zmass_outer[j]
+        dM_z.append(dM_t2 - dM_t1)
+
+
+    dM_z_dt = np.array(dM_z)/np.array(dt)
+    print(dM_z_dt)
+    plt.plot(np.array(times[1:]),dM_z_dt,label=labels[i],color=colors[i])
+#    plt.title('Metal Flow Rate vs Time')
+#    plt.show()
+
 
 #plt.text(1,0.6,name,size=15)
-plt.text(4,0.7,'More metals within 10 kpc')
-plt.text(3.9,-1.11,'More metals outside of 10 kpc')
-rect_in  = pat.Rectangle((0,0), 14, 0.8,color='SkyBlue',alpha=0.3)
-rect_out = pat.Rectangle((0,-1.201), 14, 1.2,color='Salmon',alpha=0.3)
-plt.gca().add_patch(rect_in)
-plt.gca().add_patch(rect_out)
-plt.ylabel(r'log Metal Flux (at 10 kpc)',fontsize=15)
+#plt.text(4,0.7,'More metals within 10 kpc')
+#plt.text(3.9,-1.11,'More metals outside of 10 kpc')
+#rect_in  = pat.Rectangle((0,0), 14, 0.8,color='SkyBlue',alpha=0.3)
+#rect_out = pat.Rectangle((0,-1.201), 14, 1.2,color='Salmon',alpha=0.3)
+#plt.gca().add_patch(rect_in)
+#plt.gca().add_patch(rect_out)
+plt.ylabel(r'log Metal Flow Rate (at 10 kpc)',fontsize=15)
 plt.xlabel('Age/Gyr',fontsize=15)
-plt.ylim(-1.2,0.8)
-plt.xlim(0,14)
+#plt.yscale('log')
+#plt.ylim(-1.2,0.8)
+#plt.xlim(0,14)
 plt.legend()
-plt.savefig('dflux_thrutime.pdf')
+plt.savefig('metalflowrate_thrutime.pdf')
 plt.show()
 
