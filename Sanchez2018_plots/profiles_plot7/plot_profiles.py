@@ -1,5 +1,5 @@
 import matplotlib
-#matplotlib.use('Agg')
+matplotlib.use('Agg')
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -55,7 +55,7 @@ plt.plot(solid,dashed,color='Black',linestyle='--',label='NO BH')
 for k in range(len(labels)):
     print('Read in: ',labels[k])
     Omass = np.loadtxt(labels[k]+'/'+labels[k]+'_Omass_'+time+'.np')
-    Omass = totgasmass # Converted arrays to Msun /(5.976*10**27) #solar mass                                                  
+    Omass = Omass # Converted arrays to Msun /(5.976*10**27) #solar mass                                                  
     R = np.loadtxt(labels[k]+'/'+labels[k]+'_Rbins_'+time+'.np')
     plt.plot(R,np.log10(Omass),label=NEW_lab[k],color=colors[k])
 
