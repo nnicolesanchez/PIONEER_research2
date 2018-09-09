@@ -62,20 +62,20 @@ pynbody.analysis.halo.center(f.star)
 f.physical_units()
 h = f.halos()
 h1 = h[1]
-pynbody.analysis.angmom.faceon(h1)
+#pynbody.analysis.angmom.faceon(h1)
+pynbody.analysis.angmom.sideon(h1)
 
-r_max = 10  # kpc
-twenty_kpc_incm = 6.171*(10**22)
-    
-Rg_d = ((h1.g['x'].in_units('kpc'))**2. + (h1.g['y'].in_units('kpc'))**2. + (h1.g['z'].in_units('kpc'))**2.)**(0.5)
-disk_gas_xyzmax =  (Rg_d < r_max)
-disk_gas_mask = disk_gas_xyzmax #& disk_gas_zmax
-disk_gas = h1.g[disk_gas_mask] #& disk_gas_zmax]
-CGM_gas  = h1.g[~disk_gas_mask]
+#r_max = 10  # kpc
+#twenty_kpc_incm = 6.171*(10**22)
+#Rg_d = ((h1.g['x'].in_units('kpc'))**2. + (h1.g['y'].in_units('kpc'))**2. + (h1.g['z'].in_units('kpc'))**2.)**(0.5)
+#disk_gas_xyzmax =  (Rg_d < r_max)
+#disk_gas_mask = disk_gas_xyzmax #& disk_gas_zmax
+#disk_gas = h1.g[disk_gas_mask] #& disk_gas_zmax]
+
+CGM_gas  = h1.g[h1.g['r'].in_units('kpc') < 10]
 CGM_temp = np.array(CGM_gas['temp'])
 
 for j in range(len(ion_labels)):
-#    CGM_gas[ion_labels[j]] = hdf5_ion_frac(CGM_gas,ion=ion_labels[j])
     CGM_gas[ion_labels[j]] = hdf5_ion_frac(CGM_gas,ion=ion_labels[j]) 
    
 CGMprofile = profile.Profile(CGM_gas,min='10 kpc',max='250 kpc')
