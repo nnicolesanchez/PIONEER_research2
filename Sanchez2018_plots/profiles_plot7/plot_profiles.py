@@ -141,8 +141,8 @@ dashed = [0,0.1]
 plt.plot(solid,dashed,color='Black',linestyle='-',label='BH')
 plt.plot(solid,dashed,color='Black',linestyle='--',label='NO BH')
 for j in range(len(labels)):
-    Novi = np.loadtxt(labels[k]+'/'+labels[k]+'_Novi_'+time+'.np')
-    R = np.loadtxt(labels[k]+'/'+labels[k]+'_Rbins_'+time+'.np')
+    Novi = np.loadtxt(labels[j]+'/'+labels[j]+'_Novi_'+time+'.np')
+    R = np.loadtxt(labels[j]+'/'+labels[j]+'_Rbins_'+time+'.np')
 #    Novi = np.loadtxt('/home1/nnsanche/PIONEER_research2/ioniz_species/'+labels[j]+'_Novi_'+time+'_hdf5.np')
 #    R = np.loadtxt('/home1/nnsanche/PIONEER_research2/ioniz_species/'+labels[j]+'_Rbins_'+time+'.np')
     plt.plot(R,Novi,label=NEW_lab[j],color=colors[j])
@@ -207,8 +207,8 @@ dashed = [0,0.1]
 plt.plot(solid,dashed,color='Black',linestyle='-',label='BH')
 plt.plot(solid,dashed,color='Black',linestyle='--',label='NO BH')
 for j in range(len(labels)):
-    Novii = np.loadtxt(labels[k]+'/'+labels[k]+'_Novii_'+time+'.np')
-    R = np.loadtxt(labels[k]+'/'+labels[k]+'_Rbins_'+time+'.np')
+    Novii = np.loadtxt(labels[j]+'/'+labels[j]+'_Novii_'+time+'.np')
+    R = np.loadtxt(labels[j]+'/'+labels[j]+'_Rbins_'+time+'.np')
 #    Novii = np.loadtxt('/home1/nnsanche/PIONEER_research2/ioniz_species/'+labels[j]+'_Novii_'+time+'_hdf5.np')
 #    R = np.loadtxt('/home1/nnsanche/PIONEER_research2/ioniz_species/'+labels[j]+'_Rbins_'+time+'.np')
     plt.plot(R,Novii,label=NEW_lab[j],color=colors[j])
