@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('Agg')
 # This script creates a phase diagram (temp vs density)
 # for the CGM of a ChaNGa Nbody Simulation
 
@@ -7,12 +9,14 @@
 
 # N. Nicole Sanchez -- July 2 2017
 # Univ. of Wash.    -- Edited: June 28, 2018
+import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import matplotlib as mpl
 import numpy as np
 import pynbody
 import sys
+
 
 #plt.rc('font', size=12, family='serif', style='normal', variant='normal', stretch#='normal', weight='normal')
 #plt.rc('xtick', labelsize=12)
@@ -89,6 +93,8 @@ z = CGM_gas['mass'].in_units('Msol')
 
 
 fig = plt.figure(figsize=(7, 5))
+# WHERE OVI LIVES 
+patches.Rectangle((0,5.6),14,0.4,linewidth=1,edgecolor='purple',facecolor='purple',alpha=0.5)
 
 plt.hexbin(x,y,C=z,reduce_C_function=np.sum,cmap=cm.jet,mincnt=1,bins='log',vmin=5.25,vmax=8.75)
 #plt.hexbin(x,y,C=z,vmin=0.01,vmax=1)#mincnt=1,bins='log',vmin=1.25,vmax=3.75)
