@@ -1,4 +1,5 @@
-
+import matplotlib
+matplotlib.use('Agg')
 from pynbody.analysis import profile
 import matplotlib.pyplot as plt
 from hdf5_Novi_R import *
@@ -27,8 +28,8 @@ import pynbody
 
 #plt.show()
 #quit()
-i = 2
-sims_noBHs = ['/nobackup/nnsanche/NO_BHs/pioneer50h243.1536gst1bwK1/pioneer50h243.1536gst1bwK1.003456','/nobackup/nnsanche/NO_BHs/pioneer50h243GM1.1536gst1bwK1/pioneer50h243GM1.1536gst1bwK1.003456','/nobackup/nnsanche/NO_BHs/pioneer50h243GM4.1536gst1bwK1/pioneer50h243GM4.1536gst1bwK1.003456','/nobackup/nnsanche/NO_BHs/pioneer50h243GM5.1536gst1bwK1/pioneer50h243GM5.1536gst1bwK1.003456','/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM6.1536gst1bwK1/pioneer50h243GM6.1536gst1bwK1.003456','/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM7.1536gst1bwK1/pioneer50h243GM7.1536gst1bwK1.003456']
+i = 5
+sims_noBHs = ['/nobackup/nnsanche/NO_BHs/pioneer50h243.1536gst1bwK1_3456/pioneer50h243.1536gst1bwK1.003456','/nobackup/nnsanche/NO_BHs/pioneer50h243GM1.1536gst1bwK1_3456/pioneer50h243GM1.1536gst1bwK1.003456','/nobackup/nnsanche/NO_BHs/pioneer50h243GM4.1536gst1bwK1_3456/pioneer50h243GM4.1536gst1bwK1.003456','/nobackup/nnsanche/NO_BHs/pioneer50h243GM5.1536gst1bwK1/pioneer50h243GM5.1536gst1bwK1.003456','/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM6.1536gst1bwK1/pioneer50h243GM6.1536gst1bwK1.003456','/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM7.1536gst1bwK1_3456/pioneer50h243GM7.1536gst1bwK1.003456']
 
 # Include GM4 no BHs
 labels_noBHs = ['P0_noBH','GM1_noBH','GM4_noBH','GM5_noBH','GM6_noBH','GM7_noBH']
