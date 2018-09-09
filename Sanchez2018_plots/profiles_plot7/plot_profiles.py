@@ -207,14 +207,18 @@ dashed = [0,0.1]
 plt.plot(solid,dashed,color='Black',linestyle='-',label='BH')
 plt.plot(solid,dashed,color='Black',linestyle='--',label='NO BH')
 for j in range(len(labels)):
-    Novii = np.loadtxt('/home1/nnsanche/PIONEER_research2/ioniz_species/'+labels[j]+'_Novii_'+time+'_hdf5.np')
-    R = np.loadtxt('/home1/nnsanche/PIONEER_research2/ioniz_species/'+labels[j]+'_Rbins_'+time+'.np')
+    Novii = np.loadtxt(labels[k]+'/'+labels[k]+'_Novii_'+time+'.np')
+    R = np.loadtxt(labels[k]+'/'+labels[k]+'_Rbins_'+time+'.np')
+#    Novii = np.loadtxt('/home1/nnsanche/PIONEER_research2/ioniz_species/'+labels[j]+'_Novii_'+time+'_hdf5.np')
+#    R = np.loadtxt('/home1/nnsanche/PIONEER_research2/ioniz_species/'+labels[j]+'_Rbins_'+time+'.np')
     plt.plot(R,Novii,label=NEW_lab[j],color=colors[j])
 
 for j in range(len(labels_noBHs)):
     print('Read in: ',labels_noBHs[j])
-    noBH_Novii = np.loadtxt('/home1/nnsanche/PIONEER_research2/noBH_analysis/'+NEW_lab_noBHs[j]+'_Novii_'+time+'_hdf5.np')
-    noBH_R = np.loadtxt('/home1/nnsanche/PIONEER_research2/noBH_analysis/'+NEW_lab_noBHs[j]+'_Rbins_'+time+'.np')
+    noBH_Novii = np.loadtxt(labels_noBHs[j]+'/'+labels_noBHs[j]+'_Novii_'+time+'.np')
+    noBH_R = np.loadtxt(labels_noBHs[j]+'/'+labels_noBHs[j]+'_Rbins_'+time+'.np')
+#    noBH_Novii = np.loadtxt('/home1/nnsanche/PIONEER_research2/noBH_analysis/'+NEW_lab_noBHs[j]+'_Novii_'+time+'_hdf5.np')
+#    noBH_R = np.loadtxt('/home1/nnsanche/PIONEER_research2/noBH_analysis/'+NEW_lab_noBHs[j]+'_Rbins_'+time+'.np')
     plt.plot(noBH_R,noBH_Novii,color=colors_noBHs[j],linestyle=noBHline)
 plt.title('z = 0.17')
 plt.ylabel(r'log(N$_{ovii}$) [cm$^{-2}$]',size=15)
