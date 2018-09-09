@@ -99,7 +99,8 @@ plt.hexbin(x,y,C=z,reduce_C_function=np.sum,cmap=cm.jet,mincnt=1,bins='log',vmin
 #plt.hexbin(x,y,C=z,cmap=cm.plasma,vmin=0.1,vmax=1)#vmin=10,vmax=270)#int(CGM_gas['r'].max()))
 
 # WHERE OVI LIVES 
-patches.Rectangle((0,5.6),14,10,linewidth=1,edgecolor='blue',facecolor='blue',alpha=0.5)
+plt.axvspan(-6, 2, ymin=5.2, ymax=5.6, facecolor='Pink', alpha=0.1,label='Collisionally Ionized Ovi')
+plt.axvspan(-6, -4, ymin=4.8, ymax=5, facecolor='Violet', alpha=0.1,label='Photoionized Ovi')
 
 plt.ylabel(r'Log$_{10}$ T ('+str(CGM_gas['temp'].units)+')',size=15)
 plt.xlabel(r'Log$_{10}$ n$_H$ (cm$^{-3}$)',size=15)
@@ -113,4 +114,5 @@ plt.ylim(3.5,7)
 plt.savefig(name+'_phasediagram_mass.pdf')
 #plt.savefig(name+'_phasediagram_metallicity.pdf')
 #plt.savefig(name+'_phasediagram_Rkpc.pdf')
+plt.legend()
 plt.show()
