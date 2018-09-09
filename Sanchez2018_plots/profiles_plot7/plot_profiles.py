@@ -223,7 +223,7 @@ for j in range(len(labels_noBHs)):
 plt.title('z = 0.17')
 plt.ylabel(r'log(N$_{ovii}$) [cm$^{-2}$]',size=15)
 plt.xlabel('R [kpc]',size=14)
-plt.ylim(13,17)
+plt.ylim(13,17.5)
 plt.xlim(-10,260)
 plt.legend(ncol=2,fontsize=15)
 plt.savefig('ALLGMs_plusnoBH_Novii_R.pdf')
