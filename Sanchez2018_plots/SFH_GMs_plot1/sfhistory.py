@@ -58,6 +58,7 @@ plt.xlabel('Time [Gyr]',size=15)
 plt.ylim(0,18) #BH
 plt.xlim(0,14)
 plt.legend(fontsize=15)
+plt.savefig('Testing_newnoBHs.pdf')
 #plt.savefig('ALLBH_sfh.pdf')
 plt.show()
 
