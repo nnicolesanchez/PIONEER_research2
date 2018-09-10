@@ -72,8 +72,9 @@ pynbody.analysis.angmom.sideon(h1)
 #disk_gas_mask = disk_gas_xyzmax #& disk_gas_zmax
 #disk_gas = h1.g[disk_gas_mask] #& disk_gas_zmax]
 
-CGM_gas  = h1.g[h1.g['r'].in_units('kpc') < 10]
-CGM_temp = np.array(CGM_gas['temp'])
+CGM_gas  = h1.g[h1.g['r'].in_units('kpc') >= 10]
+#print(CGM_gas['r'].min(),CGM_gas['r'].max())
+#CGM_temp = np.array(CGM_gas['temp'])
 
 for j in range(len(ion_labels)):
     CGM_gas[ion_labels[j]] = hdf5_ion_frac(CGM_gas,ion=ion_labels[j]) 
