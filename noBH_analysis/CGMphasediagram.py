@@ -42,13 +42,13 @@ else:
     elif (str(sys.argv[1]) == 'GM4'):
         sim = pynbody.load('/nobackupp2/nnsanche/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.00'+ts)    
     elif (str(sys.argv[1]) == 'P0noBH'):
-        sim = pynbody.load('/nobackupp2/nnsanche/NO_BHs/pioneer50h243.1536gst1bwK1_3456/pioneer50h243.1536gst1bwK1.00'+ts)
+        sim = pynbody.load('/nobackupp2/nnsanche/NO_BHs/pioneer50h243.1536gst1bwK1/pioneer50h243.1536gst1bwK1.00'+ts)
     elif (str(sys.argv[1]) == 'GM1noBH'):
-        sim = pynbody.load('/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM1.1536gst1bwK1_3456/pioneer50h243GM1.1536gst1bwK1.00'+ts)
+        sim = pynbody.load('/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM1.1536gst1bwK1/pioneer50h243GM1.1536gst1bwK1.00'+ts)
     elif (str(sys.argv[1]) == 'GM7noBH'):
-        sim = pynbody.load('/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM7.1536gst1bwK1_3456/pioneer50h243GM7.1536gst1bwK1.00'+ts) 
+        sim = pynbody.load('/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM7.1536gst1bwK1/pioneer50h243GM7.1536gst1bwK1.00'+ts) 
     elif (str(sys.argv[1]) == 'GM4noBH'):
-        sim = pynbody.load('/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM4.1536gst1bwK1_3456/pioneer50h243GM4.1536gst1bwK1.00'+ts)    
+        sim = pynbody.load('/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM4.1536gst1bwK1/pioneer50h243GM4.1536gst1bwK1.00'+ts)    
 
     else :
         print('Not a valid option. Current options: P0, GM1, GM7 (aka GM2), GM4 (aka GM3)')
@@ -82,30 +82,20 @@ m_H = 1.6733 * 10**-24 #g
 Z_sun = 0.0142 # (Asplund 2009; https://arxiv.org/pdf/0909.0948.pdf) 
 
 # Want to isolate CGM  
-# Isolate and remove disk stars within radius 0-10 kpc & vertically 4 kpc 
-r_max = 10  # kpc
-z_max = 4   # kpc
+CGM_gas = h1.g[h1.g['r'].in_units('kpc') > 10]
 
-Rg_d = ((h1.g['x'].in_units('kpc'))**2. + (h1.g['y'].in_units('kpc'))**2.)**(0.5)
-disk_gas_xymax =  (Rg_d < r_max)
-disk_gas_zmax  = (h1.g['z'].in_units('kpc') < z_max) & (h1.g['z'].in_units('kpc') > -z_max)
-
-disk_gas_mask = disk_gas_xymax & disk_gas_zmax
-disk_gas = h1.g[disk_gas_xymax & disk_gas_zmax]
-CGM_gas  = h1.g[~disk_gas_mask]
-
+print('Total halo mass:',np.sum(h1['mass']))
+print('Total gas mass:',np.sum(h1.g['mass']))
+print('Total stellar mass:',np.sum(h1.s['mass']))
 print('Total CGM gas mass:', np.sum(CGM_gas['mass']))
+print('Virial radius:',pynbody.analysis.halo.virial_radius(h1))
 #print('Total CGM gas mass in metals:',np.sum(CGM_gas['mass']*CGM_gas['metals'])) # 'metals' *IS* metallicity
 CGM_gas['ZoverZsun'] = CGM_gas['metals']/Z_sun
 hiZ_CGM_gas = CGM_gas[CGM_gas['ZoverZsun'] >= 0.8]
 print('Total CGM gas mass w/ Z > 0.8:',np.sum(hiZ_CGM_gas['mass']))
 print('Fraction of Total CGM gas mass that has Z > 0.8:',np.sum(hiZ_CGM_gas['mass'])/np.sum(CGM_gas['mass']))
-print('Total CGM gas mass w/ Z > 0.8 and > 20 kpc from center:',np.sum(hiZ_CGM_gas['mass'][hiZ_CGM_gas['r'] > 20]))
-print('Fraction of CGM gas mass w/ Z > 0.8 that is also > 20 kpc from center:',np.sum(hiZ_CGM_gas['mass'][hiZ_CGM_gas['r'] > 20])/np.sum(hiZ_CGM_gas['mass']))
-
-#print('Total mass Oxygen in CGM:', np.sum(CGM_gas['OxMassFrac']*CGM_gas['mass']),CGM_gas['mass'].units)
-#print('Total mass in OVI in CGM:', np.sum(CGM_gas['OxMassFrac']*CGM_gas['mass']*CGM_gas['ovi']))
-#print('OVI fractions:',np.average(CGM_gas['ovi']))
+print('Total CGM gas mass w/ Z > 0.8 and > 20 kpc from center:',np.sum(hiZ_CGM_gas['mass'][hiZ_CGM_gas['r'].in_units('kpc') > 20]))
+print('Fraction of CGM gas mass w/ Z > 0.8 that is also > 20 kpc from center:',np.sum(hiZ_CGM_gas['mass'][hiZ_CGM_gas['r'].in_units('kpc') > 20])/np.sum(hiZ_CGM_gas['mass']))
 
 # Plotting Phase Diagrams
 x = np.log10(CGM_gas['rho'].in_units('g cm**-3')/m_H)
@@ -113,16 +103,23 @@ y = np.log10(CGM_gas['temp'])
 
 # Mass
 fig = plt.figure(figsize=(7, 5))
-z = np.log10(CGM_gas['mass'].in_units('Msol'))
-plt.hexbin(x,y,C=z,reduce_C_function=np.sum,cmap=cm.jet,mincnt=1,bins='log',vmin=1.25,vmax=3.75)
-plt.ylabel(r'Log$_{10}$ T ('+str(CGM_gas['temp'].units)+')',size=15)
-plt.xlabel(r'Log$_{10}$ n$_H$ (cm$^{-3}$)',size=15)
+z = CGM_gas['mass']
+plt.hexbin(x,y,C=z,reduce_C_function=np.sum,cmap=cm.jet,mincnt=1,bins='log',vmin=5.25,vmax=8.75)
+#plt.hexbin(x,y,C=z,reduce_C_function=np.sum,cmap=cm.jet,mincnt=1,bins='log',vmin=1.25,vmax=3.75)
+plt.ylabel(r'Log$_{10}$ T/'+str(CGM_gas['temp'].units),size=15)
+plt.xlabel(r'Log$_{10}$ n$_H$/cm$^{-3}$',size=15)
+
+from matplotlib.patches import Rectangle
+currentAxis = plt.gca()
+currentAxis.add_patch(Rectangle((-6,5.2), 8, 0.4, facecolor='Black', alpha=0.2,label='Collisionally Ionized Ovi',hatch='/',edgecolor='Black'))
+currentAxis.add_patch(Rectangle((-5,4.8), 1, 0.2, facecolor='Black', alpha=0.5,label='Photoionized Ovi',hatch='|',edgecolor='Black'))
 
 plt.colorbar(label=r'M$_{CGM}$/M$_{\odot}$')
-plt.text(-5.5,6.7,name, color='black',size=15)
-plt.text(0,6.7,'z = '+str('%.2f' % sim.properties['z']),color='black',size=15)
+plt.text(-5.5,6.5,name, color='black',size=15)
+plt.text(0,6.5,'z = '+str('%.2f' % sim.properties['z']),color='black',size=15)
 plt.xlim(-6,2)
-plt.ylim(3.5,7)
+plt.ylim(3.5,6.8)
+plt.legend(ncol=2,loc=8)
 plt.savefig(name+'_phasediagram_mass_'+ts+'.pdf')
 #plt.show()
 plt.clf()
@@ -135,10 +132,10 @@ plt.ylabel(r'Log$_{10}$ T ('+str(CGM_gas['temp'].units)+')',size=15)
 plt.xlabel(r'Log$_{10}$ n$_H$ (cm$^{-3}$)',size=15)
 
 plt.colorbar(label=(r'Z/Z$_{\odot}$'))
-plt.text(-5.5,6.7,name, color='black',size=15)
-plt.text(0,6.7,'z = '+str('%.2f' % sim.properties['z']),color='black',size=15)
+plt.text(-5.5,6.5,name, color='black',size=15)
+plt.text(0,6.5,'z = '+str('%.2f' % sim.properties['z']),color='black',size=15)
 plt.xlim(-6,2)
-plt.ylim(3.5,7)
+plt.ylim(3.5,6.8)
 plt.savefig(name+'_phasediagram_metallicity_'+ts+'.pdf')
 #plt.show()
 plt.clf()
@@ -156,5 +153,5 @@ plt.text(0,6.7,'z = '+str('%.2f' % sim.properties['z']),color='black',size=15)
 plt.xlim(-6,2)
 plt.ylim(3.5,7)
 plt.savefig(name+'_phasediagram_Rkpc_'+ts+'.pdf')
-plt.show()
+#plt.show()
 plt.clf()

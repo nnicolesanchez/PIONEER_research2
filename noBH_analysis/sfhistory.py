@@ -6,7 +6,7 @@ import pynbody
 
 
 
-sims_noBHs = ['/nobackup/nnsanche/NO_BHs/pioneer50h243.1536gst1bwK1/pioneer50h243.1536gst1bwK1.004096','/nobackup/nnsanche/NO_BHs/pioneer50h243GM1.1536gst1bwK1/pioneer50h243GM1.1536gst1bwK1.003968','/nobackup/nnsanche/NO_BHs/pioneer50h243GM4.1536gst1bwK1/pioneer50h243GM4.1536gst1bwK1.004096','/nobackup/nnsanche/NO_BHs/pioneer50h243GM5.1536gst1bwK1/pioneer50h243GM5.1536gst1bwK1.003456','/nobackup/nnsanche/NO_BHs/pioneer50h243GM6.1536gst1bwK1/pioneer50h243GM6.1536gst1bwK1.003712']#,'/nobackup/nnsanche/NO_BHs/pioneer50h243GM7.1536gst1bwK1/pioneer50h243GM7.1536gst1bwK1.003456']
+sims_noBHs = ['/nobackup/nnsanche/NO_BHs/pioneer50h243.1536gst1bwK1/pioneer50h243.1536gst1bwK1.004096','/nobackup/nnsanche/NO_BHs/pioneer50h243GM1.1536gst1bwK1_3456/pioneer50h243GM1.1536gst1bwK1.003456']#,'/nobackup/nnsanche/NO_BHs/pioneer50h243GM4.1536gst1bwK1/pioneer50h243GM4.1536gst1bwK1.004096','/nobackup/nnsanche/NO_BHs/pioneer50h243GM5.1536gst1bwK1/pioneer50h243GM5.1536gst1bwK1.003456','/nobackup/nnsanche/NO_BHs/pioneer50h243GM6.1536gst1bwK1/pioneer50h243GM6.1536gst1bwK1.003712']#,'/nobackup/nnsanche/NO_BHs/pioneer50h243GM7.1536gst1bwK1/pioneer50h243GM7.1536gst1bwK1.003456']
 # Include GM4 no BHs
 labels_noBHs = ['P0_noBH','GM1_noBH','GM4_noBH','GM5_noBH','GM6_noBH','GM7_noBH']
 colors_noBHs = ['DodgerBlue','SteelBlue','FireBrick','IndianRed','Salmon','Orange']
@@ -31,7 +31,7 @@ for i in range(len(sims_noBHs)):
 
     # Save for easier plot making later (tho this script doesn't take that long to run)
     # Good practice to keep in place though
-    np.savetxt(labels[i]+'_sfhistory_bins.txt', np.transpose([sfhist, bins[:-1]]))
+    np.savetxt(labels_noBHs[i]+'_sfhistory_bins.txt', np.transpose([sfhist, bins[:-1]]))
 
 # For individual labels instead of legend (bc Fabio asked. Shrug. I guess it looks better?)
 # Remember to "unset" legend when using these instead
@@ -46,6 +46,7 @@ plt.title('z = 0.17')
 plt.ylim(0,25)
 #plt.xlim(5,7)
 plt.legend(loc=2)
-plt.savefig('P0-GM7_sfh_plusGM4noBH.pdf')
+plt.savefig('Test_newnoBH.pdf')
+#plt.savefig('P0-GM7_sfh_plusGM4noBH.pdf')
 plt.show()
 
