@@ -82,8 +82,8 @@ m_H = 1.6733 * 10**-24 #g
 Z_sun = 0.0142 # (Asplund 2009; https://arxiv.org/pdf/0909.0948.pdf) 
 
 # Want to isolate CGM  
-#CGM_limit = 10 #kpc
-CGM_limit = 15 #kpc
+CGM_limit = 10 #kpc
+#CGM_limit = 15 #kpc
 CGM_gas = h1.g[h1.g['r'].in_units('kpc') > CGM_limit]
 
 print('Total halo mass:',np.sum(h1['mass']))
@@ -122,7 +122,7 @@ plt.text(0,6.5,'z = '+str('%.2f' % sim.properties['z']),color='black',size=15)
 plt.xlim(-6,2)
 plt.ylim(3.5,6.8)
 plt.legend(ncol=2,loc=8)
-plt.savefig(name+'_phasediagram_CGMat15_mass_'+ts+'.pdf')
+plt.savefig(name+'_phasediagram_CGMat10_mass_'+ts+'.pdf')
 plt.show()
 plt.clf()
 
@@ -138,7 +138,7 @@ plt.text(-5.5,6.5,name, color='black',size=15)
 plt.text(0,6.5,'z = '+str('%.2f' % sim.properties['z']),color='black',size=15)
 plt.xlim(-6,2)
 plt.ylim(3.5,6.8)
-plt.savefig(name+'_phasediagram_CGMat15_metallicity_'+ts+'.pdf')
+plt.savefig(name+'_phasediagram_CGMat10_metallicity_'+ts+'.pdf')
 plt.show()
 plt.clf()
 
@@ -149,11 +149,11 @@ plt.hexbin(x,y,C=z,cmap=cm.plasma,vmin=0.1,vmax=1)
 plt.ylabel(r'Log$_{10}$ T ('+str(CGM_gas['temp'].units)+')',size=15)
 plt.xlabel(r'Log$_{10}$ n$_H$ (cm$^{-3}$)',size=15)
 
-plt.colorbar(label=(r'R [kpc]/R$_{vir}$'))
+plt.colorbar(label=(r'R/R$_{vir}$'))
 plt.text(-5.5,6.7,name, color='black',size=15)
 plt.text(0,6.7,'z = '+str('%.2f' % sim.properties['z']),color='black',size=15)
 plt.xlim(-6,2)
 plt.ylim(3.5,7)
-plt.savefig(name+'_phasediagram_CGMat15_Rkpc_'+ts+'.pdf')
+plt.savefig(name+'_phasediagram_CGMat10_Rkpc_'+ts+'.pdf')
 #plt.show()
 plt.clf()
