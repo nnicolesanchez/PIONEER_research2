@@ -1,5 +1,5 @@
-import matplotlib
-matplotlib.use('Agg')
+#import matplotlib
+#matplotlib.use('Agg')
 
 # This script plots the star formation history for the GM
 # suite for h243 (P0, GM1, GM2(GM7), GM3(GM4)
@@ -13,14 +13,14 @@ import pynbody
 import os
 
 # Information for loading all available sims P0 - GM7
-sims      = ['/nobackupp2/nnsanche/pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH.004096','/nobackupp2/nnsanche/pioneer50h243GM1.1536gst1bwK1BH_Simpyorbitnotworking/pioneer50h243GM1.1536gst1bwK1BH.004096','/nobackupp2/nnsanche/pioneer50h243GM7.1536gst1bwK1BH/pioneer50h243GM7.1536gst1bwK1BH.003968','/nobackupp2/nnsanche/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.004096','/nobackupp2/nnsanche/NO_BHs/pioneer50h243.1536gst1bwK1/pioneer50h243.1536gst1bwK1.003456','/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM1.1536gst1bwK1_3456/pioneer50h243GM1.1536gst1bwK1.003456','/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM7.1536gst1bwK1/pioneer50h243GM7.1536gst1bwK1.003456','/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM4.1536gst1bwK1/pioneer50h243GM4.1536gst1bwK1.003456']
+sims      = ['/nobackupp2/nnsanche/pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH.004096','/nobackupp2/nnsanche/pioneer50h243GM1.1536gst1bwK1BH/pioneer50h243GM1.1536gst1bwK1BH.004096','/nobackupp2/nnsanche/pioneer50h243GM7.1536gst1bwK1BH/pioneer50h243GM7.1536gst1bwK1BH.003968','/nobackupp2/nnsanche/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.004096','/nobackupp2/nnsanche/NO_BHs/pioneer50h243.1536gst1bwK1/pioneer50h243.1536gst1bwK1.004096','/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM1.1536gst1bwK1/pioneer50h243GM1.1536gst1bwK1.003968','/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM7.1536gst1bwK1/pioneer50h243GM7.1536gst1bwK1.003840','/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM4.1536gst1bwK1/pioneer50h243GM4.1536gst1bwK1.004096']
 
 labels = ['P0','GM1','GM2','GM3','P0_noBH','GM1_noBH','GM2_noBH','GM3_noBH']
 colors = ['DodgerBlue','SteelBlue','FireBrick','Salmon','DodgerBlue','SteelBlue','FireBrick','Salmon']
 lines  = ['-','-','-','-','--','--','--','--']
 
 # Create sfh data arrays (also save 
-for i in range(4,6):#,len(sims)):
+for i in range(0,4):#4,len(sims)):
     print(labels[i])
 
     if os.path.exists(labels[i]+'_sfhistory_bins.txt'):
@@ -54,11 +54,12 @@ for i in range(4,6):#,len(sims)):
 
 plt.ylabel(r'SFR [M$_{\odot}$ yr$^{-1}$]',size=15)
 plt.xlabel('Time [Gyr]',size=15)
-#plt.ylim(0,30) #noBH
+#plt.ylim(0,35) #noBH
 plt.ylim(0,18) #BH
 plt.xlim(0,14)
 plt.legend(fontsize=15)
-plt.savefig('Testing_newnoBHs.pdf')
-#plt.savefig('ALLBH_sfh.pdf')
+#plt.savefig('Testing_newnoBHs.pdf')
+plt.savefig('ALLBH_sfh.pdf')
+#plt.savefig('ALLnoBH_sfh.pdf')
 plt.show()
 
