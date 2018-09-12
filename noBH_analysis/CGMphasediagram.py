@@ -77,6 +77,13 @@ h = sim.halos()
 h1 = h[1]
 pynbody.analysis.angmom.faceon(h1)
 
+pynbody.plot.sph.image(h1.g,qty='metals', width="500 kpc",filename=name+'_xy_rho_wid500.pdf')
+plt.show()
+
+pynbody.plot.sph.image(h1.g,qty='rho', width="50 kpc",filename=name+'_xy_rho_wid50.pdf')
+plt.show()
+
+
 # Constants
 m_H = 1.6733 * 10**-24 #g
 Z_sun = 0.0142 # (Asplund 2009; https://arxiv.org/pdf/0909.0948.pdf) 
@@ -122,7 +129,7 @@ plt.text(0,6.5,'z = '+str('%.2f' % sim.properties['z']),color='black',size=15)
 plt.xlim(-6,2)
 plt.ylim(3.5,6.8)
 plt.legend(ncol=2,loc=8)
-plt.savefig(name+'_phasediagram_CGMat10_mass_'+ts+'.pdf')
+plt.savefig(name+'_phasediagram_CGMat10_mass_'+ts+'_grp.pdf')
 plt.show()
 plt.clf()
 
@@ -138,9 +145,12 @@ plt.text(-5.5,6.5,name, color='black',size=15)
 plt.text(0,6.5,'z = '+str('%.2f' % sim.properties['z']),color='black',size=15)
 plt.xlim(-6,2)
 plt.ylim(3.5,6.8)
-plt.savefig(name+'_phasediagram_CGMat10_metallicity_'+ts+'.pdf')
+plt.savefig(name+'_phasediagram_CGMat10_metallicity_'+ts+'_grp.pdf')
 plt.show()
 plt.clf()
+
+pynbody.plot.sph.image(CGM_gas,qty='metals', width="500 kpc",filename=name+'_xy_rho_wid500.pdf')
+plt.show()
 
 # Radius
 #fig = plt.figure(figsize=(7, 5))
@@ -154,6 +164,6 @@ plt.text(-5.5,6.7,name, color='black',size=15)
 plt.text(0,6.7,'z = '+str('%.2f' % sim.properties['z']),color='black',size=15)
 plt.xlim(-6,2)
 plt.ylim(3.5,7)
-plt.savefig(name+'_phasediagram_CGMat10_Rkpc_'+ts+'.pdf')
+plt.savefig(name+'_phasediagram_CGMat10_Rkpc_'+ts+'_grp.pdf')
 #plt.show()
 plt.clf()
