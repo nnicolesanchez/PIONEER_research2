@@ -34,13 +34,13 @@ else:
     elif (str(sys.argv[1]) == 'GM4'):
         sim = pynbody.load('/nobackupp2/nnsanche/pioneer50h243GM4.1536gst1bwK1BH/pioneer50h243GM4.1536gst1bwK1BH.00'+ts)    
     elif (str(sys.argv[1]) == 'P0noBH'):
-        sim = pynbody.load('/nobackupp2/nnsanche/NO_BHs/pioneer50h243.1536gst1bwK1/pioneer50h243.1536gst1bwK1.00'+ts)
+        simname = '/nobackupp2/nnsanche/NO_BHs/pioneer50h243.1536gst1bwK1/pioneer50h243.1536gst1bwK1.00'
     elif (str(sys.argv[1]) == 'GM1noBH'):
         simname = '/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM1.1536gst1bwK1/pioneer50h243GM1.1536gst1bwK1.00'
     elif (str(sys.argv[1]) == 'GM7noBH'):
         simname = '/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM7.1536gst1bwK1/pioneer50h243GM7.1536gst1bwK1.00'
     elif (str(sys.argv[1]) == 'GM4noBH'):
-        sim = pynbody.load('/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM4.1536gst1bwK1/pioneer50h243GM4.1536gst1bwK1.00'+ts)    
+        simname = '/nobackupp2/nnsanche/NO_BHs/pioneer50h243GM4.1536gst1bwK1/pioneer50h243GM4.1536gst1bwK1.00'
 
     else :
         print('Not a valid option. Current options: P0, GM1, GM7 (aka GM2), GM4 (aka GM3)')
