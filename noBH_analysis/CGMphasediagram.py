@@ -83,6 +83,7 @@ pynbody.analysis.angmom.faceon(h1)
 #pynbody.plot.sph.image(h1.g,qty='rho', width="50 kpc",filename=name+'_xy_rho_wid50.pdf')
 #plt.show()
 
+#quit()
 
 # Constants
 m_H = 1.6733 * 10**-24 #g
@@ -92,6 +93,7 @@ Z_sun = 0.0142 # (Asplund 2009; https://arxiv.org/pdf/0909.0948.pdf)
 CGM_limit = 10 #kpc
 #CGM_limit = 15 #kpc
 CGM_gas = h1.g[h1.g['r'].in_units('kpc') > CGM_limit]
+disk_gas = h1.g[h1.g['r'].in_units('kpc') <= CGM_limit]
 
 print('Total halo mass:',np.sum(h1['mass']))
 print('Total gas mass:',np.sum(h1.g['mass']))
@@ -99,6 +101,8 @@ print('Total stellar mass:',np.sum(h1.s['mass']))
 print('Total CGM gas mass:', np.sum(CGM_gas['mass']))
 print('Virial radius:',pynbody.analysis.halo.virial_radius(h1))
 #print('Total CGM gas mass in metals:',np.sum(CGM_gas['mass']*CGM_gas['metals'])) # 'metals' *IS* metallicity
+print('Total CGM gas mass in Oxygen:',np.sum(CGM_gas['mass']*CGM_gas['OxMassFrac']))
+print('Total disk gas mass in Oxygen:',np.sum(disk_gas['mass']*disk_gas['OxMassFrac']))
 CGM_gas['ZoverZsun'] = CGM_gas['metals']/Z_sun
 hiZ_CGM_gas = CGM_gas[CGM_gas['ZoverZsun'] >= 0.8]
 print('Total CGM gas mass w/ Z > 0.8:',np.sum(hiZ_CGM_gas['mass']))
@@ -111,9 +115,10 @@ x = np.log10(CGM_gas['rho'].in_units('g cm**-3')/m_H)
 y = np.log10(CGM_gas['temp'])
 
 # Mass
+# Changing to Oxygen mass! 9.18.18
 fig = plt.figure(figsize=(7, 5))
-z = CGM_gas['mass']
-plt.hexbin(x,y,C=z,reduce_C_function=np.sum,cmap=cm.jet,mincnt=1,bins='log',vmin=5.25,vmax=8.75)
+z = CGM_gas['mass']*CGM_gas['OxMassFrac']
+plt.hexbin(x,y,C=z,reduce_C_function=np.sum,cmap=cm.inferno,mincnt=1,bins='log',vmin=0.5,vmax=5.5)
 #plt.hexbin(x,y,C=z,reduce_C_function=np.sum,cmap=cm.jet,mincnt=1,bins='log',vmin=1.25,vmax=3.75)
 plt.ylabel(r'Log$_{10}$ T/'+str(CGM_gas['temp'].units),size=15)
 plt.xlabel(r'Log$_{10}$ n$_H$/cm$^{-3}$',size=15)
@@ -123,14 +128,15 @@ currentAxis = plt.gca()
 currentAxis.add_patch(Rectangle((-6,5.2), 8, 0.4, facecolor='Black', alpha=0.2,label='Collisionally Ionized Ovi',hatch='/',edgecolor='Black'))
 currentAxis.add_patch(Rectangle((-5,4.8), 1, 0.2, facecolor='Black', alpha=0.5,label='Photoionized Ovi',hatch='|',edgecolor='Black'))
 
-plt.colorbar(label=r'M$_{CGM}$/M$_{\odot}$')
+plt.colorbar(label=r'M$_{Oxygen}$/M$_{\odot}$')
 plt.text(-5.5,6.5,name, color='black',size=15)
 plt.text(0,6.5,'z = '+str('%.2f' % sim.properties['z']),color='black',size=15)
 plt.xlim(-6,2)
 plt.ylim(3.5,6.8)
 plt.legend(ncol=2,loc=8)
-plt.savefig(name+'_phasediagram_CGMat10_mass_'+ts+'_AHF.pdf')
+plt.savefig(name+'_phasediagram_CGMat10_Omass_'+ts+'_AHF.pdf')
 plt.show()
+quit()
 plt.clf()
 
 # Metallicity
