@@ -76,13 +76,15 @@ for t in range(10,len(ts)):
         Z_sun = 0.0142 # (Asplund 2009; https://arxiv.org/pdf/0909.0948.pdf) 
         h1.g['ZoverZsun'] = h1.g['metals']/Z_sun
         
-        pynbody.plot.sph.image(h1.g,qty='ZoverZsun',av_z='rho',width="250 kpc",filename=name+'_xy_Z_avgrho_'+ts[t]+'.pdf')
+        pynbody.plot.sph.image(h1.g,qty='ZoverZsun',av_z='rho',width="250 kpc")
         plt.title(name+', z = '+str('%.2f' % sim.properties['z']))
+        plt.savefig(name+'_xy_Z_avgrho_'+ts[t]+'.pdf')
         #    plt.show()
         plt.clf()
         
-        pynbody.plot.sph.image(h1.g,qty='ZoverZsun',av_z='rho',width="250 kpc",filename=name+'_xy_Z_avgrho_'+ts[t]+'.pdf')
+        pynbody.plot.sph.image(h1.g,qty='rho',width="250 kpc")
         plt.title(name+', z = '+str('%.2f' % sim.properties['z']))
+        plt.savefig(name+'_xy_rho_'+ts[t]+'.pdf')
         #    plt.show()
         plt.clf()
         
