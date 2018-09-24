@@ -67,8 +67,8 @@ else:
     else:
         name = str(sys.argv[1])
 
-tangos_halo = tangos.get_halo(ALL_db[k])
-BH_data = tangos_halo['BH'][0]
+#tangos_halo = tangos.get_halo(ALL_db[k])
+#BH_data = tangos_halo['BH'][0]
 
 file_path = 'metalflux_data/'+name+'totmass_in1kpc.txt'
 if (os.path.exists(file_path) == False) or ('overwrite' in sys.argv):

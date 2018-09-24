@@ -53,9 +53,6 @@ for i in range(len(name)):
 #    plt.show()
 
 
-
-
-
 import tangos
 tangos.all_simulations()
 import pylab as p
