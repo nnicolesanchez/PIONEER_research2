@@ -14,12 +14,12 @@ HALO_data = pd.read_csv('/home1/nnsanche/ROMULUS_research/OVI_columndensities/MW
 if sys.argv[1] == 'COS':
     #### COS-HALOS Range
     print('Plotting COS-Halos stellas mass range of ROM galaxies')    
+
     M_blue = [9,10,14,15,16,17,18,19,20,21,22,26,27,28,29,30,31,32,33,34,35,36,37,38,42,43,44,45,46,47,48,49,50,51,58,61,63,68,69,70,72,77,79,80,87,89] #no 83,86
     M_red  = [11,23,24,41,52,66]
     halo   = M_blue + M_red
     therange = 'COShalos'
     if sys.argv[1] == 'halo':
-
         ctype = 'Mhalo'
         logmax = 12.8 #halo
         logmin = 11.5 #halo
@@ -46,12 +46,12 @@ elif sys.argv[1] == 'MW':
         logmin = 10.2 # star
         cblabel = r'M$_{star}$'
 
-else:
+elif sys.argv[1] == 'GMs':
     #### GM stellar mass range (10^10 - 5^10)
-    halo = [72,54,87,66,77,79,68,37,69,61,80,70,86,89,72,54,87,75,78,96,71,94,91,73,65,67,88,85,81,39,90,60,98,93,62,84,92,95,56,97]
+#    halo = [72,54,87,66,77,79,68,37,69,61,80,70,86,89,72,54,87,75,78,96,71,94,91,73,65,67,88,85,81,39,90,60,98,93,62,84,92,95,56,97]
+    halo = np.arange(60,223)
     therange = 'GMstellarrange'
     if sys.argv[1] == 'halo':
-
         ctype = 'Mvir'
         logmax = 12.2 #halo
         logmin = 11.5 #halo
@@ -62,6 +62,9 @@ else:
         logmax = 10.7 #star
         logmin = 10 #star
         cblabel = 'M$_{star}$'
+else:
+    print('Invalid Option. Accepted ranges are:')
+    print('COShalos, MW, or GMs')
 
 labels = map(str, halo)
 labels = list(labels)
@@ -134,12 +137,12 @@ for k in range(len(labels)):
 
     plt.plot(np.log10(BH_mass[(BH_times > 11.645) & (BH_times < 11.65)][0]),Novi[R == 76.],label=NEW_lab[k],color=colors[k],marker=spot[k],markersize=8,linestyle=None,markeredgecolor='Black')
 
-plt.text(6.75,15.25,'z = 0.17',size=15)
+plt.text(6.35,15,'z = 0.17',size=15)
 plt.ylabel(r'N$_{Ovi}$ at 75 kpc',size=15)
 plt.xlabel(r'M$_{BH}$/M$_{\odot}$',size=15)
-plt.ylim(10.,15.5)
-plt.xlim(5,9.5)
-plt.legend(fontsize=11,ncol=1,loc=1)
+plt.ylim(10.5,15.5)
+plt.xlim(6,9.5)
+plt.legend(fontsize=11,ncol=1,loc=4)
 plt.colorbar(sm,label=r'log '+cblabel+'/M$_{\odot}$')
 plt.savefig('BHmass_Noviat75kpc_'+therange+'_color'+ctype+'.pdf')
 plt.show()
