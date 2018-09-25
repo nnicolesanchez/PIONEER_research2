@@ -1,4 +1,4 @@
-B1;95;0c# This script is a modified version of:
+# This script is a modified version of:
 
 #Charlotte Christensen
 #5/10/18
@@ -117,7 +117,7 @@ for i in range(0,len(dirs)):
     outer_outflux_metal = []
     time     = []
     redshift = []
-    if (os.path.exists(labels[i]+'_times2.txt') == False):
+    if (os.path.exists(labels[i]+'_times.txt') == False):
         steps = np.loadtxt('../'+labels[i]+'/timesteps.txt',dtype=str)
         for ts in range(3,len(steps)):
             filename = dirs[i] + '/' + files[i] + '.00' + steps[ts]
