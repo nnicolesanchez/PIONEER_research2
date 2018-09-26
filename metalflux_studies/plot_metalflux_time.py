@@ -119,7 +119,7 @@ for i in range(0,len(dirs)):
     redshift = []
     if (os.path.exists(labels[i]+'_times.txt') == False):
         steps = np.loadtxt('../'+labels[i]+'/timesteps.txt',dtype=str)
-        for ts in range(3,len(steps)):
+        for ts in range(0,3):#len(steps)):
             filename = dirs[i] + '/' + files[i] + '.00' + steps[ts]
             print(files[i],haloid[i],steps[ts])
             radius = 0.1
@@ -150,12 +150,12 @@ for i in range(0,len(dirs)):
         time = np.loadtxt(labels[i]+'_times.txt')
         redshift = np.loadtxt(labels[i]+'_redshifts.txt')
 
-    plt.plot(time,outer_influx_metal,label='Inflow at Rvir',linestyle='-',linewidth=4,color='SteelBlue')
-    plt.plot(time,outer_outflux_metal,label='Outflow at Rvir',linestyle=':',linewidth=4,color='SteelBlue')    
-    plt.plot(time,inner_influx_metal,label='Inflow at 0.25*Rvir',linestyle='-',linewidth=2,color='SkyBlue')
-    plt.plot(time,inner_outflux_metal,label='Outflow at 0.25*Rvir',linestyle=':',linewidth=2,color='SkyBlue')
+    plt.plot(time,outer_influx_metal,label='Inflow at Rvir',linestyle='-',linewidth=2,color='SteelBlue')
+    plt.plot(time,outer_outflux_metal,label='Outflow at Rvir',linestyle=':',linewidth=2,color='SteelBlue')    
+    plt.plot(time,inner_influx_metal,label='Inflow at 0.1*Rvir',linestyle='-',linewidth=2,color='SkyBlue')
+    plt.plot(time,inner_outflux_metal,label='Outflow at 0.1*Rvir',linestyle=':',linewidth=2,color='SkyBlue')
     plt.ylim(-1,1)
-    plt.xlim()
+    plt.xlim(2,14)
     plt.title(labels[i])
     plt.legend()
     plt.savefig(labels[i]+'_in_outflow_metalmass_time.pdf')
