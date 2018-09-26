@@ -43,13 +43,7 @@ for i in range(len(sim)):
     # ISOLATE CGM GAS #   
     ###################
     # Isolate and remove disk stars within radius 0-10 kpc & vertically 10 kpc 
-    r_max = 10  # kpc
-    twenty_kpc_incm = 6.171*(10**22)
-    
-    Rg_d = ((h1.g['x'].in_units('kpc'))**2. + (h1.g['y'].in_units('kpc'))**2. + (h1.g['z'].in_units('kpc'))**2.)**(0.5)
-    disk_gas_xyzmax =  (Rg_d < r_max)
-    disk_gas_mask = disk_gas_xyzmax #& disk_gas_zmax
-    disk_gas = h1.g[disk_gas_mask] #& disk_gas_zmax]
+    disk_gas = h1.g[h1.g['r'].in_units('kpc') <= 10]
 
     disk_profile = profile.Profile(disk_gas,min='0.1 kpc',max='10 kpc')
 

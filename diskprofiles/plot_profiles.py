@@ -5,7 +5,8 @@ import numpy as np
 labels = ['P0','GM1','GM7','GM4']
 lab_NEW = ['P0','GM1','GM2','GM3'] 
 lab_NB = ['P0noBH','GM1noBH','GM7noBH','GM4noBH']
-colors = ['DodgerBlue','SteelBlue','FireBrick','Red','Salmon','Orange']
+#colors = ['DodgerBlue','SteelBlue','FireBrick','Red','Salmon','Orange']
+colors = ['Black','Black','Grey','Grey']
 m_p = 1.6726 * 10**-24 #g 
 
 time = '3456'
@@ -14,15 +15,17 @@ solid = [-0.1,-0.1]
 dashed = [-0.1,-0.1]
 plt.plot(solid,dashed,color='Black',linestyle='-',label='BH')
 plt.plot(solid,dashed,color='Black',linestyle='--',label='NO BH')
+plt.plot(solid,dashed,color='Black',linestyle='-',label='Star Forming')
+plt.plot(solid,dashed,color='Grey',linestyle='-',label='Quenched')
 for k in range(len(labels)):
     Z = np.loadtxt(labels[k]+'_metals_'+time+'.np')
     R = np.loadtxt(labels[k]+'_Rbins_'+time+'.np')
-    plt.plot(R,Z/Z_sun,label=lab_NEW[k],color=colors[k])
+    plt.plot(R,Z/Z_sun,color=colors[k])
 
 for i in range(len(labels)):
     Z_noBH = np.loadtxt(lab_NB[i]+'_metals_3456.np')
     R_noBH = np.loadtxt(lab_NB[i]+'_Rbins_3456.np')
-    plt.plot(R_noBH,Z_noBH/Z_sun,color=colors[i],linestyle='--')
+    plt.plot(R_noBH,Z_noBH/Z_sun,linestyle='--',color=colors[0]) #since noBHs are all SF
 
 plt.title('Disk Profile at z = 0.17')
 plt.ylabel(r'$Z/Z_{\odot}$',size=15)
