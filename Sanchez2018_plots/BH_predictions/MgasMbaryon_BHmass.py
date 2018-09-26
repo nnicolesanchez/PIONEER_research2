@@ -20,7 +20,7 @@ print(rho,p_val)
 # Plot Mgas/Mbaryon vs BHmass
 sm = plt.scatter(np.log10(BHmass),Mgas_Mbaryon,marker='o',alpha=0.7,cmap='rainbow',c=np.log10(Mstellar),vmin=10.5,vmax=11.5)
 
-plt.ylabel(r'M$_{gas}$/M$_{baryon}$',size=15)
+plt.ylabel(r'f$_{B, CGM}$',size=15)
 plt.xlabel(r'M$_{BH}$/M$_{\odot}$',size=15)
 plt.colorbar().set_label(label=r'log M$_{*}$/M$_{\odot}$',size=15)
 plt.savefig('Mgasoverbaryons_BHmass.pdf')
