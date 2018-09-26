@@ -65,40 +65,36 @@ pynbody.analysis.angmom.sideon(h1)
 # Constants
 m_H = 1.6733 * 10**-24 #g
 
-# Want to isolate CGM  
-# Isolate and remove disk stars within radius 0-10 kpc & vertically 4 kpc 
-r_max = 10  # kpc
-z_max = 10   # kpc
-
-Rg_d = ((h1.g['x'].in_units('kpc'))**2. + (h1.g['y'].in_units('kpc'))**2.)**(0.5)
-disk_gas_xymax =  (Rg_d < r_max)
-disk_gas_zmax  = (h1.g['z'].in_units('kpc') < z_max) & (h1.g['z'].in_units('kpc') > -z_max)
-
-disk_gas_mask = disk_gas_xymax & disk_gas_zmax
-disk_gas = h1.g[disk_gas_xymax & disk_gas_zmax]
-CGM_gas  = h1.g[~disk_gas_mask]
+CGM_gas  = h1.g[h1.g['r'].in_units('kpc') > 10]
 
 CGM_tail = CGM_gas[CGM_gas['temp'] < 10**4.4]
 
-#pynbody.plot.sph.image(CGM_tail,qty='temp',width="50 kpc")
-#plt.title(name)
-#plt.savefig(name+'_cooltail_faceon_temp.pdf')
-#plt.show()
+pynbody.plot.sph.image(CGM_tail,qty='temp',width="100 kpc")
+plt.title(name)
+plt.savefig(name+'_cooltail_faceon_temp.pdf')
+plt.show()
+
+pynbody.plot.sph.velocity_image(CGM_tail,width="100 kpc",key_length="10 km s**-1")
+plt.title(name)
+plt.savefig(name+'_cooltail_faceon_velocity.pdf')
+plt.show()
+
+pynbody.plot.sph.image(CGM_tail,qty='temp',width="100 kpc")
+plt.title(name)
+plt.savefig(name+'_cooltail_edgeon_temp.pdf')
+plt.show()
 
 #pynbody.plot.sph.velocity_image(CGM_tail,width="50 kpc")
 #plt.title(name)
-#plt.savefig(name+'_cooltail_faceon_velocity.pdf')
+#plt.savefig(name+'_cooltail_edgeon_velocity.pdf')
 #plt.show()
 
-pynbody.plot.sph.image(CGM_tail,qty='temp',width="50 kpc")
-plt.title(name)
-plt.savefig(name+'_cooltail_edgeon_temp.pdf')
-#plt.show()
 
-pynbody.plot.sph.velocity_image(CGM_tail,width="50 kpc")
-plt.title(name)
-plt.savefig(name+'_cooltail_edgeon_velocity.pdf')
-#plt.show()
+
+
+
+
+
 
 quit()
 
