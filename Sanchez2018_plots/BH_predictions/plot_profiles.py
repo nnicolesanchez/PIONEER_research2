@@ -13,7 +13,7 @@ HALO_data = pd.read_csv('/home1/nnsanche/ROMULUS_research/OVI_columndensities/MW
 
 if sys.argv[1] == 'COS':
     #### COS-HALOS Range
-    print('Plotting COS-Halos stellas mass range of ROM galaxies')    
+    print('Plotting COS-Halos stellar mass range of ROM galaxies')    
 
     M_blue = [9,10,14,15,16,17,18,19,20,21,22,26,27,28,29,30,31,32,33,34,35,36,37,38,42,43,44,45,46,47,48,49,50,51,58,61,63,68,69,70,72,77,79,80,87,89] #no 83,86
     M_red  = [11,23,24,41,52,66]
@@ -75,7 +75,7 @@ ROMcmap = cm.get_cmap('rainbow')
 import tangos
 #tangos.all_simulations()
 #tangos.get_simulation('cosmo25').timesteps
-tangos.get_halo('cosmo25/cosmo25p.768sg1bwK1BHe75.006912/halo_9')
+#tangos.get_halo('cosmo25/cosmo25p.768sg1bwK1BHe75.006912/halo_9')
 ROM_BH_masses = []
 ROM_BH_ids = []
 for i in range(len(halo)):
