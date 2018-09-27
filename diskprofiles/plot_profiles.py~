@@ -2,11 +2,52 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-labels = ['P0','GM1','GM4','GM5','GM6','GM7']
-colors = ['DodgerBlue','SteelBlue','FireBrick','Red','Salmon','Orange']
+labels = ['P0','GM1','GM7','GM4']
+lab_NEW = ['P0','GM1','GM2','GM3'] 
+lab_NB = ['P0noBH','GM1noBH','GM7noBH','GM4noBH']
+#colors = ['DodgerBlue','SteelBlue','FireBrick','Red','Salmon','Orange']
+colors = ['Black','Black','Grey','Grey']
 m_p = 1.6726 * 10**-24 #g 
 
 time = '3456'
+Z_sun = 0.0142 # (Asplund 2009; https://arxiv.org/pdf/0909.0948.pdf) 
+solid = [-0.1,-0.1]
+dashed = [-0.1,-0.1]
+plt.plot(solid,dashed,color='Black',linestyle='-',label='BH')
+plt.plot(solid,dashed,color='Black',linestyle='--',label='NO BH')
+plt.plot(solid,dashed,color='Black',linestyle='-',label='Star Forming')
+plt.plot(solid,dashed,color='Grey',linestyle='-',label='Quenched')
+for k in range(len(labels)):
+    Z = np.loadtxt(labels[k]+'_metals_'+time+'.np')
+    R = np.loadtxt(labels[k]+'_Rbins_'+time+'.np')
+    plt.plot(R,Z/Z_sun,color=colors[k])
+
+for i in range(len(labels)):
+    Z_noBH = np.loadtxt(lab_NB[i]+'_metals_3456.np')
+    R_noBH = np.loadtxt(lab_NB[i]+'_Rbins_3456.np')
+    plt.plot(R_noBH,Z_noBH/Z_sun,linestyle='--',color=colors[0]) #since noBHs are all SF
+
+plt.title('Disk Profile at z = 0.17')
+plt.ylabel(r'$Z/Z_{\odot}$',size=15)
+plt.xlabel('R [kpc]',size=15)
+plt.ylim(0,4)
+plt.xlim(0,10)
+plt.legend(ncol=2,fontsize=15)
+plt.savefig('ALLGMs_DISKmetals_R_plusnoBH.pdf')
+plt.show()
+plt.close()
+
+
+quit()
+
+
+
+
+
+
+
+
+
 for k in range(len(labels)):
     totgasmass = np.loadtxt('../ioniz_species/totgasmass_thrutime/'+labels[k]+'_totmassgas_'+time+'.np')
     totgasmass = totgasmass/(5.976*10**27) #solar mass
@@ -29,24 +70,7 @@ plt.show()
 plt.close()
 
 
-for k in range(len(labels)):
-    Z = np.loadtxt('../ioniz_species/metals_thrutime/'+labels[k]+'_metals_'+time+'.np')
-    R = np.loadtxt('../ioniz_species/Rbins_thrutime/'+labels[k]+'_Rbins_'+time+'.np')
-    plt.plot(R,Z,label=labels[k],color=colors[k])
 
-Z_noBH = np.loadtxt('GM4noBHs_Z_3456.np')
-R_noBH = np.loadtxt('GM4noBHs_Rbins_3456.np')
-plt.plot(R_noBH,Z_noBH,label='GM4_noBH',color='Green',linestyle='--')
-
-plt.title('z = 0.17')
-plt.ylabel(r'$Z$')
-plt.xlabel('R [kpc]')
-#plt.ylim(5.2,6.2)
-plt.xlim(-10,260)
-plt.legend()
-plt.savefig('ALLGMs_metals_R.pdf')
-plt.show()
-plt.close()
 
 
 
