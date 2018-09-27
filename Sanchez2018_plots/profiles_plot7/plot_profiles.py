@@ -46,7 +46,7 @@ plt.ylim(8,9.5)
 plt.xlim(-10,260)
 #plt.legend(ncol=2,loc=3,fontsize=15)
 plt.savefig('ALLGMs_plusnoBH_totgasmass_R_'+catalogue+'.pdf')
-plt.show()
+#plt.show()
 plt.close()
 
 
@@ -77,7 +77,7 @@ plt.xlim(-10,260)
 plt.savefig('ALLGMs_plusnoBH_Omass_R_'+catalogue+'.pdf')
 plt.show()
 plt.close()
-
+quit()
 
 #solid = [-0.05,-0.1]
 #dashed = [-0.05,-0.1]
@@ -257,4 +257,3 @@ plt.xlim(-10,260)
 plt.savefig('ALLGMs_plusnoBH_rho_R_'+catalogue+'.pdf')
 plt.show()
 plt.close()
-
