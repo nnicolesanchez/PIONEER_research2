@@ -117,9 +117,11 @@ y = np.log10(CGM_gas['temp'])
 # Mass
 # Changing to Oxygen mass! 9.18.18
 fig = plt.figure(figsize=(7, 5))
-z = CGM_gas['mass']*CGM_gas['OxMassFrac']
-plt.hexbin(x,y,C=z,reduce_C_function=np.sum,cmap=cm.inferno,mincnt=1,bins='log',vmin=0.5,vmax=5.5)
-#plt.hexbin(x,y,C=z,reduce_C_function=np.sum,cmap=cm.jet,mincnt=1,bins='log',vmin=1.25,vmax=3.75)
+z = CGM_gas['mass']
+plt.hexbin(x,y,C=z,reduce_C_function=np.sum,cmap=cm.jet,mincnt=1,bins='log',vmin=5.25,vmax=8.75)
+# OXYGEN MASS
+#z = CGM_gas['mass']*CGM_gas['OxMassFrac']
+#plt.hexbin(x,y,C=z,reduce_C_function=np.sum,cmap=cm.inferno,mincnt=1,bins='log',vmin=0.5,vmax=5.5)
 plt.ylabel(r'Log$_{10}$ T/'+str(CGM_gas['temp'].units),size=15)
 plt.xlabel(r'Log$_{10}$ n$_H$/cm$^{-3}$',size=15)
 
@@ -134,10 +136,11 @@ plt.text(0,6.5,'z = '+str('%.2f' % sim.properties['z']),color='black',size=15)
 plt.xlim(-6,2)
 plt.ylim(3.5,6.8)
 plt.legend(ncol=2,loc=8)
-plt.savefig(name+'_phasediagram_CGMat10_Omass_'+ts+'_AHF.pdf')
+#plt.savefig(name+'_phasediagram_CGMat10_Omass_'+ts+'_AHF.pdf')
+plt.savefig(name+'_phasediagram_CGMat10_CGMmass_'+ts+'_AHF.pdf')
 plt.show()
 plt.clf()
-
+quit()
 # Metallicity
 #fig = plt.figure(figsize=(7, 5))
 z = CGM_gas['metals']/Z_sun
