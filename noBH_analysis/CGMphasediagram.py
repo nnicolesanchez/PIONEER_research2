@@ -128,7 +128,7 @@ currentAxis = plt.gca()
 currentAxis.add_patch(Rectangle((-6,5.2), 8, 0.4, facecolor='Black', alpha=0.2,label='Collisionally Ionized Ovi',hatch='/',edgecolor='Black'))
 currentAxis.add_patch(Rectangle((-5,4.8), 1, 0.2, facecolor='Black', alpha=0.5,label='Photoionized Ovi',hatch='|',edgecolor='Black'))
 
-plt.colorbar(label=r'M$_{Oxygen}$/M$_{\odot}$')
+plt.colorbar().set_label(label=r'M$_{Oxygen}$/M$_{\odot}$',size=15)
 plt.text(-5.5,6.5,name, color='black',size=15)
 plt.text(0,6.5,'z = '+str('%.2f' % sim.properties['z']),color='black',size=15)
 plt.xlim(-6,2)
@@ -136,7 +136,6 @@ plt.ylim(3.5,6.8)
 plt.legend(ncol=2,loc=8)
 plt.savefig(name+'_phasediagram_CGMat10_Omass_'+ts+'_AHF.pdf')
 plt.show()
-quit()
 plt.clf()
 
 # Metallicity
@@ -146,7 +145,11 @@ plt.hexbin(x,y,C=z,vmin=0.01,vmax=1)#mincnt=1,bins='log',vmin=1.25,vmax=3.75)
 plt.ylabel(r'Log$_{10}$ T ('+str(CGM_gas['temp'].units)+')',size=15)
 plt.xlabel(r'Log$_{10}$ n$_H$ (cm$^{-3}$)',size=15)
 
-plt.colorbar(label=(r'Z/Z$_{\odot}$'))
+currentAxis = plt.gca()
+currentAxis.add_patch(Rectangle((-6,5.2), 8, 0.4, facecolor='Black', alpha=0.2,label='Collisionally Ionized Ovi',hatch='/',edgecolor='Black'))
+currentAxis.add_patch(Rectangle((-5,4.8), 1, 0.2, facecolor='Black', alpha=0.5,label='Photoionized Ovi',hatch='|',edgecolor='Black'))
+
+plt.colorbar().set_label(label=r'Z/Z$_{\odot}$',size=15)
 plt.text(-5.5,6.5,name, color='black',size=15)
 plt.text(0,6.5,'z = '+str('%.2f' % sim.properties['z']),color='black',size=15)
 plt.xlim(-6,2)
@@ -162,7 +165,13 @@ plt.hexbin(x,y,C=z,cmap=cm.plasma,vmin=0.1,vmax=1)
 plt.ylabel(r'Log$_{10}$ T ('+str(CGM_gas['temp'].units)+')',size=15)
 plt.xlabel(r'Log$_{10}$ n$_H$ (cm$^{-3}$)',size=15)
 
-plt.colorbar(label=(r'R/R$_{vir}$'))
+currentAxis = plt.gca()
+currentAxis.add_patch(Rectangle((-6,5.2), 8, 0.4, facecolor='Black', alpha=0.2,label='Collisionally Ionized O\
+vi',hatch='/',edgecolor='Black'))
+currentAxis.add_patch(Rectangle((-5,4.8), 1, 0.2, facecolor='Black', alpha=0.5,label='Photoionized Ovi',hatch\
+='|',edgecolor='Black'))
+
+plt.colorbar().set_label(label=r'R/R$_{vir}$',size=15)
 plt.text(-5.5,6.7,name, color='black',size=15)
 plt.text(0,6.7,'z = '+str('%.2f' % sim.properties['z']),color='black',size=15)
 plt.xlim(-6,2)
