@@ -5,7 +5,8 @@ import sys
 time = str(sys.argv[1])
 halo = int(sys.argv[2])
 
-sim = pynbody.load('/nobackup/nnsanche/NO_BHs/pioneer50h243GM7.1536gst1bwK1/pioneer50h243GM7.1536gst1bwK1.003200')
+sim = pynbody.load('/nobackup/nnsanche/NO_BHs/pioneer50h243GM7.1536gst1bwK1/pioneer50h243GM7.1536gst1bwK1.00'+time)
+#sim = pynbody.load('/nobackup/nnsanche/NO_BHs/pioneer50h243GM4.1536gst1bwK1/pioneer50h243GM4.1536gst1bwK1.00'+time)
 h   = sim.halos()
 sat = h[halo]
 sat_iords = sat.g['iord']

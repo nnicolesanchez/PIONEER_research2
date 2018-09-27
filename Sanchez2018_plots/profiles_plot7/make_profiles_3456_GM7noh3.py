@@ -46,11 +46,11 @@ elif (str(sys.argv[1]) == 'GM1noBH'):
 elif (str(sys.argv[1]) == 'GM7noBH'):
     lab = str(sys.argv[1])
     i = 6
-    excludeh3iords = np.loadtxt('GM7noBH_h3iords_1792.txt')
+    excludeh3iords = np.loadtxt('GM7noBH_h3iords_3200.txt')
 elif (str(sys.argv[1]) == 'GM4noBH'):
     lab = str(sys.argv[1])
     i = 7
-    excludeh3iords = np.loadtxt('GM7noBH_h3iords_1792.txt')
+    excludeh3iords = np.loadtxt('GM4noBH_h3iords_3200.txt')
 else:
     print('Invalid option. Goodbye.')
     quit()
