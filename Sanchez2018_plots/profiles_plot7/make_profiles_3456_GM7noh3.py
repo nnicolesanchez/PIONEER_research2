@@ -34,6 +34,7 @@ elif (str(sys.argv[1]) == 'GM1'):
 elif (str(sys.argv[1]) == 'GM7'):
     lab = str(sys.argv[1])
     i = 2
+    excludeh3iords = np.loadtxt('GM7_h3iords_3200.txt')
 elif (str(sys.argv[1]) == 'GM4'):
     lab = str(sys.argv[1])
     i = 3
