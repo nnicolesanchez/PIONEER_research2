@@ -80,7 +80,7 @@ def calc_eta(tfile,halo_num,radius):
 #prefix = '/home/christenc/Data/Sims/'
 #step = '00512'
 prefix = '/nobackupp2/nnsanche/'
-#step = '003456'
+prefixnoBH = '/nobackupp2/nnsanche/NO_BHs/'
 
 dirP0   = prefix + 'pioneer50h243.1536g1bwK1BH'
 fileP0  = 'pioneer50h243.1536gst1bwK1BH'
@@ -94,10 +94,23 @@ keyGM7  = 'GM7'
 dirGM4  = prefix + 'pioneer50h243GM4.1536gst1bwK1BH'
 fileGM4 ='pioneer50h243GM4.1536gst1bwK1BH'
 keyGM4  = 'GM4'
-dirs  = np.array([dirP0, dirGM1, dirGM7, dirGM4])
-files = np.array([fileP0, fileGM1, fileGM7, fileGM4])
+dirP0noBH   = prefixnoBH + 'pioneer50h243.1536gst1bwK1'
+fileP0noBH  = 'pioneer50h243.1536gst1bwK1'
+keyP0noBH   = 'P0noBH'
+dirGM1noBH  = prefixnoBH + 'pioneer50h243GM1.1536gst1bwK1'
+fileGM1noBH = 'pioneer50h243GM1.1536gst1bwK1'
+keyGM1noBH  = 'GM1noBH'
+dirGM7noBH  = prefixnoBH + 'pioneer50h243GM7.1536gst1bwK1'
+fileGM7noBH = 'pioneer50h243GM7.1536gst1bwK1'
+keyGM7noBH  = 'GM7noBH'
+dirGM4noBH  = prefixnoBH + 'pioneer50h243GM4.1536gst1bwK1'
+fileGM4noBH ='pioneer50h243GM4.1536gst1bwK1'
+keyGM4noBH  = 'GM4noBH'
+
+dirs  = np.array([dirP0, dirGM1, dirGM7, dirGM4, dirP0noBH, dirGM1noBH, dirGM7noBH, dirGM4noBH])
+files = np.array([fileP0, fileGM1, fileGM7, fileGM4, fileP0noBH, fileGM1noBH, fileGM7noBH, fileGM4noBH])
 haloid   = np.array([1,1,1,1,1,1,1,1])
-labels = ['P0','GM1','GM7','GM4']
+labels = ['P0','GM1','GM7','GM4','P0noBH','GM1noBH','GM7noBH','GM4noBH']
 #masssort = np.array([1,2,3,4,5,6,7,8])
 #dirs = dirs[masssort]
 #files = files[masssort]
@@ -109,8 +122,7 @@ etaz_inner = np.array(len(dirs))
 eta_outer = np.array(len(dirs))
 etaz_outer = np.array(len(dirs))
 
-
-for i in range(0,len(dirs)):
+for i in range(3,len(dirs)):
     inner_influx_metal  = []
     inner_outflux_metal = []
     outer_influx_metal  = []
@@ -119,15 +131,13 @@ for i in range(0,len(dirs)):
     redshift = []
     if (os.path.exists(labels[i]+'_times.txt') == False):
         steps = np.loadtxt('../'+labels[i]+'/timesteps.txt',dtype=str)
-        for ts in range(0,3):#len(steps)):
+        for ts in range(1,len(steps)-2):
             filename = dirs[i] + '/' + files[i] + '.00' + steps[ts]
             print(files[i],haloid[i],steps[ts])
             radius = 0.1
             eta_inner,etaz_inner,vvir,inner_influx_z,inner_outflux_z,t,red = calc_eta(filename,haloid[i],radius)
-            #print(eta_inner,etaz_inner)
             radius = 1
             eta_outer,etaz_outer,vvir,outer_influx_z,outer_outflux_z,t,red = calc_eta(filename,haloid[i],radius)
-            #print(eta_outer,etaz_outer)    
             inner_influx_metal.append(inner_influx_z)
             inner_outflux_metal.append(inner_outflux_z)
             outer_influx_metal.append(outer_influx_z)
@@ -135,12 +145,12 @@ for i in range(0,len(dirs)):
             time.append(t)
             redshift.append(red)
     
-        np.savetxt(labels[i]+'_inner_influx_metal.txt',inner_influx_metal)
-        np.savetxt(labels[i]+'_inner_outflux_metal.txt',inner_outflux_metal)
-        np.savetxt(labels[i]+'_outer_influx_metal.txt',outer_influx_metal)
-        np.savetxt(labels[i]+'_outer_outflux_metal.txt',outer_outflux_metal)
-        np.savetxt(labels[i]+'_times.txt',time)
-        np.savetxt(labels[i]+'_redshifts.txt',redshift)
+            np.savetxt(labels[i]+'_inner_influx_metal.txt',inner_influx_metal)
+            np.savetxt(labels[i]+'_inner_outflux_metal.txt',inner_outflux_metal)
+            np.savetxt(labels[i]+'_outer_influx_metal.txt',outer_influx_metal)
+            np.savetxt(labels[i]+'_outer_outflux_metal.txt',outer_outflux_metal)
+            np.savetxt(labels[i]+'_times.txt',time)
+            np.savetxt(labels[i]+'_redshifts.txt',redshift)
 
     else:
         inner_influx_metal = np.loadtxt(labels[i]+'_inner_influx_metal.txt')    
@@ -159,4 +169,5 @@ for i in range(0,len(dirs)):
     plt.title(labels[i])
     plt.legend()
     plt.savefig(labels[i]+'_in_outflow_metalmass_time.pdf')
-    plt.show()
+#    plt.show()
+    plt.clf()
