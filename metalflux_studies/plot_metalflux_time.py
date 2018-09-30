@@ -122,7 +122,7 @@ etaz_inner = np.array(len(dirs))
 eta_outer = np.array(len(dirs))
 etaz_outer = np.array(len(dirs))
 
-for i in range(3,len(dirs)):
+for i in range(0,len(dirs)):
     inner_influx_metal  = []
     inner_outflux_metal = []
     outer_influx_metal  = []
@@ -131,13 +131,14 @@ for i in range(3,len(dirs)):
     redshift = []
     if (os.path.exists(labels[i]+'_times.txt') == False):
         steps = np.loadtxt('../'+labels[i]+'/timesteps.txt',dtype=str)
-        for ts in range(1,len(steps)-2):
+        for ts in range(len(steps)-6,len(steps)):
             filename = dirs[i] + '/' + files[i] + '.00' + steps[ts]
             print(files[i],haloid[i],steps[ts])
             radius = 0.1
             eta_inner,etaz_inner,vvir,inner_influx_z,inner_outflux_z,t,red = calc_eta(filename,haloid[i],radius)
             radius = 1
             eta_outer,etaz_outer,vvir,outer_influx_z,outer_outflux_z,t,red = calc_eta(filename,haloid[i],radius)
+            print('Time:',t)
             inner_influx_metal.append(inner_influx_z)
             inner_outflux_metal.append(inner_outflux_z)
             outer_influx_metal.append(outer_influx_z)
