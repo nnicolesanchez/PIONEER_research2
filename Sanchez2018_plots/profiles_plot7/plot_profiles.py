@@ -9,10 +9,10 @@ catalogue = 'grp'
 
 labels = ['P0','GM1','GM7','GM4']
 NEW_lab = ['P0','GM1','GM2','GM3']
-colors = ['DodgerBlue','SteelBlue','FireBrick','Salmon']#''Red','Salmon','Orange']
+colors = ['SteelBlue','SkyBlue','FireBrick','Salmon']#''Red','Salmon','Orange']
 labels_noBHs = ['P0noBH','GM1noBH','GM7noBH','GM4noBH']
 NEW_lab_noBHs = ['P0_noBH','GM1_noBH','GM7_noBH','GM4_noBH']
-colors_noBHs = ['DodgerBlue','SteelBlue','FireBrick','Salmon']#,'Orange']
+colors_noBHs = ['SteelBlue','SkyBlue','FireBrick','Salmon']#,'Orange']
 noBHline = '--'
 
 #OLDGM4_noBH = 'OLDGM4noBHs'
