@@ -69,7 +69,7 @@ for j in range(len(labels_noBHs)):
     plt.plot(noBH_R,np.log10(noBH_Omass),color=colors_noBHs[j],linestyle=noBHline)
 
 plt.title('z = 0.17')
-plt.ylabel('log(M$_{oxygen gas}$) [M$_{\odot}$]',size=15)
+plt.ylabel('log(M$_{O_{tot}}$) [M$_{\odot}$]',size=15)
 plt.xlabel('R [kpc]',size=15)
 plt.ylim(4,7.1)
 plt.xlim(0,250)
