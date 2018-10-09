@@ -3,7 +3,7 @@ import numpy as np
 from hdf5_Novi_R import *
 import pynbody
 
-m_p = 1.6726 * 10**-24
+m_p = 1.6726e-24
 
 P0 = '/nobackupp2/nnsanche/pioneer50h243.1536g1bwK1BH/pioneer50h243.1536gst1bwK1BH.003456'
 GM1 = '/nobackupp2/nnsanche/pioneer50h243GM1.1536gst1bwK1BH/pioneer50h243GM1.1536gst1bwK1BH.003456'
@@ -18,29 +18,29 @@ GM3s = pynbody.load(GM3)
 P0h = P0s.halos()
 P0_h1 = P0h[1]
 pynbody.analysis.angmom.faceon(P0_h1)
-P0_CGMgas = P0_h1.g[P0_h1.g['r'].in_units('kpc') > 10]
-P0_CGMgas_oden = P0_CGMgas['rho'].in_units('g cm^-3')*P0_CGMgas['OxMassFrac']/(16*1.6726 * 10**-24)
+P0_CGMgas = P0_h1.g[P0_h1.g['r'].in_units('kpc') > 10.]
+P0_CGMgas_oden = P0_CGMgas['rho'].in_units('g cm^-3')*P0_CGMgas['OxMassFrac']/(16.*m_p)
 P0_CGMgas['ovi'] = hdf5_ion_frac(P0_CGMgas,ion='ovi')
 
 GM1h = GM1s.halos()
 GM1_h1 = GM1h[1]
 pynbody.analysis.angmom.faceon(GM1_h1)
-GM1_CGMgas = GM1_h1.g[GM1_h1.g['r'].in_units('kpc') > 10]
-GM1_CGMgas_oden = GM1_CGMgas['rho'].in_units('g cm^-3')*GM1_CGMgas['OxMassFrac']/(16*1.6726 * 10**-24)
+GM1_CGMgas = GM1_h1.g[GM1_h1.g['r'].in_units('kpc') > 10.]
+GM1_CGMgas_oden = GM1_CGMgas['rho'].in_units('g cm^-3')*GM1_CGMgas['OxMassFrac']/(16.*m_p)
 GM1_CGMgas['ovi'] = hdf5_ion_frac(GM1_CGMgas,ion='ovi')
 
 GM2h = GM2s.halos()
 GM2_h1 = GM2h[1]
 pynbody.analysis.angmom.faceon(GM2_h1)
-GM2_CGMgas = GM2_h1.g[GM2_h1.g['r'].in_units('kpc') > 10]
-GM2_CGMgas_oden = GM2_CGMgas['rho'].in_units('g cm^-3')*GM2_CGMgas['OxMassFrac']/(16*1.6726 * 10**-24)
+GM2_CGMgas = GM2_h1.g[GM2_h1.g['r'].in_units('kpc') > 10.]
+GM2_CGMgas_oden = GM2_CGMgas['rho'].in_units('g cm^-3')*GM2_CGMgas['OxMassFrac']/(16.*m_p)
 GM2_CGMgas['ovi'] = hdf5_ion_frac(GM2_CGMgas,ion='ovi')
 
 GM3h = GM3s.halos()
 GM3_h1 = GM3h[1]
 pynbody.analysis.angmom.faceon(GM3_h1)
-GM3_CGMgas = GM3_h1.g[GM3_h1.g['r'].in_units('kpc') > 10]
-GM3_CGMgas_oden = GM3_CGMgas['rho'].in_units('g cm^-3')*GM3_CGMgas['OxMassFrac']/(16*1.6726 * 10**-24)
+GM3_CGMgas = GM3_h1.g[GM3_h1.g['r'].in_units('kpc') > 10.]
+GM3_CGMgas_oden = GM3_CGMgas['rho'].in_units('g cm^-3')*GM3_CGMgas['OxMassFrac']/(16.*m_p)
 GM3_CGMgas['ovi'] = hdf5_ion_frac(GM3_CGMgas,ion='ovi')
 
 b_kpc = np.linspace(10,260,num=26)
@@ -50,11 +50,9 @@ GM3_N_OVI = np.zeros(len(b_kpc))
 for i in range(len(b_kpc)):
     for j in range(len(b_kpc)):
         if((b_kpc[j]>=b_kpc_halfstep[i]) & (b_kpc[j]<b_kpc_halfstep[-1])):
-            GM3_path = (b_kpc_halfstep[j+1]-b_kpc_halfstep[j])*b_kpc_halfstep[j+1]/np.sqrt(b_kpc_halfstep[j+1]**2-b_kpc[i]**2)
-            GM3_N_OVI[i] += 2.*GM3_path*GM3_nOVI_kpc[j]*3.086*10**21
-print(GM3_N_OVI)
-import matplotlib.pyplot as plt
-plt.plot(b_kpc,GM3_N_OVI)
+            GM3_path = (b_kpc_halfstep[j+1]-b_kpc_halfstep[j])*b_kpc_halfstep[j+1]/np.sqrt(b_kpc_halfstep[j+1]**2.0-b_kpc[i]**2.0)
+            GM3_N_OVI[i] += 2.*GM3_path*GM3_nOVI_kpc[j]*3.086e21
+
 b_kpc = np.linspace(10,260,num=26)
 b_kpc_halfstep = np.linspace(5,255,num=26)
 GM2_nOVI_kpc = np.interp(b_kpc,GM2_CGMgas['r'].in_units('kpc'),GM2_CGMgas['ovi']*GM2_CGMgas_oden)
@@ -62,9 +60,9 @@ GM2_N_OVI = np.zeros(len(b_kpc))
 for i in range(len(b_kpc)):
     for j in range(len(b_kpc)):
         if((b_kpc[j]>=b_kpc_halfstep[i]) & (b_kpc[j]<b_kpc_halfstep[-1])):
-            GM2_path = (b_kpc_halfstep[j+1]-b_kpc_halfstep[j])*b_kpc_halfstep[j+1]/np.sqrt(b_kpc_halfstep[j+1]**2-b_kpc[i]**2)
-            GM2_N_OVI[i] += 2.*GM2_path*GM2_nOVI_kpc[j]*3.086*10**21
-plt.plot(b_kpc,GM2_N_OVI)
+            GM2_path = (b_kpc_halfstep[j+1]-b_kpc_halfstep[j])*b_kpc_halfstep[j+1]/np.sqrt(b_kpc_halfstep[j+1]**2.0-b_kpc[i]**2.0)
+            GM2_N_OVI[i] += 2.*GM2_path*GM2_nOVI_kpc[j]*3.086e21
+
 b_kpc = np.linspace(10,260,num=26)
 b_kpc_halfstep = np.linspace(5,255,num=26)
 GM1_nOVI_kpc = np.interp(b_kpc,GM1_CGMgas['r'].in_units('kpc'),GM1_CGMgas['ovi']*GM1_CGMgas_oden)
@@ -72,9 +70,9 @@ GM1_N_OVI = np.zeros(len(b_kpc))
 for i in range(len(b_kpc)):
     for j in range(len(b_kpc)):
         if((b_kpc[j]>=b_kpc_halfstep[i]) & (b_kpc[j]<b_kpc_halfstep[-1])):
-            GM1_path = (b_kpc_halfstep[j+1]-b_kpc_halfstep[j])*b_kpc_halfstep[j+1]/np.sqrt(b_kpc_halfstep[j+1]**2-b_kpc[i]**2)
-            GM1_N_OVI[i] += 2.*GM1_path*GM1_nOVI_kpc[j]*3.086*10**21
-plt.plot(b_kpc,GM1_N_OVI)
+            GM1_path = (b_kpc_halfstep[j+1]-b_kpc_halfstep[j])*b_kpc_halfstep[j+1]/np.sqrt(b_kpc_halfstep[j+1]**2.0-b_kpc[i]**2.0)
+            GM1_N_OVI[i] += 2.*GM1_path*GM1_nOVI_kpc[j]*3.086e21
+
 b_kpc = np.linspace(10,260,num=26)
 b_kpc_halfstep = np.linspace(5,255,num=26)
 P0_nOVI_kpc = np.interp(b_kpc,P0_CGMgas['r'].in_units('kpc'),P0_CGMgas['ovi']*P0_CGMgas_oden)
@@ -82,8 +80,8 @@ P0_N_OVI = np.zeros(len(b_kpc))
 for i in range(len(b_kpc)):
     for j in range(len(b_kpc)):
         if((b_kpc[j]>=b_kpc_halfstep[i]) & (b_kpc[j]<b_kpc_halfstep[-1])):
-            P0_path = (b_kpc_halfstep[j+1]-b_kpc_halfstep[j])*b_kpc_halfstep[j+1]/np.sqrt(b_kpc_halfstep[j+1]**2-b_kpc[i]**2)
-            P0_N_OVI[i] += 2.*GM1_path*GM1_nOVI_kpc[j]*3.086*10**21
+            P0_path = (b_kpc_halfstep[j+1]-b_kpc_halfstep[j])*b_kpc_halfstep[j+1]/np.sqrt(b_kpc_halfstep[j+1]**2.0-b_kpc[i]**2.0)
+            P0_N_OVI[i] += 2.*GM1_path*GM1_nOVI_kpc[j]*3.086e21
 
 P0_CGMprofile = profile.Profile(P0_CGMgas,min='0.1 kpc',max='250 kpc')
 GM1_CGMprofile = profile.Profile(GM1_CGMgas,min='0.1 kpc',max='250 kpc')
@@ -100,4 +98,6 @@ plt.plot(b_kpc,np.log10(GM2_N_OVI),color='FireBrick',linestyle='--')
 plt.plot(b_kpc,np.log10(GM3_N_OVI),color='Red',linestyle='--')
 plt.ylabel(r'N$_{OVI}$')
 plt.xlabel('R/kpc')
+plt.savefig('abel.pdf')
 plt.show()
+
