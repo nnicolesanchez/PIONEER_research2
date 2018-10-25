@@ -9,10 +9,10 @@ catalogue = 'grp'
 
 labels = ['P0','GM1','GM7','GM4']
 NEW_lab = ['P0','GM1','GM2','GM3']
-colors = ['SteelBlue','SkyBlue','FireBrick','Salmon']#''Red','Salmon','Orange']
+colors = ['DodgerBlue','SteelBlue','FireBrick','Salmon']#''Red','Salmon','Orange']
 labels_noBHs = ['P0noBH','GM1noBH','GM7noBH','GM4noBH']
 NEW_lab_noBHs = ['P0_noBH','GM1_noBH','GM7_noBH','GM4_noBH']
-colors_noBHs = ['SteelBlue','SkyBlue','FireBrick','Salmon']#,'Orange']
+colors_noBHs = ['DodgerBlue','SteelBlue','FireBrick','Salmon']#,'Orange']
 noBHline = '--'
 
 #OLDGM4_noBH = 'OLDGM4noBHs'
@@ -69,7 +69,7 @@ for j in range(len(labels_noBHs)):
     plt.plot(noBH_R,np.log10(noBH_Omass),color=colors_noBHs[j],linestyle=noBHline)
 
 plt.title('z = 0.17')
-plt.ylabel('log(M$_{O_{tot}}$) [M$_{\odot}$]',size=15)
+plt.ylabel('log(M$_{O}$) [M$_{\odot}$]',size=15)
 plt.xlabel('R [kpc]',size=15)
 plt.ylim(4,7.1)
 plt.xlim(0,250)
