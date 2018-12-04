@@ -62,10 +62,10 @@ def calc_eta(tfile,halo_num,radius):
     annuli[inward]['flux_z_part'] =  annuli[inward]['flux_mass_part']*(annuli[inward]['OxMassFrac']*2.09 + annuli[inward]['FeMassFrac']*1.06)
     annuli[outward]['flux_mass_part'] =  (annuli[outward]['x']*annuli[outward]['vx'].in_units('kpc yr**-1') + annuli[outward]['y']*annuli[outward]['vy'].in_units('kpc yr**-1') + annuli[outward]['z']*annuli[outward]['vz'].in_units('kpc yr**-1'))/np.sqrt(annuli[outward]['x']*annuli[outward]['x'] + annuli[outward]['y']*annuli[outward]['y'] + annuli[outward]['z']*annuli[outward]['z'])*annuli[outward]['mass']/(radius2 - radius1)
     annuli[outward]['flux_z_part'] =  annuli[outward]['flux_mass_part']*(annuli[outward]['OxMassFrac']*2.09 + annuli[outward]['FeMassFrac']*1.06)
-    in_flux_mass = sum(annuli[inward]['flux_mass_part'])
-    in_flux_z = sum(annuli[inward]['flux_z_part'])
-    out_flux_mass = sum(annuli[outward]['flux_mass_part'])
-    out_flux_z = sum(annuli[outward]['flux_z_part'])
+    in_flux_mass = sum(annuli[inward]['flux_mass_part'])   # Msol yr**-1
+    in_flux_z = sum(annuli[inward]['flux_z_part'])         # Msol yr**-1  
+    out_flux_mass = sum(annuli[outward]['flux_mass_part']) # Msol yr**-1  
+    out_flux_z = sum(annuli[outward]['flux_z_part'])       # Msol yr**-1  
     
     dtime = 50 #Myr 
     young = pynbody.filt.LowPass('age', str(dtime) + ' Myr')
@@ -74,7 +74,7 @@ def calc_eta(tfile,halo_num,radius):
     eta = out_flux_mass/sfr
     etaz = out_flux_z/sfr
 
-    return eta,etaz,vvir,in_flux_z,out_flux_z,halo.properties['time'].in_units('Gyr'),halo.properties['z']
+    return eta,etaz,vvir,in_flux_z,out_flux_z,in_flux_mass,out_flux_mass,halo.properties['time'].in_units('Gyr'),halo.properties['z']
 
 
 #prefix = '/home/christenc/Data/Sims/'
@@ -123,6 +123,10 @@ eta_outer = np.array(len(dirs))
 etaz_outer = np.array(len(dirs))
 
 for i in range(0,len(dirs)):
+    inner_influx_mass  = []
+    inner_outflux_mass = []
+    outer_influx_mass  = []
+    outer_outflux_mass = []
     inner_influx_metal  = []
     inner_outflux_metal = []
     outer_influx_metal  = []
@@ -131,14 +135,18 @@ for i in range(0,len(dirs)):
     redshift = []
     if (os.path.exists(labels[i]+'_times.txt') == False):
         steps = np.loadtxt('../'+labels[i]+'/timesteps.txt',dtype=str)
-        for ts in range(len(steps)-6,len(steps)):
+        for ts in range(len(steps)):
             filename = dirs[i] + '/' + files[i] + '.00' + steps[ts]
             print(files[i],haloid[i],steps[ts])
             radius = 0.1
-            eta_inner,etaz_inner,vvir,inner_influx_z,inner_outflux_z,t,red = calc_eta(filename,haloid[i],radius)
+            eta_inner,etaz_inner,vvir,inner_influx_z,inner_outflux_z,inner_influx_M,inner_outflux_M,t,red = calc_eta(filename,haloid[i],radius)
             radius = 1
-            eta_outer,etaz_outer,vvir,outer_influx_z,outer_outflux_z,t,red = calc_eta(filename,haloid[i],radius)
-            print('Time:',t)
+            eta_outer,etaz_outer,vvir,outer_influx_z,outer_outflux_z,outer_influx_M,outer_outflux_M,t,red = calc_eta(filename,haloid[i],radius)
+ #           print('Time:',t)
+            inner_influx_mass.append(inner_influx_M)
+            inner_outflux_mass.append(inner_outflux_M)
+            outer_influx_mass.append(outer_influx_M)
+            outer_outflux_mass.append(outer_outflux_M)
             inner_influx_metal.append(inner_influx_z)
             inner_outflux_metal.append(inner_outflux_z)
             outer_influx_metal.append(outer_influx_z)
@@ -146,14 +154,22 @@ for i in range(0,len(dirs)):
             time.append(t)
             redshift.append(red)
     
-            np.savetxt(labels[i]+'_inner_influx_metal.txt',inner_influx_metal)
-            np.savetxt(labels[i]+'_inner_outflux_metal.txt',inner_outflux_metal)
-            np.savetxt(labels[i]+'_outer_influx_metal.txt',outer_influx_metal)
-            np.savetxt(labels[i]+'_outer_outflux_metal.txt',outer_outflux_metal)
-            np.savetxt(labels[i]+'_times.txt',time)
-            np.savetxt(labels[i]+'_redshifts.txt',redshift)
+        np.savetxt(labels[i]+'_inner_influx_mass.txt',inner_influx_mass)
+        np.savetxt(labels[i]+'_inner_outflux_mass.txt',inner_outflux_mass)
+        np.savetxt(labels[i]+'_outer_influx_mass.txt',outer_influx_mass)
+        np.savetxt(labels[i]+'_outer_outflux_mass.txt',outer_outflux_mass)
+        np.savetxt(labels[i]+'_inner_influx_metal.txt',inner_influx_metal)
+        np.savetxt(labels[i]+'_inner_outflux_metal.txt',inner_outflux_metal)
+        np.savetxt(labels[i]+'_outer_influx_metal.txt',outer_influx_metal)
+        np.savetxt(labels[i]+'_outer_outflux_metal.txt',outer_outflux_metal)
+        np.savetxt(labels[i]+'_times.txt',time)
+        np.savetxt(labels[i]+'_redshifts.txt',redshift)
 
     else:
+        inner_influx_mass = np.loadtxt(labels[i]+'_inner_influx_mass.txt')    
+        inner_outflux_mass = np.loadtxt(labels[i]+'_inner_outflux_mass.txt')
+        outer_influx_mass = np.loadtxt(labels[i]+'_outer_influx_mass.txt')    
+        outer_outflux_mass = np.loadtxt(labels[i]+'_outer_outflux_mass.txt')
         inner_influx_metal = np.loadtxt(labels[i]+'_inner_influx_metal.txt')    
         inner_outflux_metal = np.loadtxt(labels[i]+'_inner_outflux_metal.txt')
         outer_influx_metal = np.loadtxt(labels[i]+'_outer_influx_metal.txt')    
@@ -165,10 +181,25 @@ for i in range(0,len(dirs)):
     plt.plot(time,outer_outflux_metal,label='Outflow at Rvir',linestyle=':',linewidth=2,color='SteelBlue')    
     plt.plot(time,inner_influx_metal,label='Inflow at 0.1*Rvir',linestyle='-',linewidth=2,color='SkyBlue')
     plt.plot(time,inner_outflux_metal,label='Outflow at 0.1*Rvir',linestyle=':',linewidth=2,color='SkyBlue')
+    plt.ylabel('Mass Flow/M$_{\odot}$ yr$^{-1}$')
+    plt.xlabel('Age of Universe/Gyr')
+    plt.title(labels[i])
+    plt.legend()
+    plt.savefig(labels[i]+'_in_outflow_mass_time.pdf')
+    plt.show()
+    plt.clf()
+
+    plt.plot(time,outer_influx_metal,label='Inflow at Rvir',linestyle='-',linewidth=2,color='SteelBlue')
+    plt.plot(time,outer_outflux_metal,label='Outflow at Rvir',linestyle=':',linewidth=2,color='SteelBlue')    
+    plt.plot(time,inner_influx_metal,label='Inflow at 0.1*Rvir',linestyle='-',linewidth=2,color='SkyBlue')
+    plt.plot(time,inner_outflux_metal,label='Outflow at 0.1*Rvir',linestyle=':',linewidth=2,color='SkyBlue')
+    plt.ylabel('Metal Mass Flux/M$_{\odot}$ yr$^{-1}$')
+    plt.xlabel('Age of Universe/Gyr')
     plt.ylim(-1,1)
     plt.xlim(2,14)
     plt.title(labels[i])
     plt.legend()
     plt.savefig(labels[i]+'_in_outflow_metalmass_time.pdf')
-#    plt.show()
+    plt.show()
     plt.clf()
+#    quit()
